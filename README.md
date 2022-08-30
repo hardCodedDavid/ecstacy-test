@@ -1,4 +1,4 @@
-# Minible
+# Coded Event Admin
 
 ## Project setup
 ```
