@@ -12,6 +12,7 @@ import store from '@/state/store'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueCookies from 'vue-cookies'
 
 import App from './App.vue'
 // As a plugin
@@ -56,6 +57,8 @@ import '@/assets/scss/app.scss'
 Vue.component('VueSlideBar', VueSlideBar) 
 
 Vue.use(VueAxios, axios)
+Vue.use(VueCookies, { expire: '1d'})
+
 Vue.use(BootstrapVue)
 Vue.use(vco)
 Vue.component('apexchart', VueApexCharts)

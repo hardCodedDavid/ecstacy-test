@@ -44,6 +44,19 @@ export default {
       ],
     };
   },
+    mounted() {
+      this.axios.get('https://api.codedevents.com/admin/auth/user')
+      .then((res) => {
+          console.log(res);
+      })
+      .catch((err) => {
+          // this.error = true
+          console.log(err);
+      })
+      .finally(() => {
+            // this.loading =  false
+      });
+    }
 };
 </script>
 

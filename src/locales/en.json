@@ -60,6 +60,9 @@
       "text": "Dashboard",
       "badge": "01"
     },
+    "categories": {
+      "text": "Categories"
+    },
     "apps": {
       "text": "Apps"
     },

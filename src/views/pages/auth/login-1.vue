@@ -21,8 +21,10 @@ export default {
     return {
       title: "Log in",
       user: {
-                email: this.email, 
-                password: this.paasword,
+                // email: this.email, 
+                // password: this.paasword,
+                email: "sandaiv001@gmail.com", 
+                password: "password",
             },
       loading: false,
       error: false,
@@ -30,26 +32,28 @@ export default {
   },
   methods: {
       loginUser(e) {
-          // if(this.user.email == '') {
-
-          // }
           e.preventDefault();
           this.loading = true
           this.error = false
-          this.axios.post('http://localhost:8000/api/login', this.user)
+          // this.axios.post('http://localhost:8000/api/login', this.user)
+
+          //::POST Login Request
+          this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
           .then((res) => {
-              // login successful if there's a jwt token in the response
-              if (res.data.token) {
-                  // store user details and jwt token in local storage to keep user logged in between page refreshes
-                  localStorage.setItem('user', JSON.stringify(res.data));
-                  localStorage.setItem('token', res.data.token);
-              }
+            //Store token to localStorage
+              localStorage.setItem('user', JSON.stringify(res.data));
+            //Add token to Authorization header
+              this.axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.data.token}`;
+              $cookies.set("token", res.data.data.token, 60 * 60 * 2);
+              
+            //Redirect User when done
               this.$router.push('/');
-              console.log(res.data);
+              
+              // console.log(res);
           })
           .catch((err) => {
               this.error = true
-              console.log(err.message);
+              console.log(err);
           })
           .finally(() => {
                 this.loading =  false

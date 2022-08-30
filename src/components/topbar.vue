@@ -6,6 +6,7 @@ export default {
   },
   data() {
     return {
+      user: null,
       languages: [
         {
           flag: require("@/assets/images/flags/us.jpg"),
@@ -43,6 +44,23 @@ export default {
     this.value = this.languages.find((x) => x.language === this.$i18n.locale);
     this.text = this.value.title;
     this.flag = this.value.flag;
+    if ($cookies.get("token")) {
+      this.axios.get('https://api.codedevents.com/admin/auth/user')
+      .then((res) => {
+        this.user = res.data.data
+          // console.log(res);
+          // console.log($cookies.get("token"));
+      })
+      .catch((err) => {
+          // this.error = true
+          console.log(err);
+      })
+      .finally(() => {
+            // this.loading =  false
+      });
+    } else {
+        localStorage.removeItem('user');
+    }
   },
   methods: {
     /**
@@ -432,7 +450,7 @@ export default {
             />
             <span
               class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"
-              >{{ $t("navbar.dropdown.marcus.text") }}</span
+              >{{user.name}}</span
             >
             <i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
           </template>

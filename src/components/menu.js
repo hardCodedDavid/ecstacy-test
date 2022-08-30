@@ -21,20 +21,32 @@ export const menuItems = [
     },
     {
         id: 4,
-        label: "menuitems.calendar.text",
+        label: "menuitems.categories.text",
         icon: "uil-calender",
-        link: "/calendar"
+        link: "/categories"
     },
+    // {
+    //     id: 4,
+    //     label: "menuitems.calendar.text",
+    //     icon: "uil-calender",
+    //     link: "/calendar"
+    // },
     {
         id: 5,
-        label: "menuitems.chat.text",
+        label: "Blog",
         icon: "uil-comments-alt",
-        link: "/chat",
-        badge: {
-            variant: "warning",
-            text: "menuitems.chat.badge"
-        }
+        link: "/blog"
     },
+    // {
+    //     id: 5,
+    //     label: "menuitems.chat.text",
+    //     icon: "uil-comments-alt",
+    //     link: "/chat",
+    //     badge: {
+    //         variant: "warning",
+    //         text: "menuitems.chat.badge"
+    //     }
+    // },
     {
         id: 6,
         label: "menuitems.ecommerce.text",

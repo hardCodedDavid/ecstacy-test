@@ -58,6 +58,25 @@ export default [{
     },
   },
   {
+    path: '/reset/password/:email/:token',
+    name: 'ResetPassword',
+    component: () => import('../views/pages/auth/changePassword'),
+    meta: {
+      beforeResolve(routeTo, routeFrom, next) {
+        // If the user is already logged in
+        if (store.getters['auth/loggedIn']) {
+          // Redirect to the home page instead
+          next({
+            name: 'home'
+          })
+        } else {
+          // Continue to the login page
+          next()
+        }
+      },
+    },
+  },
+  {
     path: '/logout',
     name: 'logout',
     meta: {
@@ -79,13 +98,30 @@ export default [{
         })
       },
     },
-  }, {
+  }, 
+  {
     path: '/',
     name: 'home',
     meta: {
       authRequired: true,
     },
     component: () => import('../views/pages/dashboard/index')
+  },
+  {
+    path: '/categories',
+    name: 'categories',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/categories/index')
+  },
+  {
+    path: '/blog',
+    name: 'blog',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/blog/index')
   },
   {
     path: '/calendar',

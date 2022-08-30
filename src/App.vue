@@ -31,6 +31,26 @@ export default {
     },
   },
   mounted() {
+    this.axios.defaults.headers.common['Authorization'] = `Bearer ${$cookies.get("token")}`;
+    if ($cookies.get("token")) {
+      this.axios.get('https://api.codedevents.com/admin/auth/user')
+      .then((res) => {
+          // console.log(res);
+          // console.log($cookies.get("token"));
+      })
+      .catch((err) => {
+          // this.error = true
+          console.log(err);
+      })
+      .finally(() => {
+            // this.loading =  false
+      });
+    } else {
+        localStorage.removeItem('user');
+    }
+
+    
+    
     // document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
   }
 };
