@@ -124,6 +124,70 @@ export default [{
     component: () => import('../views/pages/blog/index')
   },
   {
+    path: '/blog/details/:id',
+    name: 'blog-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/blog/show')
+  },
+  {
+    path: '/blog/add',
+    name: 'blog-create',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/blog/create')
+  },
+  {
+    path: '/blog/edit/:id',
+    name: 'blog-edit',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/blog/edit')
+  },
+  {
+    path: '/events',
+    name: 'event',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/event/index')
+  },
+  {
+    path: '/events/show/:id',
+    name: 'event-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/event/show')
+  },
+  {
+    path: '/plans',
+    name: 'plans',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/plan/index')
+  },
+  {
+    path: '/transactions',
+    name: 'transactions',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/transaction/index')
+  },
+  {
+    path: '/transaction/payments',
+    name: 'payments',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/transaction/payment')
+  },
+  {
     path: '/calendar',
     name: 'calendar',
     meta: {

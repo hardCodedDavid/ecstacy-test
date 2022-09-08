@@ -40,13 +40,13 @@ export default {
       sortDesc: false,
       fields: [
         {
-          key: "check",
-          label: "",
+          key: "index",
+          label: "S/N",
         },
-        // {
-        //   key: "id",
-        //   label: "ID",
-        // },
+        {
+          key: "image",
+          label: "Image",
+        },
         {
           key: "title",
           label: "Title",
@@ -61,9 +61,14 @@ export default {
           label: "Body",
           sortable: true,
         },
-        "action",
+        {
+          key: "action",
+          label: "Action",
+        },
       ],
       isBusy: false,
+      blogInfo: null,
+      blogInfoId: null,
     };
   },
   middleware: "authentication",
@@ -103,7 +108,26 @@ export default {
     },
     toggleBusy() {
         this.isBusy = !this.isBusy
-    }
+    },
+    getBlogDetails(data){
+        this.blogInfo = data.item.title;
+        this.blogInfoId = data.item.id;
+    },
+    deleteBlog(){
+        this.toggleBusy();
+        this.axios.delete('https://api.codedevents.com/admin/blog/' + this.blogInfoId)
+        .then((res) => {
+            console.log(res.data.data);
+            this.fetchBlog();
+        })
+        .catch((err) => {
+            // this.error = true
+            console.log(err);
+        })
+        .finally(() => {
+            this.isBusy =  false
+        });
+    },
   },
 };
 </script>
@@ -111,6 +135,28 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
+
+<!-- ::START DELETE category Modal -->
+        
+        <b-modal id="modal-delete-category" title="Delete Blog" title-class="font-18" hide-footer>
+            <p>Are you sure you want to delete "{{blogInfo}}" </p>
+            
+            <div class="modal-footer">
+                <button @click="deleteBlog(), $bvModal.hide('modal-delete-category')" type="button" class="btn btn-primary">
+                    Delete
+                </button>
+                <b-button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                    @click="$bvModal.hide('modal-delete-category')"
+                    >
+                    Close
+                </b-button>
+            </div>
+        </b-modal>
+
+      <!-- ::END DELETE category Modal -->
     <div class="row">
       <div class="col-12">
         <div>
@@ -128,7 +174,8 @@ export default {
             type="button"
             class="btn btn-success mb-3"
           >
-            <i class="mdi mdi-plus me-1"></i> Add New Blog
+          <router-link :to="{ name: 'blog-create'}" class="text-white"><i class="mdi mdi-plus me-1"></i> Add New Blog</router-link>
+            
           </button>
         </div>
         <div class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline">
@@ -188,6 +235,9 @@ export default {
                 <strong>Loading...</strong>
                 </div>
             </template>
+            <template v-slot:cell(index)="data">
+              {{ data.index + 1 }}
+            </template>
             <template v-slot:cell(check)="data">
               <div class="custom-control custom-checkbox text-center">
                 <input
@@ -208,9 +258,8 @@ export default {
                 >{{ data.id }}</a
               >
             </template>
-
-            <template v-slot:cell(title)="data">
-                <img
+            <template v-slot:cell(image)="data">
+              <img
                     v-if="data.item.thumbnail"
                     :src="data.item.thumbnail"
                     alt
@@ -226,10 +275,13 @@ export default {
                       <i class="mdi mdi-account-circle m-0"></i>
                     </div>
                   </div>
-              <a href="#" class="text-body">{{ data.item.title }}</a>
+            </template>
+
+            <template v-slot:cell(title)="data">
+              <router-link :to="{ name: 'blog-details', params: { id: data.item.id }}">{{ data.item.title }}</router-link>
             </template>
             <template v-slot:cell(body)="data">
-              <p class="d-inline-block text-truncate" style="max-width: 150px;">{{ data.item.body }}</p>
+              <div class="d-inline-block text-truncate" style="max-width: 450px; max-height: 60px;" v-html="data.item.body"></div>
             </template>
             <template v-slot:cell(status)="data">
               <div
@@ -242,7 +294,7 @@ export default {
                 {{ data.item.status }}
               </div>
             </template>
-            <template v-slot:cell(action)>
+            <template v-slot:cell(action)="data">
               <ul class="list-inline mb-0">
                 <li class="list-inline-item">
                   <a
@@ -251,7 +303,9 @@ export default {
                     v-b-tooltip.hover
                     title="Edit"
                   >
+                  <router-link :to="{ name: 'blog-edit', params: { id: data.item.id }}">
                     <i class="uil uil-pen font-size-18"></i>
+                  </router-link>
                   </a>
                 </li>
                 <li class="list-inline-item">
@@ -260,6 +314,8 @@ export default {
                     class="px-2 text-danger"
                     v-b-tooltip.hover
                     title="Delete"
+                    @click="getBlogDetails(data)"
+                    v-b-modal.modal-delete-category
                   >
                     <i class="uil uil-trash-alt font-size-18"></i>
                   </a>

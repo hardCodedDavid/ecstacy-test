@@ -31,11 +31,11 @@ export default {
     },
   },
   mounted() {
-    this.axios.defaults.headers.common['Authorization'] = `Bearer ${$cookies.get("token")}`;
-    if ($cookies.get("token")) {
+    this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get("token")}`;
+    if (this.$cookies.get("token")) {
       this.axios.get('https://api.codedevents.com/admin/auth/user')
       .then((res) => {
-          // console.log(res);
+          console.log(res);
           // console.log($cookies.get("token"));
       })
       .catch((err) => {

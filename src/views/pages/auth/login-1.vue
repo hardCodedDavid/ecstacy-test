@@ -23,7 +23,7 @@ export default {
       user: {
                 // email: this.email, 
                 // password: this.paasword,
-                email: "sandaiv001@gmail.com", 
+                email: "admin@codedevents.com", 
                 password: "password",
             },
       loading: false,
@@ -44,7 +44,7 @@ export default {
               localStorage.setItem('user', JSON.stringify(res.data));
             //Add token to Authorization header
               this.axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.data.token}`;
-              $cookies.set("token", res.data.data.token, 60 * 60 * 2);
+              this.$cookies.set("token", res.data.data.token, 60 * 60 * 2);
               
             //Redirect User when done
               this.$router.push('/');

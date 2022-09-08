@@ -40,12 +40,8 @@ export default {
       sortDesc: false,
       fields: [
         {
-          key: "check",
-          label: "",
-        },
-        {
-          key: "id",
-          label: "Category ID",
+          key: "index",
+          label: "S/N",
         },
         {
           key: "name",
@@ -177,15 +173,21 @@ export default {
       <div class="col-12">
         <div>
           <div class="float-end">
-            <form class="d-inline-flex mb-3">
-              <label class="my-1 me-2" for="order-selectinput">Categories</label>
-              <select class="form-select" id="order-selectinput">
-                <option selected="">All</option>
-                <option value="1">Active</option>
-                <option value="2">Unpaid</option>
-              </select>
-            </form>
-          </div>
+            <div
+                id="tickets-table_filter"
+                class="dataTables_filter text-md-end"
+              >
+                <label class="d-inline-flex align-items-center fw-normal">
+                  Search:
+                  <b-form-input
+                    v-model="filter"
+                    type="search"
+                    placeholder="Search..."
+                    class="form-control form-control-sm ms-2"
+                  ></b-form-input>
+                </label>
+              </div>
+          </div> 
 
           <!-- ::START ADD Category Modal -->
 
@@ -221,7 +223,7 @@ export default {
           <!-- ::START EDIT category Modal -->
             
             <b-modal id="modal-edit-category" title="Edit Category" title-class="font-18" hide-footer>
-                <h5>Edit Category</h5>
+                <!-- <h5>Edit Category</h5> -->
                 <input type="text" v-model="categoryName" id="horizontal-firstname-input" placeholder="Enter category name..." class="form-control">
                 <div class="modal-footer">
                     <button @click="editCategory(), $bvModal.hide('modal-edit-category')" type="button" class="btn btn-primary">
@@ -243,7 +245,7 @@ export default {
           <!-- ::START DELETE category Modal -->
             
             <b-modal id="modal-delete-category" title="Delete Category" title-class="font-18" hide-footer>
-                <p>Are you sure you want to delete {{categoryName}} </p>
+                <p>Are you sure you want to delete "{{categoryName}}" </p>
                 
                 <div class="modal-footer">
                     <button @click="deleteCategory(), $bvModal.hide('modal-delete-category')" type="button" class="btn btn-primary">
@@ -288,6 +290,9 @@ export default {
                 <b-spinner class="align-middle"></b-spinner>
                 <strong>Loading...</strong>
                 </div>
+            </template>
+            <template v-slot:cell(index)="data">
+              {{ data.index + 1 }}
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">

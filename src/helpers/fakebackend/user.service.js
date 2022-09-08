@@ -30,7 +30,7 @@ function login(email, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
-    $cookies.remove('token');
+    this.$cookies.remove('token');
 }
 
 function register(user) {

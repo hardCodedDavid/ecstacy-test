@@ -44,7 +44,7 @@ export default {
     this.value = this.languages.find((x) => x.language === this.$i18n.locale);
     this.text = this.value.title;
     this.flag = this.value.flag;
-    if ($cookies.get("token")) {
+    if (this.$cookies.get("token")) {
       this.axios.get('https://api.codedevents.com/admin/auth/user')
       .then((res) => {
         this.user = res.data.data

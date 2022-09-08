@@ -37,6 +37,43 @@ export const menuItems = [
         icon: "uil-comments-alt",
         link: "/blog"
     },
+    {
+        id: 70,
+        label: "Events",
+        icon: "uil-file-alt",
+        link: "/events"
+    },
+    {
+        id: 71,
+        label: "Plans",
+        icon: "uil-invoice",
+        link: "/plans"
+    },
+    {
+        id: 72,
+        label: "Transactions",
+        icon: "uil-invoice",
+        subItems: [
+            {
+                id: 1,
+                label: "All Transactions",
+                link: "/transactions",
+                parentId: 72
+            },
+            {
+                id: 2,
+                label: "Payments",
+                link: "/transaction/payments",
+                parentId: 72
+            },
+            {
+                id: 3,
+                label: "Withdrawals",
+                link: "/",
+                parentId: 72
+            },
+        ]
+    },
     // {
     //     id: 5,
     //     label: "menuitems.chat.text",
@@ -547,37 +584,37 @@ export const menuItems = [
             },
         ]
     },
-    {
-        id: 88,
-        label: "menuitems.multilevel.text",
-        icon: "uil-share-alt",
-        subItems: [
-            {
-                id: 89,
-                label: "menuitems.multilevel.list.level1.1",
-                link: "#",
-                parentId: 88
-            },
-            {
-                id: 90,
-                label: "menuitems.multilevel.list.level1.2",
-                parentId: 88,
-                subItems: [
-                    {
-                        id: 91,
-                        label: "menuitems.multilevel.list.level1.level2.1",
-                        link: "#",
-                        parentId: 88
-                    },
-                    {
-                        id: 92,
-                        label: "menuitems.multilevel.list.level1.level2.2",
-                        link: "#",
-                        parentId: 88
-                    }
-                ]
-            }
-        ]
-    }
+    // {
+    //     id: 88,
+    //     label: "menuitems.multilevel.text",
+    //     icon: "uil-share-alt",
+    //     subItems: [
+    //         {
+    //             id: 89,
+    //             label: "menuitems.multilevel.list.level1.1",
+    //             link: "#",
+    //             parentId: 88
+    //         },
+    //         {
+    //             id: 90,
+    //             label: "menuitems.multilevel.list.level1.2",
+    //             parentId: 88,
+    //             subItems: [
+    //                 {
+    //                     id: 91,
+    //                     label: "menuitems.multilevel.list.level1.level2.1",
+    //                     link: "#",
+    //                     parentId: 88
+    //                 },
+    //                 {
+    //                     id: 92,
+    //                     label: "menuitems.multilevel.list.level1.level2.2",
+    //                     link: "#",
+    //                     parentId: 88
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // }
 ];
 

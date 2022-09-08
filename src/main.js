@@ -13,6 +13,7 @@ import store from '@/state/store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookies from 'vue-cookies'
+import moment from 'moment';
 
 import App from './App.vue'
 // As a plugin
@@ -58,6 +59,18 @@ Vue.component('VueSlideBar', VueSlideBar)
 
 Vue.use(VueAxios, axios)
 Vue.use(VueCookies, { expire: '1d'})
+Vue.filter('formatDate', function(value) {
+  if (value) {
+      return moment(String(value)).format('DD MMMM, YYYY h:mma')
+  }
+});
+
+Vue.filter('formatDay', function(value) {
+  if (value) {
+      return moment(String(value)).format('DD MMMM, YYYY')
+  }
+});
+
 
 Vue.use(BootstrapVue)
 Vue.use(vco)
