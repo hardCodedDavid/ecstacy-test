@@ -98,7 +98,7 @@ export default {
               <div class="card-body p-4">
                 <div class="text-center mt-2">
                   <h5 class="text-primary">Welcome Back !</h5>
-                  <p class="text-muted">Sign in to continue to Minible.</p>
+                  <p class="text-muted">Sign in to continue to Coded Events.</p>
                 </div>
                 <div class="loader" v-if="loading">
                   <p class="text-center text-success font-bold">Loading...</p>
