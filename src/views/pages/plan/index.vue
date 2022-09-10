@@ -1,4 +1,6 @@
 <script>
+    import Multiselect from "vue-multiselect";
+
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
@@ -7,7 +9,7 @@
      * Orders component
      */
     export default {
-      components: { Layout, PageHeader },
+      components: { Layout, Multiselect, PageHeader },
       page: {
         title: "Plans",
         meta: [
@@ -67,6 +69,8 @@
           isBusy: false,
           planInfo: null,
           planInfoId: null,
+          options: null,
+          defaultoptions: ["month", "year"],
           plan:{ 
             name: this.name,
             price: this.price,
@@ -93,6 +97,7 @@
         // Set the initial number of items
         this.totalRows = this.items.length;
         this.fetchPlan();
+        this.fetchFeature();
       },
       methods: {
         fetchPlan(){
@@ -119,15 +124,33 @@
             this.isBusy = !this.isBusy
         },
         getPlanDetails(data){
+          this.axios.get('https://api.codedevents.com/admin/plans/' + data.id + '/details')
+          .then((res) => {
+            console.log(res.data);
+              this.plan.name = res.data.data.name;
+              this.plan.price = res.data.data.price;
+              this.plan.currency = res.data.data.currency;
+              this.plan.max_documents = res.data.data.max_documents;
+              this.plan.max_media = res.data.data.max_media;
+              this.plan.max_vendors = res.data.data.max_vendors;
+              this.plan.link_validity = res.data.data.link_validity;
+              this.plan.link_validity_type = res.data.data.link_validity_type;
+              
+              
+              this.plan.features = res.data.data.features;
+            })
+            .catch((err) => {
+                // this.error = true
+                console.log(err);
+            })
+            .finally(() => {
+                this.isBusy =  false
+            });
             this.planInfo = data.name;
             this.planInfoId = data.id;
 
             console.log(data);
-            this.plan.name = data.name;
-            this.plan.price = data.price;
-            this.plan.currency = data.currency;
-            // let dataFeat = JSON.stringify(data.features);
-            this.plan.features = data.features.map(({ id }) => id).join(', ');
+            
         },
         deletePlan(){
             this.toggleBusy();
@@ -145,13 +168,17 @@
             });
         },
         addPlan() {
-          this.plan.features = this.plan.features.split(", ");
-          this.plan.max_documents = 20,
-          this.plan.max_media = 50,
-          this.plan.max_vendors = 20,
-          this.plan.link_validity = 5,
-          this.plan.link_validity_type = 'month',
+          // this.plan.features = this.plan.features.split(", ");
+          // this.plan.max_documents = 20,
+          // this.plan.max_media = 50,
+          // this.plan.max_vendors = 20,
+          // this.plan.link_validity = 5,
+          // this.plan.link_validity_type = 'month',
+          let val = this.plan.features.map(({ id }) => id).join(', ');
 
+          this.plan.features = val.split(", ");
+
+          // console.log(this.plan);
           this.axios.post('https://api.codedevents.com/admin/plans', this.plan)
             .then((res) => {
                 console.log(res.data.data);
@@ -166,12 +193,14 @@
             });
         },
         editPlan() {
-          this.plan.features = this.plan.features.split(", ");
-          this.plan.max_documents = 20,
-          this.plan.max_media = 50,
-          this.plan.max_vendors = 20,
-          this.plan.link_validity = 5,
-          this.plan.link_validity_type = 'month',
+          let val = this.plan.features.map(({ id }) => id).join(', ');
+
+          this.plan.features = val.split(", ");
+          // this.plan.max_documents = 20,
+          // this.plan.max_media = 50,
+          // this.plan.max_vendors = 20,
+          // this.plan.link_validity = 5,
+          // this.plan.link_validity_type = 'month',
 
           this.axios.put('https://api.codedevents.com/admin/plans/' + this.planInfoId, this.plan)
             .then((res) => {
@@ -186,6 +215,23 @@
                 this.isBusy =  false
             });
         },
+        fetchFeature(){
+          this.axios.get('https://api.codedevents.com/admin/plans/permissions')
+          .then((res) => {
+                console.log(res.data.data);
+                this.options = res.data.data;
+            })
+            .catch((err) => {
+                // this.error = true
+                console.log(err);
+            })
+            .finally(() => {
+                this.isBusy =  false
+            });
+        },
+        // defaultPlanInfo() {
+        //   this.plan = ""
+        // }
       },
     };
     </script>
@@ -194,7 +240,7 @@
       <Layout>
         <PageHeader :title="title" :items="items" />
         
-        <button type="button" class="text-white btn btn-success mb-3" v-b-modal.modal-add-plan>
+        <button type="button" class="brand-primary text-white btn btn-success mb-3" v-b-modal.modal-add-plan>
             <i class="mdi mdi-plus me-1"></i> Add New Plan
         </button>
 
@@ -207,8 +253,31 @@
               <input type="number" v-model="plan.price" id="horizontal-firstname-input" placeholder="Enter plan price..." class="m-2 form-control">
               <label for="" class="m-2">Currency: </label>
               <input type="text" v-model="plan.currency" id="horizontal-firstname-input" placeholder="Enter plan currency..." class="m-2 form-control">
+              <label for="" class="m-2">Max Documents: </label>
+              <input type="number" v-model="plan.max_documents" id="horizontal-firstname-input" placeholder="Enter maximum documents..." class="m-2 form-control">
+              <label for="" class="m-2">Max Media: </label>
+              <input type="number" v-model="plan.max_media" id="horizontal-firstname-input" placeholder="Enter maximum media..." class="m-2 form-control">
+              <label for="" class="m-2">Max Vendors: </label>
+              <input type="number" v-model="plan.max_vendors" id="horizontal-firstname-input" placeholder="Enter maximum vendor..." class="m-2 form-control">
+              <label for="" class="m-2">Link Validity: </label>
+              <input type="number" v-model="plan.link_validity" id="horizontal-firstname-input" placeholder="Enter maximum validity..." class="m-2 form-control">
+              <label for="" class="m-2">Link Validity Type: </label>
+              <multiselect
+                v-model="plan.link_validity"
+                :options="defaultoptions"
+                class="m-2"
+              ></multiselect>
+              <!-- <input type="text" v-model="plan.link_validity_type" id="horizontal-firstname-input" placeholder="Enter maximum validity type..." class="m-2 form-control"> -->
               <label for="features" class="m-2">Features: </label>
-              <textarea v-model="plan.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea>
+              <multiselect
+                v-model="plan.features"
+                :options="options"
+                track-by="id"
+                label="name"
+                :multiple="true"
+                class="m-2"
+              ></multiselect>
+              <!-- <textarea v-model="plan.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
               <div class="modal-footer">
                   <button @click="addPlan(), $bvModal.hide('modal-add-plan')" type="button" class="btn btn-primary">
                       Save changes
@@ -217,7 +286,7 @@
                       type="button"
                       class="btn btn-secondary"
                       data-dismiss="modal"
-                      @click="$bvModal.hide('modal-edit-plan')"
+                      @click="$bvModal.hide('modal-add-plan')"
                       >
                       Close
                   </b-button>
@@ -234,8 +303,26 @@
               <input type="number" v-model="plan.price" id="horizontal-firstname-input" placeholder="Enter plan price..." class="m-2 form-control">
               <label for="" class="m-2">Currency: </label>
               <input type="text" v-model="plan.currency" id="horizontal-firstname-input" placeholder="Enter plan currency..." class="m-2 form-control">
-              <label for="features" class="m-2">Features: </label>
-              <textarea v-model="plan.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea>
+              <label for="" class="m-2">Max Documents: </label>
+              <input type="number" v-model="plan.max_documents" id="horizontal-firstname-input" placeholder="Enter maximum documents..." class="m-2 form-control">
+              <label for="" class="m-2">Max Media: </label>
+              <input type="number" v-model="plan.max_media" id="horizontal-firstname-input" placeholder="Enter maximum media..." class="m-2 form-control">
+              <label for="" class="m-2">Max Vendors: </label>
+              <input type="number" v-model="plan.max_vendors" id="horizontal-firstname-input" placeholder="Enter maximum vendor..." class="m-2 form-control">
+              <label for="" class="m-2">Link Validity: </label>
+              <input type="number" v-model="plan.link_validity" id="horizontal-firstname-input" placeholder="Enter maximum validity..." class="m-2 form-control">
+              <label for="" class="m-2">Link Validity Type: </label>
+              <input type="text" v-model="plan.link_validity_type" id="horizontal-firstname-input" placeholder="Enter maximum validity type..." class="m-2 form-control">
+              <label class="mt-3">Features: </label>
+              <multiselect
+                v-model="plan.features"
+                :options="options"
+                track-by="id"
+                label="name"
+                :multiple="true"
+              ></multiselect>
+              <!-- <label for="features" class="m-2">Features: </label> -->
+              <!-- <textarea v-model="plan.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
               <div class="modal-footer">
                   <button @click="editPlan(), $bvModal.hide('modal-edit-plan')" type="button" class="btn btn-primary">
                       Save changes
@@ -276,12 +363,12 @@
         <div class="row justify-content-center">
           <div class="col-lg-5">
             <div class="text-center mb-5">
-              <h4>Choose your Pricing plan</h4>
-              <p class="text-muted mb-4">
+              <h4>Pricing plan</h4>
+              <!-- <p class="text-muted mb-4">
                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem
                 accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
                 quae ab illo veritatis
-              </p>
+              </p> -->
             </div>
           </div>
         </div>
@@ -304,7 +391,7 @@
                       </div>
                     </div>
 
-                    <div style="height: 500px;">
+                    <div>
                       <div v-for="feature in data.features" :key="feature.id" class="list-unstyled plan-features mt-3">
                         
                         <p style="font-size: 14px;">

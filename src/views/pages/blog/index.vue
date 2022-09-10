@@ -172,7 +172,7 @@ export default {
           </div>
           <button
             type="button"
-            class="btn btn-success mb-3"
+            class="btn btn-success mb-3 brand-primary"
           >
           <router-link :to="{ name: 'blog-create'}" class="text-white"><i class="mdi mdi-plus me-1"></i> Add New Blog</router-link>
             

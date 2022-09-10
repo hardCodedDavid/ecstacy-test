@@ -222,10 +222,10 @@ export default {
       element.classList.toggle("show");
     },
     logoutUser() {
-      this.logout();
-      this.$router.push({
-        path: "/account/login",
-      });
+      // this.logout();
+      localStorage.removeItem('user');
+      this.$cookies.remove('token');
+      this.$router.push('/login');
     },
   },
   watch: {
@@ -646,7 +646,7 @@ export default {
           <a
             class="dropdown-item"
             href="javascript: void(0);"
-            @click="logoutUser"
+            @click="logoutUser()"
           >
             <i
               class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"
