@@ -135,7 +135,7 @@ export default {
                             <i
                               class="uil uil-eye text-primary me-2 font-size-16 align-middle"
                             ></i>
-                            View Event: <a :href="eventData.link" target="_blank">{{eventData.link}}</a>
+                             Event Link: <a href="javascript:void(0)">{{eventData.link}}</a>
                           </p>
                           <p>
                             <i

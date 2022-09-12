@@ -188,6 +188,14 @@ export default [{
     component: () => import('../views/pages/transaction/payment')
   },
   {
+    path: '/profile/admin',
+    name: 'profile',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/profile/index')
+  },
+  {
     path: '/calendar',
     name: 'calendar',
     meta: {

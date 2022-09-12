@@ -9,7 +9,7 @@ export const menuItems = [
         label: "menuitems.dashboard.text",
         icon: "uil-home-alt",
         badge: {
-            variant: "primary",
+            variant: "warning",
             text: "menuitems.dashboard.badge"
         },
         link: "/"
@@ -73,6 +73,12 @@ export const menuItems = [
                 parentId: 72
             },
         ]
+    },
+    {
+        id: 73,
+        label: "Profile",
+        icon: "uil-user-circle",
+        link: "/profile/admin"
     },
     // {
     //     id: 5,

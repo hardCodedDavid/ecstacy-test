@@ -161,14 +161,14 @@ export default {
       <div class="col-12">
         <div>
           <div class="float-end">
-            <form class="d-inline-flex mb-3">
+            <!-- <form class="d-inline-flex mb-3">
               <label class="my-1 me-2" for="order-selectinput">Blogs</label>
               <select class="form-select" id="order-selectinput">
                 <option selected="">All</option>
                 <option value="1">Active</option>
                 <option value="2">Unpaid</option>
               </select>
-            </form>
+            </form> -->
           </div>
           <button
             type="button"
