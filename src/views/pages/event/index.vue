@@ -236,7 +236,7 @@
 
               <template v-slot:cell(status)="data">
                 <div
-                  class="badge bg-pill bg-soft-info font-size-12"
+                  class="badge bg-pill font-size-12"
                   :class="{
                     'bg-soft-success': data.item.status === 'active',
                     'bg-soft-danger': data.item.status === 'expired',
