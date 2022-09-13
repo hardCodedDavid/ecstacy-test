@@ -196,6 +196,22 @@ export default [{
     component: () => import('../views/pages/profile/index')
   },
   {
+    path: '/management/admin',
+    name: 'admin',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/admin')
+  },
+  {
+    path: '/management/role',
+    name: 'role',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/role')
+  },
+  {
     path: '/calendar',
     name: 'calendar',
     meta: {

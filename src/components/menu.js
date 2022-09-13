@@ -76,9 +76,34 @@ export const menuItems = [
     },
     {
         id: 73,
-        label: "Profile",
+        label: "Management",
         icon: "uil-user-circle",
-        link: "/profile/admin"
+        subItems: [
+            {
+                id: 1,
+                label: "Admin",
+                link: "/management/admin",
+                parentId: 73
+            },
+            {
+                id: 2,
+                label: "Roles",
+                link: "/management/role",
+                parentId: 73
+            },
+            {
+                id: 3,
+                label: "Users",
+                link: "/transaction/payments",
+                parentId: 73
+            },
+            {
+                id: 4,
+                label: "Profile",
+                link: "/profile/admin",
+                parentId: 73
+            },
+        ]
     },
     // {
     //     id: 5,

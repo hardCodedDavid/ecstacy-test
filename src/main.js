@@ -14,6 +14,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookies from 'vue-cookies'
 import moment from 'moment';
+import VueToastr from "vue-toastr";
+
 
 import App from './App.vue'
 // As a plugin
@@ -70,6 +72,7 @@ Vue.filter('formatDay', function(value) {
       return moment(String(value)).format('DD MMMM, YYYY')
   }
 });
+Vue.component("vue-toastr", VueToastr);
 
 
 Vue.use(BootstrapVue)

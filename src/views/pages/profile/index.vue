@@ -160,7 +160,7 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Projects</th>
+                                                    <th scope="col">Names</th>
                                                     <!-- <th scope="col">Date</th> -->
                                                     <th scope="col">Status</th>
                                                     <!-- <th scope="col" style="width: 120px;">Action</th> -->

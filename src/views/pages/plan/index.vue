@@ -168,12 +168,6 @@
             });
         },
         addPlan() {
-          // this.plan.features = this.plan.features.split(", ");
-          // this.plan.max_documents = 20,
-          // this.plan.max_media = 50,
-          // this.plan.max_vendors = 20,
-          // this.plan.link_validity = 5,
-          // this.plan.link_validity_type = 'month',
           let val = this.plan.features.map(({ id }) => id).join(', ');
 
           this.plan.features = val.split(", ");
