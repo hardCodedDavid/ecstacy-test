@@ -1,5 +1,6 @@
 <script>
     import Multiselect from "vue-multiselect";
+    import VueToastr from "vue-toastr";
 
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
@@ -9,7 +10,7 @@
      * Orders component
      */
     export default {
-      components: { Layout, Multiselect, PageHeader },
+      components: { Layout, Multiselect, PageHeader, VueToastr },
       page: {
         title: "Plans",
         meta: [
@@ -81,6 +82,8 @@
             max_vendors: this.max_vendors,
             link_validity: this.link_validity,
             link_validity_type: this.link_validity_type,
+            no_of_scans: this.no_of_scans,
+            max_locations: this.max_locations,
           },
         };
       },
@@ -135,6 +138,8 @@
               this.plan.max_vendors = res.data.data.max_vendors;
               this.plan.link_validity = res.data.data.link_validity;
               this.plan.link_validity_type = res.data.data.link_validity_type;
+              this.plan.no_of_scans = res.data.data.no_of_scans;
+              this.plan.max_locations = res.data.data.max_locations;
               
               
               this.plan.features = res.data.data.features;
@@ -158,10 +163,25 @@
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchPlan();
+
+                this.$refs.mytoast.Add({
+                msg: "Plan Deleted Successfully",
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
             })
             .catch((err) => {
                 // this.error = true
                 console.log(err);
+                this.$refs.mytoast.Add({
+                msg: err.response.data.details,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
             })
             .finally(() => {
                 this.isBusy =  false
@@ -177,10 +197,27 @@
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchPlan();
+
+                this.$refs.mytoast.Add({
+                msg: "Plan Created Successfully",
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
             })
             .catch((err) => {
                 // this.error = true
                 console.log(err);
+                this.plan.features = ""
+
+                this.$refs.mytoast.Add({
+                msg: err.response.data.details,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
             })
             .finally(() => {
                 this.isBusy =  false
@@ -190,20 +227,30 @@
           let val = this.plan.features.map(({ id }) => id).join(', ');
 
           this.plan.features = val.split(", ");
-          // this.plan.max_documents = 20,
-          // this.plan.max_media = 50,
-          // this.plan.max_vendors = 20,
-          // this.plan.link_validity = 5,
-          // this.plan.link_validity_type = 'month',
+          
 
           this.axios.put('https://api.codedevents.com/admin/plans/' + this.planInfoId, this.plan)
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchPlan();
+                this.$refs.mytoast.Add({
+                msg: "Plan Edited Successfully",
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
             })
             .catch((err) => {
                 // this.error = true
                 console.log(err);
+                this.$refs.mytoast.Add({
+                msg: err.response.data.details,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
             })
             .finally(() => {
                 this.isBusy =  false
@@ -233,9 +280,10 @@
     <template>
       <Layout>
         <PageHeader :title="title" :items="items" />
-        
-        <button type="button" class="brand-primary text-white btn btn-success mb-3" v-b-modal.modal-add-plan>
-            <i class="mdi mdi-plus me-1"></i> Add New Plan
+        <vue-toastr ref="mytoast"></vue-toastr>
+
+        <button type="button" class="brand-primary text-white btn btn-success mb-3" >
+          <router-link :to="{ name: 'create-plans'}" class="text-white"><i class="mdi mdi-plus me-1"></i> Add New Plan</router-link>
         </button>
 
         <!-- ::START ADD Plan Modal -->    
@@ -253,11 +301,15 @@
               <input type="number" v-model="plan.max_media" id="horizontal-firstname-input" placeholder="Enter maximum media..." class="m-2 form-control">
               <label for="" class="m-2">Max Vendors: </label>
               <input type="number" v-model="plan.max_vendors" id="horizontal-firstname-input" placeholder="Enter maximum vendor..." class="m-2 form-control">
+              <label for="" class="m-2">Max Location: </label>
+              <input type="number" v-model="plan.max_locations" id="horizontal-firstname-input" placeholder="Enter maximum locations..." class="m-2 form-control">
+              <label for="" class="m-2">Number of scans: </label>
+              <input type="number" v-model="plan.no_of_scans" id="horizontal-firstname-input" placeholder="Enter number of scans..." class="m-2 form-control">
               <label for="" class="m-2">Link Validity: </label>
               <input type="number" v-model="plan.link_validity" id="horizontal-firstname-input" placeholder="Enter maximum validity..." class="m-2 form-control">
               <label for="" class="m-2">Link Validity Type: </label>
               <multiselect
-                v-model="plan.link_validity"
+                v-model="plan.link_validity_type"
                 :options="defaultoptions"
                 class="m-2"
               ></multiselect>
@@ -303,10 +355,18 @@
               <input type="number" v-model="plan.max_media" id="horizontal-firstname-input" placeholder="Enter maximum media..." class="m-2 form-control">
               <label for="" class="m-2">Max Vendors: </label>
               <input type="number" v-model="plan.max_vendors" id="horizontal-firstname-input" placeholder="Enter maximum vendor..." class="m-2 form-control">
+              <label for="" class="m-2">Max Location: </label>
+              <input type="number" v-model="plan.max_locations" id="horizontal-firstname-input" placeholder="Enter maximum locations..." class="m-2 form-control">
+              <label for="" class="m-2">Number of scans: </label>
+              <input type="number" v-model="plan.no_of_scans" id="horizontal-firstname-input" placeholder="Enter number of scan..." class="m-2 form-control">
               <label for="" class="m-2">Link Validity: </label>
               <input type="number" v-model="plan.link_validity" id="horizontal-firstname-input" placeholder="Enter maximum validity..." class="m-2 form-control">
               <label for="" class="m-2">Link Validity Type: </label>
-              <input type="text" v-model="plan.link_validity_type" id="horizontal-firstname-input" placeholder="Enter maximum validity type..." class="m-2 form-control">
+              <multiselect
+                v-model="plan.link_validity"
+                :options="defaultoptions"
+                class="m-2"
+              ></multiselect>
               <label class="mt-3">Features: </label>
               <multiselect
                 v-model="plan.features"
@@ -408,7 +468,7 @@
                               Action
                               <i class="mdi mdi-chevron-down"></i>
                             </template>
-                            <b-dropdown-item v-b-modal.modal-edit-plan @click="getPlanDetails(data)">Edit</b-dropdown-item>
+                            <b-dropdown-item ><router-link :to="{ name: 'edit-plans', params: { id: data.id }}">Edit</router-link></b-dropdown-item>
                             <b-dropdown-item v-b-modal.modal-delete-category @click="getPlanDetails(data)">Delete</b-dropdown-item>
                           </b-dropdown>
                       <!-- <a 

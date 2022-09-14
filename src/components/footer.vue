@@ -8,12 +8,11 @@ export default {
     <footer class="footer">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6">{{ new Date().getFullYear()}} © Minible.</div>
+            <div class="col-sm-6">© All rights reserved Coded Events</div>
             <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">
-                    Crafted with
-                    <i class="mdi mdi-heart text-danger"></i> by
-                    <a href="https://themesbrand.com/" target="_blank" class="text-reset">Themesbrand</a>
+                    Powered by
+                    <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digitals</a>
                 </div>
             </div>
         </div>

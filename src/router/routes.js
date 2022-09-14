@@ -172,6 +172,22 @@ export default [{
     component: () => import('../views/pages/plan/index')
   },
   {
+    path: '/plans/create',
+    name: 'create-plans',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/plan/create')
+  },
+  {
+    path: '/plans/edit/:id',
+    name: 'edit-plans',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/plan/edit')
+  },
+  {
     path: '/transactions',
     name: 'transactions',
     meta: {
@@ -210,6 +226,14 @@ export default [{
       authRequired: true,
     },
     component: () => import('../views/pages/management/role')
+  },
+  {
+    path: '/notification/subscribers',
+    name: 'notifiaction',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/notification/index')
   },
   {
     path: '/calendar',

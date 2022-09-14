@@ -134,8 +134,7 @@
             this.role.permissions = val.split(", ");
 
             this.axios.put('https://api.codedevents.com/admin/roles/' 
-            + this.role.id + '?name=' + this.role.name + 
-            '&permissions=' + this.role.permissions)
+            + this.role.id, this.role)
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchData();
@@ -150,6 +149,7 @@
             })
             .catch((err) => {
                 console.log(err);
+                console.log(this.role);
 
                 this.$refs.mytoast.Add({
                 msg: err.response.data.details,

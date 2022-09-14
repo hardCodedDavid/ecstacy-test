@@ -1,7 +1,7 @@
 export const menuItems = [
     {
         id: 1,
-        label: "menuitems.menu.text",
+        label: "Overview",
         isTitle: true
     },
     {
@@ -21,16 +21,10 @@ export const menuItems = [
     },
     {
         id: 4,
-        label: "menuitems.categories.text",
-        icon: "uil-calender",
-        link: "/categories"
+        label: "Events",
+        icon: "uil-file-alt",
+        link: "/events"
     },
-    // {
-    //     id: 4,
-    //     label: "menuitems.calendar.text",
-    //     icon: "uil-calender",
-    //     link: "/calendar"
-    // },
     {
         id: 5,
         label: "Blog",
@@ -38,73 +32,83 @@ export const menuItems = [
         link: "/blog"
     },
     {
-        id: 70,
-        label: "Events",
-        icon: "uil-file-alt",
-        link: "/events"
-    },
-    {
-        id: 71,
+        id: 6,
         label: "Plans",
         icon: "uil-invoice",
         link: "/plans"
     },
     {
-        id: 72,
-        label: "Transactions",
-        icon: "uil-invoice",
-        subItems: [
-            {
-                id: 1,
-                label: "All Transactions",
-                link: "/transactions",
-                parentId: 72
-            },
-            {
-                id: 2,
-                label: "Payments",
-                link: "/transaction/payments",
-                parentId: 72
-            },
-            {
-                id: 3,
-                label: "Withdrawals",
-                link: "/",
-                parentId: 72
-            },
-        ]
+        id: 7,
+        label: "menuitems.categories.text",
+        icon: "uil-calender",
+        link: "/categories"
     },
     {
-        id: 73,
-        label: "Management",
-        icon: "uil-user-circle",
-        subItems: [
-            {
-                id: 1,
-                label: "Admin",
-                link: "/management/admin",
-                parentId: 73
-            },
-            {
-                id: 2,
-                label: "Roles",
-                link: "/management/role",
-                parentId: 73
-            },
-            {
-                id: 3,
-                label: "Users",
-                link: "/transaction/payments",
-                parentId: 73
-            },
-            {
-                id: 4,
-                label: "Profile",
-                link: "/profile/admin",
-                parentId: 73
-            },
-        ]
+        id: 17,
+        label: "Notification",
+        icon: "uil-comment-alt-notes",
+        link: "/notification/subscribers",
     },
+    {
+        id: 8,
+        label: "Finances",
+        isTitle: true
+    },
+    {
+        id: 9,
+        label: "Transactions",
+        icon: "uil-money-bill-stack",
+        link: "/transactions"
+    },
+    {
+        id: 10,
+        label: "Payments",
+        icon: "uil-money-insert",
+        link: "/transaction/payments"
+    },
+    {
+        id: 11,
+        label: "Withdrawals",
+        icon: "uil-money-withdrawal",
+        link: "/transaction/payments"
+    },
+    {
+        id: 12,
+        label: "Management",
+        isTitle: true
+    },
+    {
+        id: 13,
+        label: "Admin",
+        icon: "uil-user-check",
+        link: "/management/admin",
+    },
+    {
+        id: 14,
+        label: "Users",
+        icon: "uil-users-alt",
+        link: "/management/admin",
+    },
+    {
+        id: 15,
+        label: "Role",
+        icon: "uil-user-circle",
+        link: "/management/role",
+    },
+    {
+        id: 16,
+        label: "Profile",
+        icon: "uil-user-circle",
+        link: "/profile/admin",
+    },
+
+
+
+
+
+
+
+
     // {
     //     id: 5,
     //     label: "menuitems.chat.text",
