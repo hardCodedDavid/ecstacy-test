@@ -48,8 +48,8 @@
               label: "S/N",
             },
             {
-              key: "reference",
-              label: "Reference",
+              key: "bank",
+              label: "Bank",
             },
             {
               key: "amount",
@@ -57,23 +57,28 @@
               sortable: true,
             },
             {
-              key: "amount_paid",
-              label: "Amount Paid",
+              key: "account_name",
+              label: "Amount Name",
               sortable: true,
             },
             {
-              key: "currency",
-              label: "Currency",
+              key: "account_number",
+              label: "Amount Number",
+              sortable: true,
+            },
+            {
+              key: "user.name",
+              label: "User Name",
+              sortable: true,
+            },
+            {
+              key: "user.email",
+              label: "User Email",
               sortable: true,
             },
             {
               key: "status",
               label: "Payment Status",
-              sortable: true,
-            },
-            {
-              key: "type",
-              label: "Type",
               sortable: true,
             },
             {
@@ -151,7 +156,7 @@
       <Layout>
         <PageHeader :title="title" :items="items" />
         <!-- ::START POST Resolve Payment Modal -->
-            {{paymentData}}
+            <!-- {{paymentData}} -->
         <b-modal id="modal-resolve-payment" title="Resolve Payment" title-class="font-18" hide-footer>
                 <p>Are you sure you want to Resolve this Payment "{{paymentRef}}" </p>
                 
