@@ -204,6 +204,14 @@ export default [{
     component: () => import('../views/pages/transaction/payment')
   },
   {
+    path: '/transaction/withdrawals',
+    name: 'withdrawals',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/transaction/withdrawal')
+  },
+  {
     path: '/profile/admin',
     name: 'profile',
     meta: {
@@ -228,12 +236,36 @@ export default [{
     component: () => import('../views/pages/management/role')
   },
   {
+    path: '/management/user',
+    name: 'user',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/user')
+  },
+  {
+    path: '/management/user/:id',
+    name: 'user-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/userShow')
+  },
+  {
     path: '/notification/subscribers',
     name: 'notifiaction',
     meta: {
       authRequired: true,
     },
     component: () => import('../views/pages/notification/index')
+  },
+  {
+    path: '/permission',
+    name: 'permission',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/permissions/index')
   },
   {
     path: '/calendar',

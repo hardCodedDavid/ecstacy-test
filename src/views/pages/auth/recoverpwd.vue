@@ -343,11 +343,12 @@ export default {
               </div>
 
               <div class="mt-5 text-center">
-                <p>
-                  © {{ new Date().getFullYear() }} Minible. Crafted with
-                  <i class="mdi mdi-heart text-danger"></i> by Themesbrand
-                </p>
-              </div>
+              <p>
+                <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
+                © All rights reserved Coded Events
+                <i class="mdi mdi-heart text-danger"></i> by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a>
+              </p>
+            </div>
             </div>
           </div>
         </div>

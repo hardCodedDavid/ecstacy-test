@@ -9,7 +9,7 @@
     export default {
         components: {Layout,PageHeader },
          page: {
-        title: "Profile",
+        title: "User Detail",
         meta: [
           {
             name: "description",
@@ -19,12 +19,12 @@
       },
         data() {
             return {
-                title: "Profile",
+                title: "User Detail",
                 items: [{
                         text: "Contacts",
                     },
                     {
-                        text: "Profile",
+                        text: "User Detail",
                         active: true,
                     },
                 ],
@@ -33,7 +33,7 @@
         },
         mounted() {
             if (this.$cookies.get("token")) {
-            this.axios.get('https://api.codedevents.com/admin/auth/user')
+            this.axios.get('https://api.codedevents.com/admin/users/' + this.$route.params.id)
             .then((res) => {
                 console.log(res);
                 this.user = res.data.data
@@ -56,7 +56,7 @@
     <template>
     <Layout>
         <PageHeader :title="title" :items="items" />
-    
+    <!-- {{user}} -->
         <div class="row mb-4" v-if="user">
             <div class="col-xl-4">
                 <div class="card h-100">
@@ -72,10 +72,14 @@
                             </b-dropdown>
                             <div class="clearfix"></div>
                             <div v-if="user.profile_photo">
-                                <img :src="user.profile" alt class="avatar-lg rounded-circle img-thumbnail" />
+                                <img :src="profile_photo" alt class="avatar-lg rounded-circle img-thumbnail" />
                             </div>
                             <div v-else>
-                                <img :src="user.thumbnail" alt class="avatar-lg rounded-circle img-thumbnail" />
+                                <div class="avatar-md d-inline-block me-2">
+                                    <div class="avatar-title bg-soft-primary rounded-circle text-primary">
+                                        <i class="mdi mdi-account-circle"></i>
+                                    </div>
+                                </div>
                             </div>
                             <h5 class="mt-3 mb-1">{{user.name}}</h5>
                             <p class="text-muted">{{user.email}}</p>
@@ -84,11 +88,13 @@
                                 <p 
                                     class="badge bg-pill"
                                     :class="{
-                                        'bg-soft-success': user.status === 'approved',
-                                        'bg-soft-danger': user.status === 'declined',
-                                        'bg-soft-warning': user.status === 'pending',
+                                        'bg-soft-success': user.email_verified === true,
+                                        'bg-soft-danger': user.email_verified === false,
                                     }"
-                                    >{{user.status}}</p>
+                                    >
+                                    <span v-if="user.email_verified">Verified</span>
+                                    <span v-if="!user.email_verified">Unverified</span>
+                                </p>
                             </div>
                         </div>
     
@@ -111,8 +117,16 @@
                                     <h5 class="font-size-16">{{user.email}}</h5>
                                 </div>
                                 <div class="mt-4">
-                                    <p class="mb-1">Role :</p>
-                                    <h5 class="font-size-16">{{user.role.name}}</h5>
+                                    <p class="mb-1">Country :</p>
+                                    <h5 class="font-size-16">{{user.country}}</h5>
+                                </div>
+                                <div class="mt-4">
+                                    <p class="mb-1">City :</p>
+                                    <h5 class="font-size-16">{{user.city}}</h5>
+                                </div>
+                                <div class="mt-4">
+                                    <p class="mb-1">Address :</p>
+                                    <h5 class="font-size-16">{{user.address || "no address"}}</h5>
                                 </div>
                             </div>
                         </div>
@@ -126,67 +140,61 @@
                         <b-tab active>
                             <template v-slot:title>
                                 <i class="uil uil-user-circle font-size-20"></i>
-                                <span class="d-none d-sm-block">Permissions</span>
+                                <span class="d-none d-sm-block">Information</span>
                             </template>
                             <div>
-                                <!-- <div>
-                                    <h5 class="font-size-16 mb-4">Experience</h5>
-    
-                                    <ul class="activity-feed mb-0 ps-2">
-                                        <li class="feed-item">
-                                            <div class="feed-item-list">
-                                                <p class="text-muted mb-1">2019 - 2020</p>
-                                                <h5 class="font-size-16">UI/UX Designer</h5>
-                                                <p>Abc Company</p>
-                                                <p class="text-muted">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual</p>
-                                            </div>
-                                        </li>
-                                        <li class="feed-item">
-                                            <div class="feed-item-list">
-                                                <p class="text-muted mb-1">2017 - 2019</p>
-                                                <h5 class="font-size-16">Graphic Designer</h5>
-                                                <p>xyz Company</p>
-                                                <p class="text-muted">It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div> -->
-    
                                 <div>
                                     <!-- <h5 class="font-size-16 mb-4">Permissions</h5> -->
     
                                     <div class="table-responsive">
                                         <table class="table table-nowrap table-hover mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Names</th>
-                                                    <!-- <th scope="col">Date</th> -->
-                                                    <th scope="col">Status</th>
-                                                    <!-- <th scope="col" style="width: 120px;">Action</th> -->
-                                                </tr>
-                                            </thead>
+                                            
                                             <tbody>
-                                                <tr v-for="role in user.role.permissions" :key="role.id">
-                                                    <th scope="row">{{role.id}}</th>
+                                                <tr>
+                                                    <!-- <th scope="row">{{role.id}}</th> -->
                                                     <td>
-                                                        <a href="#" class="text-dark">{{role.name}}</a>
+                                                        <a href="#" class="text-dark">Registerd Date</a>
                                                     </td>
-                                                    <!-- <td>18 Jun, 2020</td> -->
+                                                    <td><p>{{user.created_at | formatDate }}</p></td>
+                                                    
+                                                </tr>
+                                                <tr>
                                                     <td>
-                                                        <span class="badge bg-soft-success font-size-12">Active</span>
+                                                        <a href="#" class="text-dark">Email Verified</a>
                                                     </td>
-                                                    <!-- <td>
-                                                        <b-dropdown right toggle-class="text-muted font-size-18 px-2 p-0" variant="white" menu-class="dropdown-menu-end">
-                                                            <template v-slot:button-content>
-                                                                <i class="uil uil-ellipsis-v"></i>
-                                                            </template>
-    
-                                                            <a class="dropdown-item" href="#">Action</a>
-                                                            <a class="dropdown-item" href="#">Another action</a>
-                                                            <a class="dropdown-item" href="#">Something else here</a>
-                                                        </b-dropdown>
-                                                    </td> -->
+                                                    <td>
+                                                        <span v-if="user.email_verified" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.email_verified" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Transaction Pin</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.has_transaction_pin" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.has_transaction_pin" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <!-- <th scope="row">{{role.id}}</th> -->
+                                                    <td>
+                                                        <a href="#" class="text-dark">Login 2FA</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.two_factor_enabled.login" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.two_factor_enabled.login" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Transaction 2FA</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.two_factor_enabled.transaction" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.two_factor_enabled.transaction" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -38,6 +38,12 @@ export const menuItems = [
         link: "/plans"
     },
     {
+        id: 6,
+        label: "Permission",
+        icon: "uil-check",
+        link: "/permission"
+    },
+    {
         id: 7,
         label: "menuitems.categories.text",
         icon: "uil-calender",
@@ -70,7 +76,7 @@ export const menuItems = [
         id: 11,
         label: "Withdrawals",
         icon: "uil-money-withdrawal",
-        link: "/transaction/payments"
+        link: "/transaction/withdrawals"
     },
     {
         id: 12,
@@ -87,7 +93,7 @@ export const menuItems = [
         id: 14,
         label: "Users",
         icon: "uil-users-alt",
-        link: "/management/admin",
+        link: "/management/user",
     },
     {
         id: 15,

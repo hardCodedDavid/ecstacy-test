@@ -12,7 +12,7 @@ export default {
             <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">
                     Powered by
-                    <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digitals</a>
+                    <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a>
                 </div>
             </div>
         </div>
