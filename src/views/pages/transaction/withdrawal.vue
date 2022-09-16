@@ -120,9 +120,24 @@
                 this.isBusy =  false
             });
         },
-        resolvePayment(){
+        approveWithdrawal(id){
             this.isBusy = !this.isBusy
-            this.axios.post('https://api.codedevents.com/admin/transactions/payments/' + this.paymentId + '/resolve')
+            this.axios.post('https://api.codedevents.com/admin/transactions/withdrawals/' + id + '/approve')
+            .then((res) => {
+                console.log(res.data.data);
+                this.fetchPayments();
+            })
+            .catch((err) => {
+                // this.error = true
+                console.log(err);
+            })
+            .finally(() => {
+                this.isBusy =  false
+            });
+        },
+        declineWithdrawal(id){
+            this.isBusy = !this.isBusy
+            this.axios.post('https://api.codedevents.com/admin/transactions/withdrawals/' + id + '/decline')
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchPayments();
@@ -299,17 +314,28 @@
                 </template>
                 <template v-slot:cell(action)="{ item }">
                   <ul class="list-inline mb-0">
-                    <li class="list-inline-item">
+                    <li v-if="item.status == 'pending' || item.status == 'failed'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
-                        class="px-2 text-success"
+                        class="px-2 text-primary"
                         v-b-tooltip.hover
-                        title="Resolve Payment"
-                        @click="getPaymentInfo(item)"
-                        v-b-modal.modal-resolve-payment
-                        data-toggle="modal"
+                        title="Approve"
+                        v-b-modal.modal-edit-admin
+                        @click="approveWithdrawal(item.id)"
                       >
-                        <i class="uil-money-withdrawal font-size-20"></i>
+                        <i class="uil uil-check-circle font-size-18 text-success"></i>
+                      </a>
+                    </li>
+                    <li v-if="item.status == 'pending' || item.status == 'success'" class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-primary"
+                        v-b-tooltip.hover
+                        title="Restrict"
+                        v-b-modal.modal-edit-admin
+                        @click="declineWithdrawal(item.id)"
+                      >
+                        <i class="uil uil-info-circle font-size-18 text-danger"></i>
                       </a>
                     </li>
                   </ul>
