@@ -294,7 +294,7 @@
                 </template>
                 <template v-slot:cell(action)="{ item }">
                   <ul class="list-inline mb-0">
-                    <li class="list-inline-item">
+                    <li v-if="!item.status == 'success'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-success"
@@ -303,6 +303,14 @@
                         @click="getPaymentInfo(item)"
                         v-b-modal.modal-resolve-payment
                         data-toggle="modal"
+                      >
+                        <i class="uil-money-withdrawal font-size-20"></i>
+                      </a>
+                    </li>
+                    <li v-if="item.status == 'success'" class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-muted"
                       >
                         <i class="uil-money-withdrawal font-size-20"></i>
                       </a>
