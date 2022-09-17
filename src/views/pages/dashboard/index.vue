@@ -35,7 +35,7 @@ export default {
       title: "Dashboard",
       items: [
         {
-          text: "Minible",
+          text: "Overview",
         },
         {
           text: "Dashboard",

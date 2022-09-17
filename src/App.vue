@@ -51,6 +51,7 @@ export default {
 
     
     
+    
     // document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
   }
 };

@@ -1,3 +1,6 @@
+
+
+
 export const menuItems = [
     {
         id: 1,
@@ -29,31 +32,39 @@ export const menuItems = [
         id: 5,
         label: "Blog",
         icon: "uil-comments-alt",
-        link: "/blog"
+        subItems: [
+            {
+                id: 7,
+                label: "Blogs",
+                link: "/blog",
+                parentId: 5
+            },
+            {
+                id: 8,
+                label: "Categories",
+                link: "/categories",
+                parentId: 5
+            },
+        ]
     },
     {
         id: 6,
-        label: "Plans",
+        label: "Plan",
         icon: "uil-invoice",
-        link: "/plans"
-    },
-    {
-        id: 6,
-        label: "Permission",
-        icon: "uil-check",
-        link: "/permission"
-    },
-    {
-        id: 7,
-        label: "menuitems.categories.text",
-        icon: "uil-calender",
-        link: "/categories"
-    },
-    {
-        id: 17,
-        label: "Notification",
-        icon: "uil-comment-alt-notes",
-        link: "/notification/subscribers",
+        subItems: [
+            {
+                id: 7,
+                label: "Plans",
+                link: "/plans",
+                parentId: 6
+            },
+            {
+                id: 8,
+                label: "Permissions",
+                link: "/permission",
+                parentId: 6
+            },
+        ]
     },
     {
         id: 8,
@@ -70,12 +81,20 @@ export const menuItems = [
         id: 10,
         label: "Payments",
         icon: "uil-money-insert",
+        badgePay: {
+            variant: "primary",
+            text: "menuitems.dashboard.badge"
+        },
         link: "/transaction/payments"
     },
     {
         id: 11,
         label: "Withdrawals",
         icon: "uil-money-withdrawal",
+        badgeWit: {
+            variant: "primary",
+            text: "menuitems.dashboard.badge"
+        },
         link: "/transaction/withdrawals"
     },
     {
@@ -106,6 +125,12 @@ export const menuItems = [
         label: "Profile",
         icon: "uil-user-circle",
         link: "/profile/admin",
+    },
+    {
+        id: 17,
+        label: "Notification",
+        icon: "uil-comment-alt-notes",
+        link: "/notification/subscribers",
     },
 
 
