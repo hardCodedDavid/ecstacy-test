@@ -170,7 +170,7 @@ export default {
       </div>
 
       <div class="d-flex">
-        <b-dropdown
+        <!-- <b-dropdown
           variant="white"
           class="d-inline-block d-lg-none ms-2"
           toggle-class="header-item noti-icon"
@@ -284,7 +284,7 @@ export default {
               </div>
             </div>
           </div>
-        </b-dropdown>
+        </b-dropdown> -->
 
         <div class="dropdown d-none d-lg-inline-block ms-1">
           <button
@@ -456,22 +456,22 @@ export default {
           </template>
 
           <!-- item-->
-          <a class="dropdown-item" href="#">
+          <router-link to="/profile/admin" class="dropdown-item">
             <i
               class="uil uil-user-circle font-size-18 align-middle text-muted me-1"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.profile")
             }}</span>
-          </a>
-          <a class="dropdown-item" href="#">
+          </router-link>
+          <!-- <a class="dropdown-item" href="#">
             <i
               class="uil uil-wallet font-size-18 align-middle me-1 text-muted"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.mywallet")
             }}</span>
-          </a>
+          </a> -->
           <a class="dropdown-item d-block" href="#">
             <i
               class="uil uil-cog font-size-18 align-middle me-1 text-muted"
@@ -481,25 +481,25 @@ export default {
             }}</span>
             <span class="badge bg-soft-success rounded-pill mt-1 ms-2">03</span>
           </a>
-          <a class="dropdown-item" href="#">
+          <!-- <a class="dropdown-item" href="#">
             <i
               class="uil uil-lock-alt font-size-18 align-middle me-1 text-muted"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.lockscreen")
             }}</span>
-          </a>
-          <a class="dropdown-item" href="/logout">
+          </a> -->
+          <router-link class="dropdown-item" to="/logout">
             <i
               class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.logout")
             }}</span>
-          </a>
+          </router-link>
         </b-dropdown>
 
-        <div class="dropdown d-inline-block">
+        <!-- <div class="dropdown d-inline-block">
           <button
             type="button"
             class="btn header-item noti-icon right-bar-toggle toggle-right"
@@ -507,7 +507,7 @@ export default {
           >
             <i class="uil-cog toggle-right"></i>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </header>
