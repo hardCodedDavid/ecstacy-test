@@ -12,7 +12,7 @@
     export default {
       components: { Layout, PageHeader, Multiselect, VueToastr },
       page: {
-        title: "User",
+        title: "Verified User",
         meta: [
           {
             name: "description",
@@ -22,14 +22,14 @@
       },
       data() {
         return {
-          title: "User",
+          title: "Verified User",
           isBusy: false,
           items: [
             {
               text: "App",
             },
             {
-              text: "User",
+              text: "Verified User",
               active: true,
             },
           ],
@@ -111,7 +111,7 @@
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get('https://api.codedevents.com/admin/users?page=1&per_page=10000')
+          this.axios.get('https://api.codedevents.com/admin/users?page=1&per_page=10000&filter=verified')
           .then((res) => {
               console.log(res.data.data);
               this.adminData = res.data.data
@@ -394,7 +394,7 @@
                     </div>
                 </template>
                 <template #empty="scope">
-                    <p class="text-center p-3">{{ scope.emptyText }}</p>
+                    {{ scope.emptyText }}
                 </template>
                 <template v-slot:cell(index)="data">
                   {{ data.index + 1 }}

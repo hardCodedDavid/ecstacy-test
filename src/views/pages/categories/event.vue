@@ -9,7 +9,7 @@
     export default {
       components: { Layout, PageHeader },
       page: {
-        title: "Descriptions",
+        title: "Event Categories",
         meta: [
           {
             name: "description",
@@ -19,13 +19,13 @@
       },
       data() {
         return {
-          title: "Descriptions",
+          title: "Event Categories",
           items: [
             {
               text: "App",
             },
             {
-              text: "Descriptions",
+              text: "Category",
               active: true,
             },
           ],
@@ -45,20 +45,14 @@
             },
             {
               key: "name",
-              label: "Name",
-              sortable: true,
-            },
-            {
-              key: "description",
-              label: "Description",
+              label: "Category Name",
               sortable: true,
             },
             "action",
           ],
-          permissionName: null,
-          permissionDesc: null,
+          categoryName: null,
           deleteModal: false,
-          permissionInfo: '',
+          categoryInfo: '',
           isBusy: false,
         };
       },
@@ -74,13 +68,13 @@
       mounted() {
         // Set the initial number of items
         this.totalRows = this.items.length;
-        this.fetchPermission();
+        this.fetchCategory();
         
       },
       methods: {
-        fetchPermission(){
+        fetchCategory(){
             this.toggleBusy();
-            this.axios.get('https://api.codedevents.com/admin/plans/permissions?page=1&per_page=10000')
+            this.axios.get('https://api.codedevents.com/admin/categories/event?page=1&per_page=10000')
             .then((res) => {
                 console.log(res.data.data);
                 this.orderData = res.data.data;
@@ -93,16 +87,16 @@
                 this.isBusy =  false
             });
         },
-        
-        editPermission(){
-            if(this.permissionDesc == ''){
+        addCategory(){
+            if(this.categoryName == null){
                 return;
             } else {
                 this.toggleBusy();
-                this.axios.put('https://api.codedevents.com/admin/permissions/' + this.permissionInfo.id + '?description=' + this.permissionDesc)
+                this.axios.post('https://api.codedevents.com/admin/categories/event?name=' + this.categoryName)
                 .then((res) => {
                     console.log(res.data.data);
-                    this.fetchPermission();
+                    this.fetchCategory();
+                    this.categoryName = null;
                 })
                 .catch((err) => {
                     // this.error = true
@@ -113,11 +107,49 @@
                 });
             }
         },
-        
-        getPermissionDetails(item){
-            this.permissionInfo = item;
-            this.permissionName = item.name;
-            this.permissionDesc = item.description;
+        editCategory(){
+            if(this.categoryName == ''){
+                return;
+            } else {
+                this.toggleBusy();
+                this.axios.put('https://api.codedevents.com/admin/categories/event/' + this.categoryInfo.id + '?name=' + this.categoryName)
+                .then((res) => {
+                    console.log(res.data.data);
+                    this.fetchCategory();
+                    this.categoryName = null;
+                })
+                .catch((err) => {
+                    // this.error = true
+                    console.log(err);
+                })
+                .finally(() => {
+                    this.isBusy =  false
+                });
+            }
+        },
+        deleteCategory(){
+            if(this.categoryName == ''){
+                return;
+            } else {
+                this.toggleBusy();
+                this.axios.delete('https://api.codedevents.com/admin/categories/event/' + this.categoryInfo.id + '?name=' + this.categoryName)
+                .then((res) => {
+                    console.log(res.data.data);
+                    this.fetchCategory();
+                    this.categoryName = null;
+                })
+                .catch((err) => {
+                    // this.error = true
+                    console.log(err);
+                })
+                .finally(() => {
+                    this.isBusy =  false
+                });
+            }
+        },
+        getCategoriesDetails(item){
+            this.categoryInfo = item;
+            this.categoryName = item.name;
         },
         /**
          * Search the table data with search input
@@ -140,14 +172,45 @@
         <div class="row">
           <div class="col-12">
             <div>
-              <!-- ::START EDIT permission Modal -->
+    
+              <!-- ::START ADD Category Modal -->
+    
+              <button
+                type="button"
+                class="btn btn-success mb-3 brand-primary"
+                v-b-modal.modal-add-category
+                data-toggle="modal"
+              >
+                <i class="mdi mdi-plus me-1"></i> Add New Category
+              </button>
+    
+              <b-modal id="modal-add-category" title="Add New Category" title-class="font-18" hide-footer>
+                <!-- <h5>New Category</h5> -->
+                <input type="text" v-model="categoryName" id="horizontal-firstname-input" placeholder="Enter category name..." class="form-control">
+                <div class="modal-footer">
+                    <button @click="addCategory(), $bvModal.hide('modal-add-category')" type="button" class="btn btn-primary">
+                        Save changes
+                    </button>
+                    <b-button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                        @click="$bvModal.hide('modal-add-category')"
+                        >
+                        Close
+                    </b-button>
+                </div>
+              </b-modal>
+    
+              <!-- ::END ADD Category Modal -->
+    
+              <!-- ::START EDIT category Modal -->
                 
-                <b-modal id="modal-edit-category" title="Edit Permission" title-class="font-18" hide-footer>
+                <b-modal id="modal-edit-category" title="Edit Category" title-class="font-18" hide-footer>
                     <!-- <h5>Edit Category</h5> -->
-                    <input type="text" v-model="permissionName" id="horizontal-firstname-input" placeholder="" class="form-control m-2" disabled>
-                    <input type="text" v-model="permissionDesc" id="horizontal-firstname-input" placeholder="" class="form-control m-2">
+                    <input type="text" v-model="categoryName" id="horizontal-firstname-input" placeholder="Enter category name..." class="form-control">
                     <div class="modal-footer">
-                        <button @click="editPermission(), $bvModal.hide('modal-edit-category')" type="button" class="btn btn-primary">
+                        <button @click="editCategory(), $bvModal.hide('modal-edit-category')" type="button" class="btn btn-primary">
                             Save changes
                         </button>
                         <b-button
@@ -161,29 +224,29 @@
                     </div>
                 </b-modal>
     
-              <!-- ::END EDIT permission Modal -->
+              <!-- ::END EDIT category Modal -->
     
-              <!-- ::START VIEW permission Modal -->
+              <!-- ::START DELETE category Modal -->
                 
-                <b-modal id="modal-permission-detail" title="Permission Details" title-class="font-18" hide-footer>
-                    
-                    <p>Name: <strong>{{ permissionName }}</strong></p> 
-                    <p>Description:  <strong>{{ permissionDesc }}</strong></p>
+                <b-modal id="modal-delete-category" title="Delete Category" title-class="font-18" hide-footer>
+                    <p>Are you sure you want to delete "{{categoryName}}" </p>
                     
                     <div class="modal-footer">
-                        
+                        <button @click="deleteCategory(), $bvModal.hide('modal-delete-category')" type="button" class="btn btn-primary">
+                            Delete
+                        </button>
                         <b-button
                             type="button"
-                            class="btn btn-danger"
+                            class="btn btn-secondary"
                             data-dismiss="modal"
-                            @click="$bvModal.hide('modal-permission-detail')"
+                            @click="$bvModal.hide('modal-delete-category')"
                             >
                             Close
                         </b-button>
                     </div>
                 </b-modal>
     
-              <!-- ::END VIEW permission Modal -->
+              <!-- ::END DELETE category Modal -->
     
     
             </div>
@@ -222,6 +285,7 @@
                 <!-- End search -->
               </div>
               <!-- Table -->
+    
               <b-table
                 :busy="isBusy"
                 table-class="table table-centered datatable table-card-list"
@@ -236,6 +300,7 @@
                 :filter="filter"
                 :filter-included-fields="filterOn"
                 @filtered="onFiltered"
+                show-empty
               >
               <template #table-busy>
                     <div class="text-center text-primary my-2">
@@ -243,21 +308,11 @@
                     <strong>Loading...</strong>
                     </div>
                 </template>
+                <template #empty="scope">
+                    <p class="text-center p-3">{{ scope.emptyText }}</p>
+                </template>
                 <template v-slot:cell(index)="data">
                   {{ data.index + 1 }}
-                </template>
-                <template v-slot:cell(name)="data">
-                    <a 
-                        class="px-2 text-primary"
-                        @click="getPermissionDetails(data.item)"
-                        v-b-modal.modal-permission-detail
-                        data-toggle="modal"
-                    >
-                        {{ data.item.name }}
-                    </a>
-                </template>
-                <template v-slot:cell(description)="data">
-                    <div class="d-inline-block text-truncate" style="max-width: 450px; max-height: 60px;">{{data.item.description}}</div>
                 </template>
                 <template v-slot:cell(action)="{ item }">
                   <ul class="list-inline mb-0">
@@ -266,11 +321,24 @@
                         class="px-2 text-primary"
                         v-b-tooltip.hover
                         title="Edit"
-                        @click="getPermissionDetails(item)"
+                        @click="getCategoriesDetails(item)"
                         v-b-modal.modal-edit-category
                         data-toggle="modal"
                       >
                         <i class="uil uil-pen font-size-18"></i>
+                      </a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-danger"
+                        v-b-tooltip.hover
+                        title="Delete"
+                        @click="getCategoriesDetails(item)"
+                        v-b-modal.modal-delete-category
+                        data-toggle="modal"
+                      >
+                        <i class="uil uil-trash-alt font-size-18"></i>
                       </a>
                     </li>
                   </ul>

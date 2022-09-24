@@ -26,24 +26,55 @@ export const menuItems = [
         id: 4,
         label: "Events",
         icon: "uil-file-alt",
-        link: "/events"
+        subItems: [
+            {
+                id: 1,
+                label: "Active Events",
+                link: "/events/active",
+                parentId: 4
+            },
+            {
+                id: 2,
+                label: "Inactive Events",
+                link: "/events/inactive",
+                parentId: 4
+            },
+            {
+                id: 3,
+                label: "Restricted Events",
+                link: "/events/restricted",
+                parentId: 4
+            },
+        ]
     },
     {
         id: 5,
         label: "Blog",
         icon: "uil-comments-alt",
+        link: "/blog",
+    },
+    {
+        id: 18,
+        label: "Categories",
+        icon: "uil-copy-landscape",
         subItems: [
             {
-                id: 7,
-                label: "Blogs",
-                link: "/blog",
-                parentId: 5
+                id: 1,
+                label: "Event Categories",
+                link: "/categories/event",
+                parentId: 18
             },
             {
-                id: 8,
-                label: "Categories",
-                link: "/categories",
-                parentId: 5
+                id: 2,
+                label: "Vendor Categories",
+                link: "/categories/vendor",
+                parentId: 18
+            },
+            {
+                id: 3,
+                label: "Blog Categories",
+                link: "/categories/blog",
+                parentId: 18
             },
         ]
     },
@@ -60,8 +91,8 @@ export const menuItems = [
             },
             {
                 id: 8,
-                label: "Permissions",
-                link: "/permission",
+                label: "Description",
+                link: "/description",
                 parentId: 6
             },
         ]
@@ -112,7 +143,26 @@ export const menuItems = [
         id: 14,
         label: "Users",
         icon: "uil-users-alt",
-        link: "/management/user",
+        subItems: [
+            {
+                id: 1,
+                label: "All User",
+                link: "/management/user",
+                parentId: 14
+            },
+            {
+                id: 2,
+                label: "Verified User",
+                link: "/management/user/verified",
+                parentId: 14
+            },
+            {
+                id: 3,
+                label: "Unverified User",
+                link: "/management/user/unverified",
+                parentId: 14
+            },
+        ]
     },
     {
         id: 15,

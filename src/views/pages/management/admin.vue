@@ -381,12 +381,16 @@
                 :filter="filter"
                 :filter-included-fields="filterOn"
                 @filtered="onFiltered"
+                show-empty
               >
                 <template #table-busy>
                     <div class="text-center text-primary my-2">
                     <b-spinner class="align-middle"></b-spinner>
                     <strong>Loading...</strong>
                     </div>
+                </template>
+                <template #empty="scope">
+                    <p class="text-center p-3">{{ scope.emptyText }}</p>
                 </template>
                 <template v-slot:cell(index)="data">
                   {{ data.index + 1 }}
@@ -434,7 +438,7 @@
                   <p>{{data.item.start_date | formatDate}}</p>
                 </template>
                 <template v-slot:cell(action)="{ item }">
-                  <ul class="list-inline mb-0">
+                  <ul class="list-inline mb-0" v-if="item.role.name !== 'Super Admin' && item.role.name !== 'Admin'">
                     <li v-if="item.status == 'restricted'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"

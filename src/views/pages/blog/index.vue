@@ -32,8 +32,8 @@ export default {
       data: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 10,
-      pageOptions: [10, 25, 50, 100],
+      perPage: 50,
+      pageOptions: [50, 100, 200, 500],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -43,10 +43,10 @@ export default {
           key: "index",
           label: "S/N",
         },
-        {
-          key: "image",
-          label: "Image",
-        },
+        // {
+        //   key: "image",
+        //   label: "Image",
+        // },
         {
           key: "title",
           label: "Title",
@@ -59,6 +59,11 @@ export default {
         {
           key: "body",
           label: "Body",
+          sortable: true,
+        },
+        {
+          key: "created_at",
+          label: "Date",
           sortable: true,
         },
         {
@@ -88,7 +93,7 @@ export default {
   methods: {
     fetchBlog(){
         this.toggleBusy();
-        this.axios.get('https://api.codedevents.com/admin/blog?page=1&per_page=50')
+        this.axios.get('https://api.codedevents.com/admin/blog?page=1&per_page=10000')
         .then((res) => {
             console.log(res.data.data);
             this.data = res.data.data;
@@ -281,7 +286,7 @@ export default {
               <router-link :to="{ name: 'blog-details', params: { id: data.item.id }}">{{ data.item.title }}</router-link>
             </template>
             <template v-slot:cell(body)="data">
-              <div class="d-inline-block text-truncate" style="max-width: 450px; max-height: 60px;" v-html="data.item.body"></div>
+              <p class="text-truncate" style="max-width: 450px;">{{ data.item.body | truncate(80, '...') }}</p>
             </template>
             <template v-slot:cell(status)="data">
               <div
@@ -292,6 +297,11 @@ export default {
                 }"
               >
                 {{ data.item.status }}
+              </div>
+            </template>
+            <template v-slot:cell(created_at)="data">
+              <div >
+                {{ data.item.created_at | formatDate }}
               </div>
             </template>
             <template v-slot:cell(action)="data">

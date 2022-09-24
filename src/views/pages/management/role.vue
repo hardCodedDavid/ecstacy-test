@@ -51,10 +51,14 @@
               key: "name",
               label: "Name",
             },
-            // {
-            //   key: "role.name",
-            //   label: "Role",
-            // },
+            {
+              key: "www",
+              label: "Admin",
+            },
+            {
+              key: "permissions.length",
+              label: "Permissions",
+            },
             "action",
           ],
           role: {
@@ -398,12 +402,16 @@
                 :filter="filter"
                 :filter-included-fields="filterOn"
                 @filtered="onFiltered"
+                show-empty
               >
                 <template #table-busy>
                     <div class="text-center text-primary my-2">
                     <b-spinner class="align-middle"></b-spinner>
                     <strong>Loading...</strong>
                     </div>
+                </template>
+                <template #empty="scope">
+                    <p class="text-center p-3">{{ scope.emptyText }}</p>
                 </template>
                 <template v-slot:cell(index)="data">
                   {{ data.index + 1 }}

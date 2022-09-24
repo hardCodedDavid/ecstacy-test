@@ -42,9 +42,20 @@ export default {
           active: true,
         },
       ],
+      eventData: null,
     };
   },
     mounted() {
+      
+      this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=50')
+      .then((res) => {
+          console.log(res.data.data);
+          this.eventData = res.data.data
+      })
+      .catch((err) => {
+          console.log(err);
+      });
+
       this.axios.get('https://api.codedevents.com/admin/auth/user')
       .then((res) => {
           console.log(res);

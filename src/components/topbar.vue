@@ -306,7 +306,7 @@ export default {
         >
           <template v-slot:button-content>
             <i class="uil-bell"></i>
-            <span class="badge bg-danger rounded-pill">3</span>
+            <!-- <span class="badge bg-danger rounded-pill">3</span> -->
           </template>
 
           <div class="p-3">
@@ -324,7 +324,7 @@ export default {
             </div>
           </div>
           <simplebar style="max-height: 230px" data-simplebar>
-            <a href class="text-reset notification-item">
+            <!-- <a href class="text-reset notification-item">
               <div class="media">
                 <div class="avatar-xs me-3">
                   <span
@@ -348,81 +348,12 @@ export default {
                   </div>
                 </div>
               </div>
-            </a>
-            <a href class="text-reset notification-item">
-              <div class="media">
-                <img
-                  src="@/assets/images/users/avatar-3.jpg"
-                  class="me-3 rounded-circle avatar-xs"
-                  alt="user-pic"
-                />
-                <div class="media-body">
-                  <h6 class="mt-0 mb-1">
-                    {{ $t("navbar.dropdown.notification.james.title") }}
-                  </h6>
-                  <div class="font-size-12 text-muted">
-                    <p class="mb-1">
-                      {{ $t("navbar.dropdown.notification.james.text") }}
-                    </p>
-                    <p class="mb-0">
-                      <i class="mdi mdi-clock-outline"></i>
-                      {{ $t("navbar.dropdown.notification.james.time") }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
-            <a href class="text-reset notification-item">
-              <div class="media">
-                <div class="avatar-xs me-3">
-                  <span
-                    class="avatar-title bg-success rounded-circle font-size-16"
-                  >
-                    <i class="uil-truck"></i>
-                  </span>
-                </div>
-                <div class="media-body">
-                  <h6 class="mt-0 mb-1">
-                    {{ $t("navbar.dropdown.notification.item.title") }}
-                  </h6>
-                  <div class="font-size-12 text-muted">
-                    <p class="mb-1">
-                      {{ $t("navbar.dropdown.notification.item.text") }}
-                    </p>
-                    <p class="mb-0">
-                      <i class="mdi mdi-clock-outline"></i>
-                      {{ $t("navbar.dropdown.notification.item.time") }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <a href class="text-reset notification-item">
-              <div class="media">
-                <img
-                  src="@/assets/images/users/avatar-4.jpg"
-                  class="me-3 rounded-circle avatar-xs"
-                  alt="user-pic"
-                />
-                <div class="media-body">
-                  <h6 class="mt-0 mb-1">
-                    {{ $t("navbar.dropdown.notification.salena.title") }}
-                  </h6>
-                  <div class="font-size-12 text-muted">
-                    <p class="mb-1">
-                      {{ $t("navbar.dropdown.notification.salena.text") }}
-                    </p>
-                    <p class="mb-0">
-                      <i class="mdi mdi-clock-outline"></i>
-                      {{ $t("navbar.dropdown.notification.salena.time") }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
+            </a> -->
+         
+            <p class="text-center p-5">No Notifications</p>
+         
           </simplebar>
-          <div class="p-2 border-top">
+          <!-- <div class="p-2 border-top">
             <div class="d-grid">
               <a
                 class="btn btn-sm btn-link font-size-14 text-center"
@@ -432,7 +363,7 @@ export default {
                 {{ $t("navbar.dropdown.notification.button") }}
               </a>
             </div>
-          </div>
+          </div> -->
         </b-dropdown>
 
         <b-dropdown
@@ -443,11 +374,13 @@ export default {
           menu-class="dropdown-menu-end"
         >
           <template v-slot:button-content>
-            <img
+            <!-- <img
               class="rounded-circle header-profile-user"
               src="@/assets/images/users/avatar-4.jpg"
               alt="Header Avatar"
-            />
+            /> -->
+            <img v-if="user.profile_photo" :src="user.profile" class="rounded-circle header-profile-user" />
+            <img v-else :src="user.thumbnail" alt class="rounded-circle header-profile-user" />
             <span
               class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"
               >{{user.name}}</span
@@ -472,7 +405,7 @@ export default {
               $t("navbar.dropdown.marcus.list.mywallet")
             }}</span>
           </a> -->
-          <a class="dropdown-item d-block" href="#">
+          <!-- <a class="dropdown-item d-block" href="#">
             <i
               class="uil uil-cog font-size-18 align-middle me-1 text-muted"
             ></i>
@@ -480,7 +413,7 @@ export default {
               $t("navbar.dropdown.marcus.list.settings")
             }}</span>
             <span class="badge bg-soft-success rounded-pill mt-1 ms-2">03</span>
-          </a>
+          </a> -->
           <!-- <a class="dropdown-item" href="#">
             <i
               class="uil uil-lock-alt font-size-18 align-middle me-1 text-muted"
@@ -499,7 +432,7 @@ export default {
           </router-link>
         </b-dropdown>
 
-        <!-- <div class="dropdown d-inline-block">
+        <div class="dropdown d-inline-block">
           <button
             type="button"
             class="btn header-item noti-icon right-bar-toggle toggle-right"
@@ -507,7 +440,7 @@ export default {
           >
             <i class="uil-cog toggle-right"></i>
           </button>
-        </div> -->
+        </div>
       </div>
     </div>
   </header>

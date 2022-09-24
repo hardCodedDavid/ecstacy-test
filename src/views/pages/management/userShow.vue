@@ -56,7 +56,20 @@
     <template>
     <Layout>
         <PageHeader :title="title" :items="items" />
-    <!-- {{user}} -->
+    
+        <div class="row" v-if="!user">
+          <div class="col-xl-12">
+            <div class="text-center my-3">
+              <a href="javascript:void(0);" class="text-primary"
+                ><i
+                  class="mdi mdi-loading mdi-spin font-size-20 align-middle me-2"
+                ></i>
+                Loading
+              </a>
+            </div>
+          </div>
+        </div>
+        
         <div class="row mb-4" v-if="user">
             <div class="col-xl-4">
                 <div class="card h-100">

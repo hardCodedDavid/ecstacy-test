@@ -108,12 +108,28 @@ export default [{
     component: () => import('../views/pages/dashboard/index')
   },
   {
-    path: '/categories',
-    name: 'categories',
+    path: '/categories/blog',
+    name: 'blog-categories',
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/categories/index')
+    component: () => import('../views/pages/categories/blog')
+  },
+  {
+    path: '/categories/event',
+    name: 'event-categories',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/categories/event')
+  },
+  {
+    path: '/categories/vendor',
+    name: 'vendor-categories',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/categories/vendor')
   },
   {
     path: '/blog',
@@ -148,12 +164,28 @@ export default [{
     component: () => import('../views/pages/blog/edit')
   },
   {
-    path: '/events',
-    name: 'event',
+    path: '/events/active',
+    name: 'active-event',
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/event/index')
+    component: () => import('../views/pages/event/active')
+  },
+  {
+    path: '/events/inactive',
+    name: 'inactive-event',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/event/inactive')
+  },
+  {
+    path: '/events/restricted',
+    name: 'restricted-event',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/event/restrict')
   },
   {
     path: '/events/show/:id',
@@ -241,7 +273,23 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/management/user')
+    component: () => import('../views/pages/user/index')
+  },
+  {
+    path: '/management/user/verified',
+    name: 'verified-user',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/user/verified')
+  },
+  {
+    path: '/management/user/unverified',
+    name: 'unverified-user',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/user/unverified')
   },
   {
     path: '/management/user/:id',
@@ -260,8 +308,8 @@ export default [{
     component: () => import('../views/pages/notification/index')
   },
   {
-    path: '/permission',
-    name: 'permission',
+    path: '/description',
+    name: 'description',
     meta: {
       authRequired: true,
     },

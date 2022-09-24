@@ -32,8 +32,8 @@
           paymentData: [],
           totalRows: 1,
           currentPage: 1,
-          perPage: 10,
-          pageOptions: [10, 25, 50, 100],
+          perPage: 50,
+          pageOptions: [50, 100, 200, 500],
           filter: null,
           filterOn: [],
           sortBy: "age",
@@ -107,7 +107,7 @@
       methods: {
         fetchPayments(){
             this.isBusy = !this.isBusy
-            this.axios.get('https://api.codedevents.com/admin/transactions/withdrawals')
+            this.axios.get('https://api.codedevents.com/admin/transactions/withdrawals?page=1&per_page=10000')
             .then((res) => {
                 console.log(res.data.data);
                 this.paymentData = res.data.data;
@@ -261,6 +261,7 @@
                 :filter="filter"
                 :filter-included-fields="filterOn"
                 @filtered="onFiltered"
+                show-empty
               >
               <template #table-busy>
                 <div class="text-center text-primary my-2">
@@ -268,6 +269,9 @@
                 <strong>Loading...</strong>
                 </div>
             </template>
+            <template #empty="scope">
+                    <p class="text-center p-3">{{ scope.emptyText }}</p>
+                </template>
             <template v-slot:cell(index)="data">
               {{ data.index + 1 }}
             </template>
@@ -314,7 +318,7 @@
                 </template>
                 <template v-slot:cell(action)="{ item }">
                   <ul class="list-inline mb-0">
-                    <li v-if="item.status == 'pending' || item.status == 'failed'" class="list-inline-item">
+                    <li v-if="item.status == 'pending'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
@@ -326,7 +330,7 @@
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
                     </li>
-                    <li v-if="item.status == 'pending' || item.status == 'success'" class="list-inline-item">
+                    <li v-if="item.status == 'pending'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"

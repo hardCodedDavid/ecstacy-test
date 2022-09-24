@@ -72,6 +72,7 @@
           planInfoId: null,
           options: [],
           defaultoptions: ["month", "year"],
+          currency: ["$", "₦"],
           plan:{ 
             name: this.name,
             price: this.price,
@@ -217,7 +218,11 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="" class="m-2">Currency: </label>
-                            <input type="text" v-model="plan.currency" id="horizontal-firstname-input" placeholder="Enter plan currency..." class="m-2 form-control">
+                            <multiselect
+                              v-model="plan.currency"
+                              :options="currency"
+                              class="m-2"
+                            ></multiselect>
                         </div>
                     </div>
                 </div>

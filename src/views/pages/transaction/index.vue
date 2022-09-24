@@ -217,6 +217,7 @@
                 :filter="filter"
                 :filter-included-fields="filterOn"
                 @filtered="onFiltered"
+                show-empty
               >
               <template #table-busy>
                 <div class="text-center text-primary my-2">
@@ -224,6 +225,9 @@
                 <strong>Loading...</strong>
                 </div>
             </template>
+            <template #empty="scope">
+                    <p class="text-center p-3">{{ scope.emptyText }}</p>
+                </template>
             <template v-slot:cell(index)="data">
               {{ data.index + 1 }}
             </template>

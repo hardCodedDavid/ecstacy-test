@@ -28,6 +28,7 @@ export default {
             },
       loading: false,
       error: false,
+      errorMsg: null,
     };
   },
   methods: {
@@ -35,8 +36,11 @@ export default {
           e.preventDefault();
           this.loading = true
           this.error = false
-          // this.axios.post('http://localhost:8000/api/login', this.user)
 
+          // if (this.user.email == "") {
+          //   this.error = true
+          //   this.errorMsg = 'Email field'
+          // }
           //::POST Login Request
           this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
           .then((res) => {
@@ -53,6 +57,7 @@ export default {
           })
           .catch((err) => {
               this.error = true
+              this.errorMsg = "Invalid Credential"
               console.log(err);
           })
           .finally(() => {
@@ -98,10 +103,7 @@ export default {
               <div class="card-body p-4">
                 <div class="text-center mt-2">
                   <h5 style="color: #761300;">Welcome Back !</h5>
-                  <p class="text-muted">Sign in to continue to Minible.</p>
-                </div>
-                <div class="loader" v-if="loading">
-                  <p class="text-center text-success font-bold">Loading...</p>
+                  <p class="text-muted">Sign in to continue to Coded Events.</p>
                 </div>
                 <div class="p-2 mt-4">
                   <form method="post" @submit="loginUser">
@@ -109,23 +111,25 @@ export default {
                         <label for="username">Email</label>
                       
                       <input
-                        type="text"
+                        type="email"
                         class="form-control"
                         id="username"
-                        placeholder="Enter username"
+                        placeholder="Enter email"
                         v-model="user.email"
                         v-if="!error"
+                        required
                       />
 
                       <input
-                        type="text"
+                        type="email"
                         class="form-control is-invalid"
                         id="username"
-                        placeholder="Enter username"
+                        placeholder="Enter email"
                         v-model="user.email"
                         v-if="error"
+                        required
                       />
-                      <span class="text-danger" v-if="error">Invalid credentials</span>
+                      <span class="text-danger" v-if="error">{{errorMsg}}</span>
                     </div>
 
                     <div class="mb-3">
@@ -141,6 +145,7 @@ export default {
                         id="userpassword"
                         placeholder="Enter password"
                         v-model="user.password"
+                        required
                       />
                     </div>
 
@@ -155,13 +160,20 @@ export default {
                       >
                     </div>
 
-                    <div class="mt-3 text-end">
+                    <div v-if="!loading" class="mt-3 text-end">
                       <button
                         class="brand-primary btn btn-primary w-sm waves-effect waves-light"
                         type="submit"
                       >
                         Log In
                       </button>
+                    </div>
+
+                    <div v-if="loading" class="mt-3 text-end">
+                      <div class="brand-primary btn btn-primary w-sm waves-effect waves-light">
+                        <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                        <span>Loading...</span>
+                      </div>
                     </div>
                   </form>
                 </div>
@@ -171,8 +183,9 @@ export default {
             <div class="mt-5 text-center">
               <p>
                 <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
-                © All rights reserved Coded Events
-                <i class="mdi mdi-heart text-danger"></i> by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a>
+                <span>© All rights reserved Coded Events</span> 
+                <br>
+                <span>Produced by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a></span>
               </p>
             </div>
 

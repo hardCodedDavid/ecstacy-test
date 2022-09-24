@@ -125,7 +125,7 @@ export default {
                     >
                   </h5> -->
                   <p class="text-muted mb-4">
-                    {{eventData.description}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, magnam consequatur! Saepe, soluta officia corrupti necessitatibus sint eum assumenda veritatis ab commodi vel atque? Culpa repudiandae rerum totam eveniet! Commodi.
+                    {{eventData.description}}
                   </p>
                   <div class="row">
                     <div class="col-md-6">

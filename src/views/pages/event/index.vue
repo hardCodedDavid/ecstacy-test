@@ -33,8 +33,8 @@
         eventData: [],
         totalRows: 1,
         currentPage: 1,
-        perPage: 10,
-        pageOptions: [10, 25, 50, 100],
+        perPage: 50,
+        pageOptions: [50, 100, 200, 500],
         filter: null,
         filterOn: [],
         sortBy: "age",
@@ -78,8 +78,10 @@
             label: "Start Date",
             sortable: true,
           },
-          // "action",
+          "action",
         ],
+        eventName: null,
+        eventInfo: null,
       };
     },
     middleware: "authentication",
@@ -99,7 +101,7 @@
     methods: {
       fetchData() {
         this.isBusy =  true
-        this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=50')
+        this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=10000')
         .then((res) => {
             console.log(res.data.data);
             this.eventData = res.data.data
@@ -110,7 +112,24 @@
         .finally(() => {
             this.isBusy =  false
         });
-    },
+      },
+      getEventDetails(item){
+          this.eventInfo = item;
+          this.eventName = item.title;
+      },
+      restrictEvent() {
+        this.axios.post('url')
+        .then((res) => {
+            console.log(res.data.data);
+            this.fetchData();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            this.isBusy =  false
+        });
+      },
 
       /**
        * Search the table data with search input
@@ -130,22 +149,27 @@
       <div class="row">
         <div class="col-12">
           <div>
-            <!-- <div class="float-end">
-              <form class="d-inline-flex mb-3">
-                <label class="my-1 me-2" for="order-selectinput">Orders</label>
-                <select class="form-select" id="order-selectinput">
-                  <option selected="">All</option>
-                  <option value="1">Active</option>
-                  <option value="2">Unpaid</option>
-                </select>
-              </form>
-            </div> -->
-            <!-- <button
-              type="button"
-              class="btn btn-success mb-3 brand-primary"
-            >
-              <i class="mdi mdi-plus me-1"></i> Add New Order
-            </button> -->
+            <!-- ::START RESTRICT event Modal -->
+                
+            <b-modal id="modal-restrict-event" title="Restrict Event" title-class="font-18" hide-footer>
+                    <p>Are you sure you want to restrict "{{eventName}}" </p>
+                    
+                    <div class="modal-footer">
+                        <button @click="restrictEvent(), $bvModal.hide('modal-restrict-event')" type="button" class="btn btn-success">
+                            Confirm
+                        </button>
+                        <b-button
+                            type="button"
+                            class="btn btn-danger"
+                            data-dismiss="modal"
+                            @click="$bvModal.hide('modal-restrict-event')"
+                            >
+                            Close
+                        </b-button>
+                    </div>
+                </b-modal>
+    
+              <!-- ::END RESTRICT event Modal -->
           </div>
           <div class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline">
             <div class="row">
@@ -227,7 +251,7 @@
             </template>
   
               <template v-slot:cell(title)="data">
-                <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate">{{data.item.title}}</router-link>
+                <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.title}}</router-link>
               </template>
 
               <template v-slot:cell(plans)>
@@ -241,6 +265,8 @@
                     'bg-soft-success': data.item.status === 'active',
                     'bg-soft-danger': data.item.status === 'expired',
                     'bg-soft-warning': data.item.status === 'pending',
+                    'bg-soft-primary': data.item.status === 'completed',
+                    'bg-soft-info': data.item.status === 'draft',
                   }"
                 >
                   {{ data.item.status }}
@@ -249,26 +275,42 @@
               <template v-slot:cell(start_date)="data">
                 <p>{{data.item.start_date | formatDate}}</p>
               </template>
-              <template v-slot:cell(action)>
+              <template v-slot:cell(action)="{ item }">
                 <ul class="list-inline mb-0">
+                  <li class="list-inline-item">
+                    <router-link 
+                      class="text-primary" 
+                      :to="{ name: 'event-details', params: { id: item.id }}"
+                      v-b-tooltip.hover
+                      title="View"
+                    ><i class="uil uil-eye font-size-18"></i></router-link>
+                  </li>
                   <li class="list-inline-item">
                     <a
                       href="javascript:void(0);"
-                      class="px-2 text-primary"
+                      class="text-info"
                       v-b-tooltip.hover
-                      title="Edit"
-                    >
-                      <i class="uil uil-pen font-size-18"></i>
+                      title="User"
+                    ><router-link 
+                      class="text-info"
+                      :to="{ name: 'event-details', params: { id: item.id }}"
+                      v-b-tooltip.hover
+                      title="User"
+                    ><i class="uil uil-user-circle font-size-18"></i></router-link>
+                      
                     </a>
                   </li>
                   <li class="list-inline-item">
                     <a
                       href="javascript:void(0);"
-                      class="px-2 text-danger"
+                      class="text-danger"
                       v-b-tooltip.hover
-                      title="Delete"
+                      title="Restrict Event"
+                      @click="getEventDetails(item)"
+                      v-b-modal.modal-restrict-event
+                      data-toggle="modal"
                     >
-                      <i class="uil uil-trash-alt font-size-18"></i>
+                      <i class="uil uil-info-circle font-size-18"></i>
                     </a>
                   </li>
                 </ul>

@@ -38,7 +38,8 @@ export default {
     };
   },
   methods: {
-    forgotPasswords() {
+    forgotPasswords(e) {
+      e.preventDefault();
       this.loading = true
       this.error = false
       this.messageSent = false
@@ -72,7 +73,8 @@ export default {
             });
     },
 
-    verifyToken() {
+    verifyToken(e) {
+      e.preventDefault();
       this.loading = true
       this.error = false
       this.messageSent = true
@@ -100,7 +102,8 @@ export default {
             });
     },
 
-    changePasswords() {
+    changePasswords(e) {
+      e.preventDefault();
       this.loading = true
       this.error = false
 
@@ -126,6 +129,8 @@ export default {
               }
           })
           .catch(err => {
+              this.errorMsg = "An error occured while changing password !"
+              this.error = true
               console.log(err);
           })
           .finally(() => {
@@ -169,7 +174,7 @@ export default {
                 <div class="card-body p-4">
                   <div class="text-center mt-2">
                     <h5 class="text-primary">Reset Password</h5>
-                    <p class="text-muted">Reset Password with Minible.</p>
+                    <p class="text-muted">Reset Password with Coded Events.</p>
                   </div>
                   <div class="p-2 mt-4">
                     <div
@@ -179,10 +184,10 @@ export default {
                       {{sentMsg}}
                     </div>
 
-                    <div class="loader" v-if="loading">
+                    <!-- <div class="loader" v-if="loading">
                       <p class="text-center text-success font-bold">Loading...</p>
-                    </div>
-
+                    </div> -->
+                    <form method="post" @submit="forgotPasswords">
                       <div class="mb-3">
                         <label for="useremail" v-if="!messageSent">Email</label>
                         <input
@@ -190,19 +195,25 @@ export default {
                           class="form-control"
                           v-bind:class="{ 'is-invalid': error }"
                           id="useremail"
-                          placeholder="Enter email"
+                          placeholder="Enter recovery email"
                           v-model="email"
                         />
                         <span class="text-danger" v-if="error">{{errorMsg}}</span>
                       </div>
 
-                      <div class="mt-3 text-end" v-if="!messageSent">
+                      <div class="mt-3 text-end" v-if="!messageSent && !loading">
                         <button
                           class="btn btn-primary w-sm waves-effect waves-light"
-                          type="submit"
-                          @click="forgotPasswords()">
+                          type="submit">
                           Reset
                         </button>
+                      </div>
+
+                      <div v-if="loading" class="mt-3 text-end">
+                        <div class="btn btn-primary w-sm waves-effect waves-light">
+                          <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                          <span>Loading...</span>
+                        </div>
                       </div>
 
                       <div class="mt-4 text-center">
@@ -216,7 +227,7 @@ export default {
                           >
                         </p>
                       </div>
-                    <!-- </form> -->
+                    </form>
                   </div>
                 </div>
               </div>
@@ -225,7 +236,7 @@ export default {
                 <div class="card-body p-4">
                   <div class="text-center mt-2">
                     <h5 class="text-primary">Reset Password</h5>
-                    <p class="text-muted">Reset Password with Minible.</p>
+                    <p class="text-muted">Reset Password with Coded Events.</p>
                   </div>
                   <div class="p-2 mt-4">
                     <div
@@ -235,12 +246,8 @@ export default {
                       {{sentMsg}}
                     </div>
 
-                    <div class="loader" v-if="loading">
-                      <p class="text-center text-success font-bold">Loading...</p>
-                    </div>
-
+                    <form method="post" @submit="verifyToken">
                       <div class="mb-3">
-
                         <label v-if="messageSent" for="useremail">Verify OTP</label>
                         <input
                           type="number"
@@ -253,13 +260,19 @@ export default {
                         <span class="text-danger" v-if="error">{{errorMsg}}</span>
                       </div>
 
-                      <div class="mt-3 text-end" v-if="messageSent">
+                      <div class="mt-3 text-end" v-if="messageSent && !loading">
                         <button
                           class="btn btn-primary w-sm waves-effect waves-light"
-                          type="submit"
-                          @click="verifyToken()">
+                          type="submit">
                           Verify OTP
                         </button>
+                      </div>
+
+                      <div v-if="loading" class="mt-3 text-end">
+                        <div class="btn btn-primary w-sm waves-effect waves-light">
+                          <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                          <span>Loading...</span>
+                        </div>
                       </div>
 
                       <div class="mt-4 text-center">
@@ -273,7 +286,7 @@ export default {
                           >
                         </p>
                       </div>
-                    <!-- </form> -->
+                    </form>
                   </div>
                 </div>
               </div>
@@ -286,9 +299,7 @@ export default {
                   </div>
                   <div class="p-2 mt-4">
 
-                    <div class="loader" v-if="loading">
-                      <p class="text-center text-success font-bold">Loading...</p>
-                    </div>
+                    <form @submit="changePasswords" method="post">
                       <div class="mb-3">
                         <label for="password">New Password</label>
                         <input
@@ -317,14 +328,20 @@ export default {
                         
                       </div>
 
-                      <div class="mt-3 text-end">
+                      <div class="mt-3 text-end" v-if="!loading">
                         <button
                           class="btn btn-primary w-sm waves-effect waves-light"
                           type="submit"
-                          @click="changePasswords()"
                           >
                           Change Password
                         </button>
+                      </div>
+
+                      <div v-if="loading" class="mt-3 text-end">
+                        <div class="btn btn-primary w-sm waves-effect waves-light">
+                          <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                          <span>Loading...</span>
+                        </div>
                       </div>
 
                       <div class="mt-4 text-center">
@@ -338,17 +355,19 @@ export default {
                           >
                         </p>
                       </div>
+                    </form>
                   </div>
                 </div>
               </div>
 
               <div class="mt-5 text-center">
-              <p>
-                <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
-                © All rights reserved Coded Events
-                <i class="mdi mdi-heart text-danger"></i> by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a>
-              </p>
-            </div>
+                <p>
+                  <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
+                  <span>© All rights reserved Coded Events</span> 
+                  <br>
+                  <span>Produced by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a></span>
+                </p>
+              </div>
             </div>
           </div>
         </div>

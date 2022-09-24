@@ -281,6 +281,7 @@
       <Layout>
         <PageHeader :title="title" :items="items" />
         <vue-toastr ref="mytoast"></vue-toastr>
+        
 
         <button type="button" class="brand-primary text-white btn btn-success mb-3" >
           <router-link :to="{ name: 'create-plans'}" class="text-white"><i class="mdi mdi-plus me-1"></i> Add New Plan</router-link>
@@ -428,6 +429,19 @@
         </div>
         <!-- end row -->
 
+        <div class="row" v-if="isBusy">
+          <div class="col-xl-12">
+            <div class="text-center my-3">
+              <a href="javascript:void(0);" class="text-primary"
+                ><i
+                  class="mdi mdi-loading mdi-spin font-size-20 align-middle me-2"
+                ></i>
+                Loading
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div class="row justify-content-center">
           <div class="col-lg-9">
             <div class="row">
@@ -468,7 +482,7 @@
                               Action
                               <i class="mdi mdi-chevron-down"></i>
                             </template>
-                            <b-dropdown-item ><router-link :to="{ name: 'edit-plans', params: { id: data.id }}">Edit</router-link></b-dropdown-item>
+                            <b-dropdown-item :to="{ name: 'edit-plans', params: { id: data.id }}">Edit</b-dropdown-item>
                             <b-dropdown-item v-b-modal.modal-delete-category @click="getPlanDetails(data)">Delete</b-dropdown-item>
                           </b-dropdown>
                       <!-- <a 
