@@ -302,6 +302,7 @@
         <!-- ::START GET Role Modal -->    
         <b-modal id="modal-get-role" title="Role Details" title-class="font-18" hide-footer>
             <div>
+              
               <p>Name: <strong>{{role.name}}</strong></p> 
               <p>Permissions: </p>
               <ul v-for="permission in role.permissions" :key="permission.id">
@@ -387,7 +388,7 @@
                 <!-- End search -->
               </div>
               <!-- Table -->
-            
+              
               <b-table
                 :busy="isBusy"
                 table-class="table table-centered datatable table-card-list"

@@ -110,9 +110,9 @@ export default {
                   <h4 class="font-size-20 mb-3">{{ eventData.title }}</h4>
                   <div class="text-muted">
                     <span v-if="eventData.status == 'draft'" class="badge bg-success font-size-14 ms-2">{{eventData.status}}</span>
-                <span v-if="eventData.status == 'pending'" class="badge bg-warning font-size-14 ms-2">{{eventData.status}}</span>
-                <span v-if="eventData.status == 'expired'" class="badge bg-danger font-size-14 ms-2">{{eventData.status}}</span>
-                    
+                    <span v-if="eventData.status == 'pending'" class="badge bg-warning font-size-14 ms-2">{{eventData.status}}</span>
+                    <span v-if="eventData.status == 'expired'" class="badge bg-danger font-size-14 ms-2">{{eventData.status}}</span>
+                        
                     234 Reviews
                   </div>
 

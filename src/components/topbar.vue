@@ -38,6 +38,7 @@ export default {
       text: null,
       flag: null,
       value: null,
+      notData: null,
     };
   },
   mounted() {
@@ -61,11 +62,24 @@ export default {
     } else {
         localStorage.removeItem('user');
     }
+
+    this.fetchNotifications();
   },
   methods: {
     /**
      * Toggle menu
      */
+    fetchNotifications(){
+      this.axios.get('https://api.codedevents.com/admin/notifications')
+      .then((res) => {
+          console.log(res.data.data);
+          this.notData = res.data.data;
+      })
+      .catch((err) => {
+          console.log(err);
+      });
+
+    },
     toggleMenu() {
       this.$parent.toggleMenu();
     },
@@ -146,7 +160,6 @@ export default {
             </span>
           </router-link>
         </div>
-
         <button
           @click="toggleMenu"
           type="button"
@@ -324,36 +337,36 @@ export default {
             </div>
           </div>
           <simplebar style="max-height: 230px" data-simplebar>
-            <!-- <a href class="text-reset notification-item">
-              <div class="media">
-                <div class="avatar-xs me-3">
-                  <span
-                    class="avatar-title bg-primary rounded-circle font-size-16"
-                  >
-                    <i class="uil-shopping-basket"></i>
-                  </span>
-                </div>
-                <div class="media-body">
-                  <h6 class="mt-0 mb-1">
-                    {{ $t("navbar.dropdown.notification.order.title") }}
-                  </h6>
-                  <div class="font-size-12 text-muted">
-                    <p class="mb-1">
-                      {{ $t("navbar.dropdown.notification.order.text") }}
-                    </p>
-                    <p class="mb-0">
-                      <i class="mdi mdi-clock-outline"></i>
-                      {{ $t("navbar.dropdown.notification.order.time") }}
-                    </p>
+            <a href class="text-reset notification-item">
+                <div class="media">
+                  <div class="avatar-xs me-3">
+                    <span
+                      class="avatar-title bg-primary rounded-circle font-size-16"
+                    >
+                      <i class="uil-shopping-basket"></i>
+                    </span>
+                  </div>
+                  <div class="media-body">
+                    <h6 class="mt-0 mb-1">
+                      ###{{notData}}
+                    </h6>
+                    <div class="font-size-12 text-muted">
+                      <p class="mb-1">
+                        {{ $t("navbar.dropdown.notification.order.text") }}
+                      </p>
+                      <p class="mb-0">
+                        <i class="mdi mdi-clock-outline"></i>
+                        {{ $t("navbar.dropdown.notification.order.time") }}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a> -->
+              </a>
          
-            <p class="text-center p-5">No Notifications</p>
+            <!-- <p class="text-center p-5">No Notifications</p> -->
          
           </simplebar>
-          <!-- <div class="p-2 border-top">
+          <div class="p-2 border-top">
             <div class="d-grid">
               <a
                 class="btn btn-sm btn-link font-size-14 text-center"
@@ -363,7 +376,7 @@ export default {
                 {{ $t("navbar.dropdown.notification.button") }}
               </a>
             </div>
-          </div> -->
+          </div>
         </b-dropdown>
 
         <b-dropdown
@@ -379,7 +392,7 @@ export default {
               src="@/assets/images/users/avatar-4.jpg"
               alt="Header Avatar"
             /> -->
-            <img v-if="user.profile_photo" :src="user.profile" class="rounded-circle header-profile-user" />
+            <img v-if="user.profile_photo" :src="user.profile_photo" class="rounded-circle header-profile-user" />
             <img v-else :src="user.thumbnail" alt class="rounded-circle header-profile-user" />
             <span
               class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"

@@ -55,7 +55,7 @@ export default {
       .catch((err) => {
           console.log(err);
       });
-
+      
       this.axios.get('https://api.codedevents.com/admin/auth/user')
       .then((res) => {
           console.log(res);

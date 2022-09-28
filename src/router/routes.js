@@ -164,6 +164,14 @@ export default [{
     component: () => import('../views/pages/blog/edit')
   },
   {
+    path: '/events',
+    name: 'event',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/event/index')
+  },
+  {
     path: '/events/active',
     name: 'active-event',
     meta: {

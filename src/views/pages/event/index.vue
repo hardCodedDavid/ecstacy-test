@@ -59,8 +59,13 @@
             sortable: true,
           },
           {
-            key: "host",
-            label: "Creator",
+            key: "user",
+            label: "User",
+            sortable: true,
+          },
+          {
+            key: "user.email",
+            label: "Email",
             sortable: true,
           },
           {
@@ -101,7 +106,7 @@
     methods: {
       fetchData() {
         this.isBusy =  true
-        this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=10000')
+        this.axios.get('https://api.codedevents.com/admin/events/?page=1&per_page=50')
         .then((res) => {
             console.log(res.data.data);
             this.eventData = res.data.data
@@ -118,7 +123,21 @@
           this.eventName = item.title;
       },
       restrictEvent() {
-        this.axios.post('url')
+        this.axios.post('https://api.codedevents.com/admin/events/' + this.eventInfo.id +'/restrict')
+        .then((res) => {
+            console.log(res.data.data);
+            this.fetchData();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            this.isBusy =  false
+        });
+      },
+
+      activateEvent() {
+        this.axios.post('https://api.codedevents.com/admin/events/' + this.eventInfo.id +'/activate')
         .then((res) => {
             console.log(res.data.data);
             this.fetchData();
@@ -170,6 +189,30 @@
                 </b-modal>
     
               <!-- ::END RESTRICT event Modal -->
+
+              <!-- ::START ACTIVATE event Modal -->
+                
+            <b-modal id="modal-activate-event" title="Activate Event" title-class="font-18" hide-footer>
+                    <p>Are you sure you want to activate "{{eventName}}" </p>
+                    
+                    <div class="modal-footer">
+                        <button @click="activateEvent(), $bvModal.hide('modal-activate-event')" type="button" class="btn btn-success">
+                            Confirm
+                        </button>
+                        <b-button
+                            type="button"
+                            class="btn btn-danger"
+                            data-dismiss="modal"
+                            @click="$bvModal.hide('modal-activate-event')"
+                            >
+                            Close
+                        </b-button>
+                    </div>
+                </b-modal>
+    
+              <!-- ::END ACTIVATE event Modal -->
+
+
           </div>
           <div class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline">
             <div class="row">
@@ -254,6 +297,10 @@
                 <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.title}}</router-link>
               </template>
 
+              <template v-slot:cell(user)="data">
+                <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.user.name}}</router-link>
+              </template>
+
               <template v-slot:cell(plans)>
                 <p>Premium Plan</p>
               </template>
@@ -264,6 +311,8 @@
                   :class="{
                     'bg-soft-success': data.item.status === 'active',
                     'bg-soft-danger': data.item.status === 'expired',
+                    'bg-soft-secondary': data.item.status === 'restricted',
+                    'bg-soft-danger': data.item.status === 'inactive',
                     'bg-soft-warning': data.item.status === 'pending',
                     'bg-soft-primary': data.item.status === 'completed',
                     'bg-soft-info': data.item.status === 'draft',
@@ -300,7 +349,20 @@
                       
                     </a>
                   </li>
-                  <li class="list-inline-item">
+                  <li v-if="item.status == 'restricted'" class="list-inline-item">
+                    <a
+                      href="javascript:void(0);"
+                      class="text-success"
+                      v-b-tooltip.hover
+                      title="Activate Event"
+                      @click="getEventDetails(item)"
+                      v-b-modal.modal-activate-event
+                      data-toggle="modal"
+                    >
+                      <i class="uil uil-check-circle font-size-18"></i>
+                    </a>
+                  </li>
+                  <li v-if="item.status == 'active'" class="list-inline-item">
                     <a
                       href="javascript:void(0);"
                       class="text-danger"

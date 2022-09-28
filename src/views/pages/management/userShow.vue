@@ -29,9 +29,27 @@
                     },
                 ],
                 user: null,
+                wallet: null,
             };
         },
+        methods: {
+            fetchWallet(){
+                this.axios.get('https://api.codedevents.com/admin/users/' + this.$route.params.id + '/wallet')
+                .then((res) => {
+                    console.log(res);
+                    this.wallet = res.data.data
+                })
+                .catch((err) => {
+                    // this.error = true
+                    console.log(err);
+                })
+                .finally(() => {
+                        // this.loading =  false
+                });
+            }
+        },
         mounted() {
+            this.fetchWallet();
             if (this.$cookies.get("token")) {
             this.axios.get('https://api.codedevents.com/admin/users/' + this.$route.params.id)
             .then((res) => {
@@ -101,12 +119,12 @@
                                 <p 
                                     class="badge bg-pill"
                                     :class="{
-                                        'bg-soft-success': user.email_verified === true,
-                                        'bg-soft-danger': user.email_verified === false,
+                                        'bg-soft-success': user.status === 'approved',
+                                        'bg-soft-danger': user.status === 'restricted',
+                                        'bg-soft-warning': user.status === 'pending',
                                     }"
                                     >
-                                    <span v-if="user.email_verified">Verified</span>
-                                    <span v-if="!user.email_verified">Unverified</span>
+                                    <span>{{user.status}}</span>
                                 </p>
                             </div>
                         </div>
@@ -169,6 +187,157 @@
                                                         <a href="#" class="text-dark">Registerd Date</a>
                                                     </td>
                                                     <td><p>{{user.created_at | formatDate }}</p></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Wallet Balance</a>
+                                                    </td>
+                                                    <td><p>{{ wallet.wallet_balance }}</p></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Email Verified</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.email_verified" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.email_verified" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Transaction Pin</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.has_transaction_pin" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.has_transaction_pin" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <!-- <th scope="row">{{role.id}}</th> -->
+                                                    <td>
+                                                        <a href="#" class="text-dark">Login 2FA</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.two_factor_enabled.login" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.two_factor_enabled.login" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Transaction 2FA</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.two_factor_enabled.transaction" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.two_factor_enabled.transaction" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </b-tab>
+                        <b-tab>
+                            <template v-slot:title>
+                                <i class="uil uil-money-bill-stack font-size-20"></i>
+                                <span class="d-none d-sm-block">Transactions</span>
+                            </template>
+                            <div>
+                                <div>
+                                    <!-- <h5 class="font-size-16 mb-4">Permissions</h5> -->
+    
+                                    <div class="table-responsive">
+                                        <table class="table table-nowrap table-hover mb-0">
+                                            
+                                            <tbody>
+                                                <tr>
+                                                    <!-- <th scope="row">{{role.id}}</th> -->
+                                                    <td>
+                                                        <a href="#" class="text-dark">Registerd Date</a>
+                                                    </td>
+                                                    <td><p>{{user.created_at | formatDate }}</p></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Wallet Balance</a>
+                                                    </td>
+                                                    <td><p>{{ wallet.wallet_balance }}</p></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Email Verified</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.email_verified" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.email_verified" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Transaction Pin</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.has_transaction_pin" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.has_transaction_pin" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <!-- <th scope="row">{{role.id}}</th> -->
+                                                    <td>
+                                                        <a href="#" class="text-dark">Login 2FA</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.two_factor_enabled.login" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.two_factor_enabled.login" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Transaction 2FA</a>
+                                                    </td>
+                                                    <td>
+                                                        <span v-if="user.two_factor_enabled.transaction" class="badge bg-soft-success font-size-12">Active</span>
+                                                        <span v-if="!user.two_factor_enabled.transaction" class="badge bg-soft-danger font-size-12">Inactive</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </b-tab>
+                        <b-tab>
+                            <template v-slot:title>
+                                <i class="uil uil-file-alt font-size-20"></i>
+                                <span class="d-none d-sm-block">Events</span>
+                            </template>
+                            <div>
+                                <div>
+                                    <!-- <h5 class="font-size-16 mb-4">Permissions</h5> -->
+    
+                                    <div class="table-responsive">
+                                        <table class="table table-nowrap table-hover mb-0">
+                                            
+                                            <tbody>
+                                                <tr>
+                                                    <!-- <th scope="row">{{role.id}}</th> -->
+                                                    <td>
+                                                        <a href="#" class="text-dark">Registerd Date</a>
+                                                    </td>
+                                                    <td><p>{{user.created_at | formatDate }}</p></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="text-dark">Wallet Balance</a>
+                                                    </td>
+                                                    <td><p>{{ wallet.wallet_balance }}</p></td>
                                                     
                                                 </tr>
                                                 <tr>

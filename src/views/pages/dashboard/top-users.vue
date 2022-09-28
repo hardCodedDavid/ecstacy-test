@@ -55,8 +55,23 @@ export default {
                     price: "$112.00",
                 },
             ],
+            user: null,
         };
     },
+    mounted() {
+        this.axios.get('https://api.codedevents.com/admin/auth/user')
+            .then((res) => {
+                console.log(res);
+                this.user = res.data.data;
+            })
+            .catch((err) => {
+                // this.error = true
+                console.log(err);
+            })
+            .finally(() => {
+                    // this.loading =  false
+            });
+    }
 };
 </script>
 
@@ -77,7 +92,7 @@ export default {
                     <b-dropdown-item href="#">Join Date</b-dropdown-item>
                 </b-dropdown>
             </div>
-            <h4 class="card-title mb-4">Top Users</h4>
+            <h4 class="card-title mb-4">Top Users </h4>
 
             <div data-simplebar style="max-height: 336px;">
                 <div class="table-responsive">

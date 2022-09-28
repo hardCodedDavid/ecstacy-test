@@ -59,8 +59,13 @@
               sortable: true,
             },
             {
-              key: "host",
-              label: "Creator",
+              key: "user",
+              label: "User",
+              sortable: true,
+            },
+            {
+              key: "user.email",
+              label: "Email",
               sortable: true,
             },
             {
@@ -101,7 +106,7 @@
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=10000')
+          this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=10000&status=restricted')
           .then((res) => {
               console.log(res.data.data);
               this.eventData = res.data.data
@@ -257,6 +262,10 @@
                 <template v-slot:cell(title)="data">
                   <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.title}}</router-link>
                 </template>
+
+                <template v-slot:cell(user)="data">
+                  <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.user.name}}</router-link>
+                </template>
   
                 <template v-slot:cell(plans)>
                   <p>Premium Plan</p>
@@ -268,6 +277,7 @@
                     :class="{
                       'bg-soft-success': data.item.status === 'active',
                       'bg-soft-danger': data.item.status === 'expired',
+                      'bg-soft-danger': data.item.status === 'restricted',
                       'bg-soft-warning': data.item.status === 'pending',
                       'bg-soft-primary': data.item.status === 'completed',
                       'bg-soft-info': data.item.status === 'draft',

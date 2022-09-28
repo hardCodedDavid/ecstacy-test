@@ -28,6 +28,12 @@ export const menuItems = [
         icon: "uil-file-alt",
         subItems: [
             {
+                id: 4,
+                label: "Events",
+                link: "/events",
+                parentId: 4
+            },
+            {
                 id: 1,
                 label: "Active Events",
                 link: "/events/active",

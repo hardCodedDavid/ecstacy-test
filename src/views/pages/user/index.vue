@@ -70,12 +70,16 @@
               label: "Country",
             },
             {
-              key: "www",
-              label: "Events",
+              key: "total_events",
+              label: "No of Events",
             },
             {
               key: "email_verified",
               label: "Verification",
+            },
+            {
+              key: "status",
+              label: "Status",
             },
             {
               key: "created_at",
@@ -124,16 +128,14 @@
               this.isBusy =  false
           });
       },
-      addAdmin() {
-        this.admin.role = this.admin.role.id
-        
+      approveUser(id) {
         this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/create', this.admin)
+        this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/approve')
         .then((res) => {
               console.log(res.data.data);
               this.fetchData();
               this.$refs.mytoast.Add({
-                msg: "Admin Created Successfully",
+                msg: "User Approved Successfully",
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -154,91 +156,14 @@
               this.isBusy =  false
           });
       },
-      fetchRoles() {
+      restrictUser(id) {
         this.isBusy =  true
-        this.axios.get('https://api.codedevents.com/admin/roles')
-        .then((res) => {
-              console.log(res.data.data);
-              this.options = res.data.data;
-          })
-          .catch((err) => {
-              console.log(err);
-          })
-          .finally(() => {
-              this.isBusy =  false
-          });
-      },
-      getAdminInfo(item) {
-        this.admin.id = item.id;
-        this.admin.name = item.name;
-        this.admin.email = item.email;
-        this.admin.phone = item.phone;
-        this.admin.role = item.role;
-      },
-      deleteAdmin() {
-        this.isBusy =  true
-        this.axios.delete('https://api.codedevents.com/admin/' + this.admin.id + '/delete')
+        this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/restrict')
         .then((res) => {
               console.log(res.data.data);
               this.fetchData();
               this.$refs.mytoast.Add({
-                msg: "Admin Deleted Successfully",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
-              });
-          })
-          .catch((err) => {
-              console.log(err);
-              this.$refs.mytoast.Add({
-                msg: err.response.data.details,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-              });
-          })
-          .finally(() => {
-              this.isBusy =  false
-          });
-      },
-      approveAdmin(id) {
-        this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/' + id + '/actions/approve')
-        .then((res) => {
-              console.log(res.data.data);
-              this.fetchData();
-              this.$refs.mytoast.Add({
-                msg: "Admin Approved Successfully",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
-              });
-          })
-          .catch((err) => {
-              console.log(err);
-              this.$refs.mytoast.Add({
-                msg: err.response.data.details,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-              });
-          })
-          .finally(() => {
-              this.isBusy =  false
-          });
-      },
-      restrictAdmin(id) {
-        this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/' + id + '/actions/restrict')
-        .then((res) => {
-              console.log(res.data.data);
-              this.fetchData();
-              this.$refs.mytoast.Add({
-                msg: "Admin Restricted Successfully",
+                msg: "User Restricted Successfully",
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -370,7 +295,7 @@
                 <!-- End search -->
               </div>
               <!-- Table -->
-            
+              
               <b-table
                 :busy="isBusy"
                 table-class="table table-centered datatable table-card-list"
@@ -440,6 +365,20 @@
                     <span v-if="!data.item.email_verified">Unverified</span>
                   </div>
                 </template>
+
+                <template v-slot:cell(status)="data">
+                  <div
+                    class="badge bg-pill font-size-12"
+                    :class="{
+                      'bg-soft-success': data.item.status == 'approved',
+                      'bg-soft-danger': data.item.status == 'restricted',
+                      'bg-soft-warning': data.item.status == 'pending',
+                    }"
+                  >
+                    <span>{{data.item.status}}</span>
+                  </div>
+                </template>
+                
                 <template v-slot:cell(start_date)="data">
                   <p>{{data.item.start_date | formatDate}}</p>
                 </template>
@@ -460,26 +399,26 @@
                         
                       </a>
                     </li>
-                    <li v-if="item.email_verified == false" class="list-inline-item">
+                    <li v-if="item.status == 'restricted' || item.status == 'pending' " class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
                         v-b-tooltip.hover
                         title="Approve"
                         v-b-modal.modal-edit-admin
-                        @click="approveAdmin(item.id)"
+                        @click="approveUser(item.id)"
                       >
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
                     </li>
-                    <li v-if="item.email_verified == true" class="list-inline-item">
+                    <li v-if="item.status == 'approved' || item.status == 'pending' " class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
                         v-b-tooltip.hover
                         title="Restrict"
                         v-b-modal.modal-edit-admin
-                        @click="restrictAdmin(item.id)"
+                        @click="restrictUser(item.id)"
                       >
                         <i class="uil uil-info-circle font-size-18 text-danger"></i>
                       </a>

@@ -1,7 +1,7 @@
 <script>
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
-    import Switches from "vue-switches";
+    // import Switches from "vue-switches";
     import VueToastr from "vue-toastr";
     import appConfig from "@/app.config";
     
@@ -9,7 +9,7 @@
      * Profile component
      */
     export default {
-        components: {Layout, Switches, PageHeader, VueToastr },
+        components: {Layout, PageHeader, VueToastr },
          page: {
         title: "Profile",
         meta: [
@@ -30,40 +30,195 @@
                         active: true,
                     },
                 ],
+                admin: {
+                    name: this.name,
+                    phone: this.phone
+                },
+                password: {
+                    current: this.current,
+                    new: this.new,
+                },
+                profile_photo: '',
                 user: null,
                 login2FA: false,
                 transaction2FA: false,
+                isLoading: false,
+                Loading: false,
+                loadings: false,
+                url: false,
             };
         },
         methods: {
-            enableLogin2FA(){
-                this.transaction2FA = true
-                // this.axios.get('https://api.codedevents.com/admin/auth/2fa/login/enable')
-                // .then((res) => {
-                //     console.log(res.data.data);
-                //     this.$refs.mytoast.Add({
-                //         msg: "Login 2FA Active",
-                //         clickClose: false,
-                //         timeout: 5000,
-                //         position: "toast-top-right",
-                //         type: "success",
-                //     })
-                // })
-                // .catch((err) => {
-                //     // this.error = true
-                //     console.log(err);
+            resetPassword(e){
+                e.preventDefault();
+                this.loadings = true
+                
+                if(this.password.current == null && this.password.new == null) {
+                    this.$refs.mytoast.Add({
+                        msg: 'Password field is required',
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
+                    this.loadings = false
+                } else {
+                    this.loadings = true
+                    this.axios.post('https://api.codedevents.com/admin/auth/password/change?old_password='+ this.password.current + '&new_password='+ this.password.new)
+                    .then((res) => {
+                        console.log(res.data.data);
+                        this.$refs.mytoast.Add({
+                            msg: "Password Reset Successfully",
+                            clickClose: false,
+                            timeout: 5000,
+                            position: "toast-top-right",
+                            type: "success",
+                        })
+                    })
+                    .catch((err) => {
+                        // this.error = true
+                        console.log(err);
 
-                //     this.$refs.mytoast.Add({
-                //         msg: err.response.data.details,
-                //         clickClose: false,
-                //         timeout: 5000,
-                //         position: "toast-top-right",
-                //         type: "error",
-                //     });
-                // })
-                // .finally(() => {
-                //     this.getUser();
-                // });
+                        this.$refs.mytoast.Add({
+                            msg: err.response.data.error,
+                            clickClose: false,
+                            timeout: 5000,
+                            position: "toast-top-right",
+                            type: "error",
+                        });
+                    })
+                    .finally(() => {
+                        this.getUser();
+                        this.loadings = false
+
+                    });
+                }
+            },
+            enable2FA(){
+                this.loadings = true
+                this.axios.post('https://api.codedevents.com/admin/auth/2fa/enable')
+                .then((res) => {
+                    console.log(res.data.data);
+                    this.$refs.mytoast.Add({
+                        msg: "Login 2FA Active",
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "success",
+                    })
+                })
+                .catch((err) => {
+                    // this.error = true
+                    console.log(err);
+
+                    this.$refs.mytoast.Add({
+                        msg: err.response.data.details,
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
+                })
+                .finally(() => {
+                    this.getUser();
+                    this.loadings = false
+
+                });
+            },
+            disable2FA(){
+                this.loadings = true
+                this.axios.post('https://api.codedevents.com/admin/auth/2fa/disable')
+                .then((res) => {
+                    console.log(res.data.data);
+                    this.$refs.mytoast.Add({
+                        msg: "Login 2FA Inactive",
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "success",
+                    })
+                })
+                .catch((err) => {
+                    // this.error = true
+                    console.log(err);
+
+                    this.$refs.mytoast.Add({
+                        msg: err.response.data.details,
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
+                })
+                .finally(() => {
+                    this.getUser();
+                    this.loadings = false
+                });
+            },
+            updateProfile(e){
+                e.preventDefault();
+                this.isLoading = true
+                this.axios.post('https://api.codedevents.com/admin/auth/profile/update', this.admin)
+                .then((res) => {
+                    console.log(res);
+                    this.getUser();
+                    this.$refs.mytoast.Add({
+                        msg: "Profile Updated Successfully",
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "success",
+                    })
+                })
+                .catch((err) => {
+                    // this.error = true
+                    console.log(err);
+                        this.$refs.mytoast.Add({
+                        msg: err.response.data.details,
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
+                })
+                .finally(() => {
+                        this.isLoading =  false
+                });
+            },
+            updateProfilePhoto(e) {
+                e.preventDefault();
+                this.Loading =  true
+                this.axios.post('https://api.codedevents.com/admin/auth/profile/photo?photo=' + this.profile_photo, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                })
+                .then((res) => {
+                    console.log(res);
+                    this.getUser();
+
+                    this.$refs.mytoast.Add({
+                        msg: "Profile Photo Updated Successfully",
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "success",
+                    })
+                })
+                .catch((err) => {
+                    // this.error = true
+                    console.log(err);
+                    this.$refs.mytoast.Add({
+                        msg: err.response.data.details.photo[0],
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
+                })
+                .finally(() => {
+                    this.Loading =  false
+                });
             },
             getUser() {
                 if (this.$cookies.get("token")) {
@@ -71,6 +226,9 @@
                 .then((res) => {
                     console.log(res);
                     this.user = res.data.data
+                    this.admin.name = res.data.data.name
+                    this.admin.phone = res.data.data.phone
+                    this.url = res.data.data.profile_photo
                 })
                 .catch((err) => {
                     // this.error = true
@@ -82,6 +240,12 @@
                 } else {
                     localStorage.removeItem('user');
                 }
+            },
+            onFileChange(e) {
+                const file = e.target.files[0];
+                this.url = URL.createObjectURL(file);
+                
+                this.profile_photo = URL.createObjectURL(file);
             }
         },
         mounted() {
@@ -124,7 +288,7 @@
                             </b-dropdown>
                             <div class="clearfix"></div>
                             <div v-if="user.profile_photo">
-                                <img :src="user.profile" alt class="avatar-lg rounded-circle img-thumbnail" />
+                                <img :src="user.profile_photo" alt class="avatar-lg rounded-circle img-thumbnail" />
                             </div>
                             <div v-else>
                                 <img :src="user.thumbnail" alt class="avatar-lg rounded-circle img-thumbnail" />
@@ -180,7 +344,7 @@
                                 <i class="uil uil-user-circle font-size-20"></i>
                                 <span class="d-none d-sm-block">Permissions</span>
                             </template>
-                            <div>
+                            <div data-simplebar style="max-height: 500px;">
                                 <!-- <div>
                                     <h5 class="font-size-16 mb-4">Experience</h5>
     
@@ -252,103 +416,106 @@
                                 <span class="d-none d-sm-block">Settings</span>
                             </template>
                             <div>
-                                <div data-simplebar style="max-height: 430px;">
-                                    <div class="mb-3">
-                                        <label for="validationCustom03">Name</label>
-                                        <input
-                                        id="validationCustom03"
-                                        type="text"
-                                        class="form-control mb-4"
-                                        placeholder="Enter Name"
-                                        v-model="user.name"
-                                        />
-                                        <label for="validationCustom03">Phone</label>
-                                        <input
-                                        id="validationCustom03"
-                                        type="number"
-                                        class="form-control mb-4"
-                                        placeholder="Enter Phone Number"
-                                        v-model="user.phone"
-                                        />
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                <div>
+                                    
+                                    <h5 class="mb-3">Profile Photo</h5>
+                                    <form @submit="updateProfilePhoto" method="post" enctype="multipart/form-data">
+                                        <div class="card p-3">
+                                            <img
+                                            class="avatar-lg rounded-circle img-thumbnail"
+                                            :src="url"
+                                            alt="Card image cap"
+                                            />
+                                        
+                                            <b-form-file
+                                                placeholder="Choose an image here..."
+                                                @change="onFileChange"
+                                                v-model="profile_photo"
+                                                :state="Boolean(profile_photo)"
+                                            ></b-form-file>
+
+                                            <button v-if="!Loading" @click="updateProfilePhoto" class="btn btn-primary mt-4">Submit</button>
+                                            <button v-if="Loading" class="btn btn-primary mt-4">
+                                                <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                                                <span>Loading...</span>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    <h5 class="mt-5 mb-3">Update Profile</h5>
+                                    <form method="post" @submit="updateProfile">
+                                        <div class="card p-3 mb-3">
+                                            <label for="validationCustom03">Name</label>
+                                            <input
+                                            id="validationCustom03"
+                                            type="text"
+                                            class="form-control mb-4"
+                                            placeholder="Enter Name"
+                                            v-model="admin.name"
+                                            />
+                                            <label for="validationCustom03">Phone</label>
+                                            <input
+                                            id="validationCustom03"
+                                            type="number"
+                                            class="form-control mb-4"
+                                            placeholder="Enter Phone Number"
+                                            v-model="admin.phone"
+                                            />
+                                            <button v-if="!isLoading" type="submit" class="btn btn-primary">Submit</button>
+                                            <button v-if="isLoading" class="btn btn-primary">
+                                                <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                                                <span>Loading...</span>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    <div class="card p-3">
+                                        <p class="mt-5 mb-3 font-bold">Update 2FA </p>
+                                        <button v-if="!user.two_factor_enabled && !loadings" class="btn btn-success" @click="enable2FA">Enable 2FA</button>
+                                        <button v-if="user.two_factor_enabled && !loadings" class="btn btn-danger" @click="disable2FA">Disable 2FA</button>
+                                        <button v-if="loadings" class="btn btn-primary">Loading...</button>
                                     </div>
+                                    
                                 </div>
+
                             </div>
                         </b-tab>
                         <b-tab>
                             <template v-slot:title>
                                 <i class="uil uil-lock-alt font-size-20"></i>
-                                <span class="d-none d-sm-block">2FA</span>
+                                <span class="d-none d-sm-block">Security</span>
                             </template>
-
-                            <div class="table-responsive">
-                                        <table class="table table-nowrap table-hover mb-0">
-                                            
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#" class="text-dark">Login 2FA</a>
-                                                    </td>
-                                                    <tb>
-                                                        <span v-if="login2FA" class="badge bg-soft-success font-size-12">Active</span>
-                                                        <span v-if="!login2FA" class="badge bg-soft-danger font-size-12">Inactive</span>
-                                                    </tb>
-                                                    <td>
-                                                        <switches
-                                                        type-bold="false"
-                                                        color="primary"
-                                                        class="ms-1 mb-0"
-                                                        v-model="login2FA"
-                                                        :onclick="enableLogin2FA()"
-                                                        ></switches>
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#" class="text-dark">Transaction 2FA</a>
-                                                    </td>
-                                                    <tb>
-                                                        <span v-if="transaction2FA" class="badge bg-soft-success font-size-12">Active</span>
-                                                        <span v-if="!transaction2FA" class="badge bg-soft-danger font-size-12">Inactive</span>
-                                                    </tb>
-                                                    <td>
-                                                        <switches
-                                                        type-bold="false"
-                                                        color="primary"
-                                                        class="ms-1 mb-0"
-                                                        v-model="transaction2FA"
-                                                        ></switches>
-                                                    </td>
-                                                    
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
                             <div>
-                                <!-- <div data-simplebar style="max-height: 430px;"> -->
-                                    <!-- <p class="mb-5">Set 2 Factor Authentication</p>
-
-
-                                    <div style="display: flex; align-items: center; justify-content: space-around;">
-                                        <p>Login 2FA</p>
-                                        <switches
-                                        type-bold="false"
-                                        color="primary"
-                                        class="ms-1 mb-0"
-                                        v-model="login2FA"
-                                        ></switches>
-                                    </div>
+                                <div>
                                     
+                                    <h5 class="mb-3">Reset Password</h5>
+                                    <form method="post" @submit="resetPassword">
+                                        <div class="card p-3 mb-3">
+                                            <label for="validationCustom03">Current Password</label>
+                                            <input
+                                            id="validationCustom03"
+                                            type="password"
+                                            class="form-control mb-4"
+                                            placeholder="Enter Current Password"
+                                            v-model="password.current"
+                                            />
+                                            <label for="validationCustom03">New Password</label>
+                                            <input
+                                            id="validationCustom03"
+                                            type="password"
+                                            class="form-control mb-4"
+                                            placeholder="Enter New Password"
+                                            v-model="password.new"
+                                            />
+                                            <button v-if="!isLoading" type="submit" class="btn btn-primary">Submit</button>
+                                            <button v-if="isLoading" class="btn btn-primary">
+                                                <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                                                <span>Loading...</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
 
-
-                                    <switches
-                                    type-bold="false"
-                                    color="primary"
-                                    class="ms-1 mb-0"
-                                    v-model="transaction2FA"
-                                    ></switches> -->
-                                <!-- </div> -->
                             </div>
                         </b-tab>
                     </b-tabs>
