@@ -30,6 +30,8 @@ export default {
         },
       ],
       eventData: null,
+      userEvent: null,
+      copied: false,
     };
   },
   middleware: "authentication",
@@ -46,10 +48,32 @@ export default {
             .finally(() => {
                 // this.isBusy =  false
             });
+        },
+        fetchUserData(){
+            this.axios.get('https://api.codedevents.com/admin/events/user/'+ this.$route.params.id)
+            .then((res) => {
+                console.log(res.data.data);
+                this.userEvent = res.data.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                // this.isBusy =  false
+            });
+        },
+        async copyURL(mytext) {
+          try {
+            await navigator.clipboard.writeText(mytext);
+            this.copied = true;
+          } catch($e) {
+            alert('Cannot copy');
+          }
         }
   },
   mounted(){
         this.fetchData();
+        this.fetchUserData();
   }
 };
 </script>
@@ -113,7 +137,7 @@ export default {
                     <span v-if="eventData.status == 'pending'" class="badge bg-warning font-size-14 ms-2">{{eventData.status}}</span>
                     <span v-if="eventData.status == 'expired'" class="badge bg-danger font-size-14 ms-2">{{eventData.status}}</span>
                         
-                    234 Reviews
+                    {{ eventData.visitors }} Visitors
                   </div>
 
                   <!-- <h5 class="mb-4 pt-2">
@@ -136,6 +160,8 @@ export default {
                               class="uil uil-eye text-primary me-2 font-size-16 align-middle"
                             ></i>
                              Event Link: <a href="javascript:void(0)">{{eventData.link}}</a>
+                             <span v-if="!copied" style="cursor: pointer;" @click="copyURL(eventData.link)" class="badge bg-primary ms-1">Copy Link</span>
+                             <span v-if="copied" class="badge bg-success ms-1">Copied!</span>
                           </p>
                           <p>
                             <i
@@ -158,7 +184,7 @@ export default {
                         <h5 class="font-size-14">Specifications :</h5>
 
                         <p><span class="me-2">Category: </span>{{eventData.category.name}}</p>
-                        <p><span class="me-2">Visitors: </span>{{eventData.visitors}}</p>
+                        <!-- <p><span class="me-2">Visitors: </span>{{eventData.visitors}}</p> -->
                         <p><span class="me-2">Accept Donations: </span>
                           <span v-if="eventData.accept_donations" class="badge bg-success ms-1">Active</span>
                           <span v-if="!eventData.accept_donations" class="badge bg-danger ms-1">Inactive</span>
@@ -170,6 +196,12 @@ export default {
                         <p><span class="me-2">Access Code Activated: </span>
                           <span v-if="eventData.access_code_activated" class="badge bg-success ms-1">Active</span>
                           <span v-if="!eventData.access_code_activated" class="badge bg-danger ms-1">Inactive</span>
+                        </p>
+                        <p><span class="me-2">Plan: </span>
+                          <span>{{eventData.plan.name}}</span>
+                        </p>
+                        <p><span class="me-2">Total Donations: </span>
+                          <span>{{eventData.total_donations}}</span>
                         </p>
                         <!-- <ul v-for="location in eventData.locations" :key="location.id" class="list-unstyled product-desc-list text-muted" >
                           <li>

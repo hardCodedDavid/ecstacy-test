@@ -52,7 +52,7 @@
               label: "Name",
             },
             {
-              key: "www",
+              key: "total_admin",
               label: "Admin",
             },
             {
@@ -66,7 +66,10 @@
             name: this.name,
             permissions: this.permissions,
           },
-          options: null,
+          options: [],
+          permissions: [],
+          allSelected: false,
+          indeterminate: false,
         };
       },
       middleware: "authentication",
@@ -85,6 +88,9 @@
         this.fetchPermission();
       },
       methods: {
+        toggleAll(checked) {
+          this.permissions = checked ? this.options.slice() : []
+        },
         fetchData() {
             this.isBusy =  true
             this.axios.get('https://api.codedevents.com/admin/roles')
@@ -230,6 +236,21 @@
           this.currentPage = 1;
         },
       },
+      watch: {
+        permissions(newValue) {
+        // Handle changes in individual flavour checkboxes
+        if (newValue.length === 0) {
+          this.indeterminate = false
+          this.allSelected = false
+        } else if (newValue.length === this.options.length) {
+          this.indeterminate = false
+          this.allSelected = true
+        } else {
+          this.indeterminate = true
+          this.allSelected = false
+        }
+      }
+    }
     };
     </script>
     
@@ -250,7 +271,38 @@
                 label="name"
                 :multiple="true"
               ></multiselect>
-              
+
+              <!-- {{permissions}}
+                <b-form-group>
+                  <template #label>
+                    <b>Choose your flavours:</b><br>
+                    <b-form-checkbox
+                      v-model="allSelected"
+                      :indeterminate="indeterminate"
+                      aria-describedby="options"
+                      aria-controls="options"
+                      @change="toggleAll"
+                    >
+                      {{ allSelected ? 'Un-select All' : 'Select All' }}
+                    </b-form-checkbox>
+                  </template>
+
+                  <template v-slot="{ ariaDescribedby }">
+                    <b-form-checkbox-group
+                      id="flavors"
+                      v-model="permissions"
+                      :options="options"
+                      :aria-describedby="ariaDescribedby"
+                      name="options"
+                      class="ml-4"
+                      aria-label="Individual options"
+                      stacked
+                      value-field="id"
+                      text-field="name"
+                      inline
+                    ></b-form-checkbox-group>
+                  </template>
+                </b-form-group> -->
               <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
               <div class="modal-footer">
                   <button @click="addRole(), $bvModal.hide('modal-add-role')" type="button" class="btn btn-primary">

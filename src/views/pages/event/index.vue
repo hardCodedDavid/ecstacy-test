@@ -294,11 +294,11 @@
             </template>
   
               <template v-slot:cell(title)="data">
-                <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.title}}</router-link>
+                <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="max-width: 200px;"  class="d-inline-block text-truncate text-primary">{{data.item.title}}</router-link>
               </template>
 
               <template v-slot:cell(user)="data">
-                <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.user.name}}</router-link>
+                <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="max-width: 200px;"  class="d-inline-block text-truncate text-primary">{{data.item.user.name}}</router-link>
               </template>
 
               <template v-slot:cell(plans)>

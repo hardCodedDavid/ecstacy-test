@@ -188,7 +188,14 @@
             updateProfilePhoto(e) {
                 e.preventDefault();
                 this.Loading =  true
-                this.axios.post('https://api.codedevents.com/admin/auth/profile/photo?photo=' + this.profile_photo, {
+                // Set formData
+                const formData = new FormData()
+                // Append the method only if you are using a patch route in your server side
+                formData.append('_method', 'POST')
+                // Append the file
+                formData.append('photo', this.profile_photo)
+                
+                this.axios.post('https://api.codedevents.com/admin/auth/profile/photo', formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -345,29 +352,6 @@
                                 <span class="d-none d-sm-block">Permissions</span>
                             </template>
                             <div data-simplebar style="max-height: 500px;">
-                                <!-- <div>
-                                    <h5 class="font-size-16 mb-4">Experience</h5>
-    
-                                    <ul class="activity-feed mb-0 ps-2">
-                                        <li class="feed-item">
-                                            <div class="feed-item-list">
-                                                <p class="text-muted mb-1">2019 - 2020</p>
-                                                <h5 class="font-size-16">UI/UX Designer</h5>
-                                                <p>Abc Company</p>
-                                                <p class="text-muted">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual</p>
-                                            </div>
-                                        </li>
-                                        <li class="feed-item">
-                                            <div class="feed-item-list">
-                                                <p class="text-muted mb-1">2017 - 2019</p>
-                                                <h5 class="font-size-16">Graphic Designer</h5>
-                                                <p>xyz Company</p>
-                                                <p class="text-muted">It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div> -->
-    
                                 <div>
                                     <!-- <h5 class="font-size-16 mb-4">Permissions</h5> -->
     

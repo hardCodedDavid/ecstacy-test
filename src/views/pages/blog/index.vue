@@ -62,6 +62,11 @@ export default {
           sortable: true,
         },
         {
+          key: "views",
+          label: "Views",
+          sortable: true,
+        },
+        {
           key: "created_at",
           label: "Date",
           sortable: true,

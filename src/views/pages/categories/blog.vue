@@ -2,12 +2,13 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
+    import VueToastr from "vue-toastr";
     
     /**
      * Orders component
      */
     export default {
-      components: { Layout, PageHeader },
+      components: { Layout, PageHeader, VueToastr },
       page: {
         title: "Blog Categories",
         meta: [
@@ -46,6 +47,11 @@
             {
               key: "name",
               label: "Category Name",
+              sortable: true,
+            },
+            {
+              key: "total_blogs",
+              label: "No of Blogs",
               sortable: true,
             },
             "action",
@@ -97,10 +103,24 @@
                     console.log(res.data.data);
                     this.fetchCategory();
                     this.categoryName = null;
+                    this.$refs.mytoast.Add({
+                        msg: "Category Added Successfully",
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "success",
+                    })
                 })
                 .catch((err) => {
                     // this.error = true
                     console.log(err);
+                    this.$refs.mytoast.Add({
+                        msg: err.response.data.details,
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
                 })
                 .finally(() => {
                     this.isBusy =  false
@@ -117,10 +137,24 @@
                     console.log(res.data.data);
                     this.fetchCategory();
                     this.categoryName = null;
+                    this.$refs.mytoast.Add({
+                        msg: "Category Updated Successfully",
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "success",
+                    })
                 })
                 .catch((err) => {
                     // this.error = true
                     console.log(err);
+                    this.$refs.mytoast.Add({
+                        msg: err.response.data.details,
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
                 })
                 .finally(() => {
                     this.isBusy =  false
@@ -137,10 +171,24 @@
                     console.log(res.data.data);
                     this.fetchCategory();
                     this.categoryName = null;
+                    this.$refs.mytoast.Add({
+                        msg: "Category Deleted Successfully",
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "success",
+                    })
                 })
                 .catch((err) => {
                     // this.error = true
                     console.log(err);
+                    this.$refs.mytoast.Add({
+                        msg: err.response.data.details,
+                        clickClose: false,
+                        timeout: 5000,
+                        position: "toast-top-right",
+                        type: "error",
+                    });
                 })
                 .finally(() => {
                     this.isBusy =  false
@@ -169,6 +217,7 @@
     <template>
       <Layout>
         <PageHeader :title="title" :items="items" />
+        <vue-toastr ref="mytoast"></vue-toastr>
         <div class="row">
           <div class="col-12">
             <div>
