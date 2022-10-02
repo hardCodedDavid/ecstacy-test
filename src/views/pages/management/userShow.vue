@@ -340,9 +340,7 @@
                                                     <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
-                                            <tbody v-if="event.length == 0">
-                                                <p class="text-center pt-3 pb-5">No event has been created</p>
-                                            </tbody>
+                                            
                                             <tbody v-for="(events, index) in event" :key="events.id">
                                                 <tr>
                                                     <th scope="row">{{ index + 1 }}</th>
@@ -367,6 +365,9 @@
                                                             }">{{events.status}}</span> 
                                                     </tb>
                                                 </tr>
+                                            </tbody>
+                                            <tbody v-if="!event">
+                                                <p class="text-center pt-3 pb-5">No event has been created</p>
                                             </tbody>
                                         </table>
                                     </div>
