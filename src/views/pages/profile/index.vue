@@ -285,14 +285,14 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="text-center">
-                            <b-dropdown class="float-end" variant="white" right menu-class="dropdown-menu-end" toggle-class="font-size-16 text-body p-0">
+                            <!-- <b-dropdown class="float-end" variant="white" right menu-class="dropdown-menu-end" toggle-class="font-size-16 text-body p-0">
                                 <template v-slot:button-content>
                                     <i class="uil uil-ellipsis-v"></i>
                                 </template>
                                 <a class="dropdown-item" href="#">Edit</a>
                                 <a class="dropdown-item" href="#">Action</a>
                                 <a class="dropdown-item" href="#">Remove</a>
-                            </b-dropdown>
+                            </b-dropdown> -->
                             <div class="clearfix"></div>
                             <div v-if="user.profile_photo">
                                 <img :src="user.profile_photo" alt class="avatar-lg rounded-circle img-thumbnail" />

@@ -30,8 +30,8 @@
                 ],
                 user: null,
                 wallet: null,
-                event: null,
-                transaction: null,
+                event: [],
+                transaction: [],
             };
         },
         methods: {
@@ -125,14 +125,6 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="text-center">
-                            <b-dropdown class="float-end" variant="white" right menu-class="dropdown-menu-end" toggle-class="font-size-16 text-body p-0">
-                                <template v-slot:button-content>
-                                    <i class="uil uil-ellipsis-v"></i>
-                                </template>
-                                <a class="dropdown-item" href="#">Edit</a>
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Remove</a>
-                            </b-dropdown>
                             <div class="clearfix"></div>
                             <div v-if="user.profile_photo">
                                 <img :src="profile_photo" alt class="avatar-lg rounded-circle img-thumbnail" />
@@ -292,9 +284,6 @@
                                                     <th scope="col">Date</th>
                                                 </tr>
                                             </thead>
-                                            <tbody v-if="transaction.length == 0">
-                                                <p class="text-center pt-3 pb-5">No transactions has been made</p>
-                                            </tbody>
                                             <tbody v-for="(transactions, index) in transaction" :key="transactions.id">
                                                 <tr>
                                                     <th scope="row">{{ index + 1 }}</th>
@@ -314,6 +303,9 @@
                                                     </tb>
                                                     <td><p>{{ transactions.created_at | formatDate }}</p></td>
                                                 </tr>
+                                            </tbody>
+                                            <tbody v-if="transaction.length == 0">
+                                                <p class="text-center pt-3 pb-5">No transactions has been made</p>
                                             </tbody>
                                         </table>
                                     </div>
