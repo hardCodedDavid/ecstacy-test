@@ -316,6 +316,14 @@ export default [{
     component: () => import('../views/pages/notification/index')
   },
   {
+    path: '/notification/all',
+    name: 'notifiactions',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/notification/all')
+  },
+  {
     path: '/description',
     name: 'description',
     meta: {
