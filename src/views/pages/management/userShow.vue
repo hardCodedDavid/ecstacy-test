@@ -269,7 +269,7 @@
                                 <i class="uil uil-money-bill-stack font-size-20"></i>
                                 <span class="d-none d-sm-block">Transactions</span>
                             </template>
-                            <div data-simplebar style="max-height: 800px;">
+                            <div>
                                 <div>
                                     <div class="table-responsive">
                                         <table class="table table-nowrap table-hover mb-0">
