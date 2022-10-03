@@ -419,7 +419,7 @@
               </template>
     
                 <template v-slot:cell(name)="data">
-                  <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate">{{data.item.name}}</router-link>
+                  <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.name}}</router-link>
                 </template>
   
                 <template v-slot:cell(created_at)="data">
