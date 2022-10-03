@@ -15,6 +15,7 @@ import VueAxios from 'vue-axios'
 import VueCookies from 'vue-cookies'
 import moment from 'moment';
 import VueToastr from "vue-toastr";
+import ToggleButton from 'vue-js-toggle-button'
 
 
 import App from './App.vue'
@@ -55,7 +56,7 @@ if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
   configureFakeBackend();
 }
 
-import '@/assets/scss/app.scss'
+// import '@/assets/scss/app.scss'
  
 Vue.component('VueSlideBar', VueSlideBar) 
 
@@ -73,6 +74,7 @@ Vue.filter('formatDay', function(value) {
   }
 });
 Vue.component("vue-toastr", VueToastr);
+Vue.use(ToggleButton);
 
 
 var filter = function(text, length, clamp){

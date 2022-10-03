@@ -48,7 +48,7 @@
               label: "S/N",
             },
             {
-              key: "user.name",
+              key: "user",
               label: "Name",
               sortable: true,
             },
@@ -230,6 +230,9 @@
                 </template>
             <template v-slot:cell(index)="data">
               {{ data.index + 1 }}
+            </template>
+            <template v-slot:cell(user)="data">
+                <router-link :to="{ name: 'user-details', params: { id: data.item.user.id }}" style="max-width: 200px;"  class="d-inline-block text-truncate text-primary">{{data.item.user.name}}</router-link>
             </template>
                 <template v-slot:cell(check)="data">
                   <div class="custom-control custom-checkbox text-center">

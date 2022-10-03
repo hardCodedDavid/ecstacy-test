@@ -94,6 +94,13 @@
                     });
                 }
             },
+            check2FA(){
+                if(this.user.two_factor_enabled == true){
+                    this.enable2FA();
+                } else {
+                    this.disable2FA();
+                }
+            },
             enable2FA(){
                 this.loadings = true
                 this.axios.post('https://api.codedevents.com/admin/auth/2fa/enable')
@@ -135,7 +142,7 @@
                         clickClose: false,
                         timeout: 5000,
                         position: "toast-top-right",
-                        type: "success",
+                        type: "warning",
                     })
                 })
                 .catch((err) => {
@@ -455,9 +462,16 @@
 
                                     <div class="card p-3">
                                         <p class="mt-5 mb-3 font-bold">Update 2FA </p>
-                                        <button v-if="!user.two_factor_enabled && !loadings" class="btn btn-success" @click="enable2FA">Enable 2FA</button>
+                                        <toggle-button 
+                                            @change="check2FA()"
+                                            v-model="user.two_factor_enabled" 
+                                            :labels="{checked: 'Active', unchecked: 'Inactive'}"
+                                            width="70" 
+                                            height="30"
+                                        />
+                                        <!-- <button v-if="!user.two_factor_enabled && !loadings" class="btn btn-success" @click="enable2FA">Enable 2FA</button>
                                         <button v-if="user.two_factor_enabled && !loadings" class="btn btn-danger" @click="disable2FA">Disable 2FA</button>
-                                        <button v-if="loadings" class="btn btn-primary">Loading...</button>
+                                        <button v-if="loadings" class="btn btn-primary">Loading...</button> -->
                                     </div>
                                     
                                 </div>

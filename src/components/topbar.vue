@@ -1,8 +1,9 @@
 <script>
 import simplebar from "simplebar-vue";
+
 export default {
   components: {
-    simplebar,
+    simplebar
   },
   data() {
     return {
@@ -38,10 +39,20 @@ export default {
       text: null,
       flag: null,
       value: null,
-      notData: null,
+      notData: [],
+      lightMode: false,
+      darkMode: false,
     };
   },
   mounted() {
+    let val = localStorage.getItem('theme');
+    
+    if(val == 'dark'){
+      this.darkMode = true
+    } else {
+      this.lightMode = true
+    }
+
     this.value = this.languages.find((x) => x.language === this.$i18n.locale);
     this.text = this.value.title;
     this.flag = this.value.flag;
@@ -127,10 +138,15 @@ export default {
       this.flag = flag;
     },
     logoutUser() {
-      this.logout();
-      this.$router.push({
-        path: "/account/login",
-      });
+      localStorage.removeItem('user');
+      this.$cookies.remove('token');
+      this.$router.push('/login');
+    },
+    launchLightMode() {
+      localStorage.setItem('theme', 'light');
+    },
+    launchDarkMode() {
+      localStorage.setItem('theme', 'dark');
     },
   },
 };
@@ -329,45 +345,45 @@ export default {
                   {{ $t("navbar.dropdown.notification.text") }}
                 </h5>
               </div>
-              <div class="col-auto">
+              <div class="col-auto" v-if="notData.length >= 1">
                 <a href="#!" class="small">{{
                   $t("navbar.dropdown.notification.subtext")
                 }}</a>
               </div>
             </div>
           </div>
-          <simplebar style="max-height: 230px" data-simplebar>
-            <a href class="text-reset notification-item">
+          <simplebar style="max-height: 230px" data-simplebar v-if="notData">
+            <a v-for="notify in notData" :key="notify.id" href class="text-reset notification-item">
                 <div class="media">
                   <div class="avatar-xs me-3">
                     <span
                       class="avatar-title bg-primary rounded-circle font-size-16"
                     >
-                      <i class="uil-shopping-basket"></i>
+                      <i class="uil uil-user-circle"></i>
                     </span>
                   </div>
                   <div class="media-body">
                     <h6 class="mt-0 mb-1">
-                      ###{{notData}}
+                      {{notify.title}}
                     </h6>
                     <div class="font-size-12 text-muted">
                       <p class="mb-1">
-                        {{ $t("navbar.dropdown.notification.order.text") }}
+                        {{notify.message}}
                       </p>
                       <p class="mb-0">
                         <i class="mdi mdi-clock-outline"></i>
-                        {{ $t("navbar.dropdown.notification.order.time") }}
+                        {{notify.date | notify.time}}
                       </p>
                     </div>
                   </div>
                 </div>
               </a>
          
-            <!-- <p class="text-center p-5">No Notifications</p> -->
+            <p class="text-center p-5" v-if="notData.length == 0">No Notifications</p>
          
           </simplebar>
-          <div class="p-2 border-top">
-            <div class="d-grid">
+          <div class="p-2 border-top" v-if="notData">
+            <div class="d-grid" v-if="notData.length >= 5">
               <a
                 class="btn btn-sm btn-link font-size-14 text-center"
                 href="javascript:void(0)"
@@ -386,12 +402,7 @@ export default {
           variant="white"
           menu-class="dropdown-menu-end"
         >
-          <template v-slot:button-content>
-            <!-- <img
-              class="rounded-circle header-profile-user"
-              src="@/assets/images/users/avatar-4.jpg"
-              alt="Header Avatar"
-            /> -->
+          <template v-slot:button-content v-if="user">
             <img v-if="user.profile_photo" :src="user.profile_photo" class="rounded-circle header-profile-user" />
             <img v-else :src="user.thumbnail" alt class="rounded-circle header-profile-user" />
             <span
@@ -435,24 +446,38 @@ export default {
               $t("navbar.dropdown.marcus.list.lockscreen")
             }}</span>
           </a> -->
-          <router-link class="dropdown-item" to="/logout">
+          <a href @click="logoutUser" class="dropdown-item">
             <i
               class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.logout")
             }}</span>
-          </router-link>
+          </a>
         </b-dropdown>
 
-        <div class="dropdown d-inline-block">
-          <button
+        <div class="dropdown d-inline-block" v-if="lightMode">
+          <a href>
+            <button
             type="button"
             class="btn header-item noti-icon right-bar-toggle toggle-right"
-            @click="toggleRightSidebar"
+            @click="launchDarkMode"
           >
-            <i class="uil-cog toggle-right"></i>
+            <i class="uil-moon toggle-right"></i>
           </button>
+          </a>
+        </div>
+
+        <div class="dropdown d-inline-block" v-if="darkMode">
+          <a href>
+            <button
+            type="button"
+            class="btn header-item noti-icon right-bar-toggle toggle-right"
+            @click="launchLightMode"
+          >
+            <i class="uil-sun toggle-right"></i>
+          </button>
+          </a>
         </div>
       </div>
     </div>

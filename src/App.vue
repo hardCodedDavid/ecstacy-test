@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import '@/assets/scss/app.scss'
+  
 import appConfig from "@/app.config";
 import { notificationMethods } from "@/state/helpers";
 
@@ -31,12 +33,22 @@ export default {
     },
   },
   mounted() {
+    
+    let val = localStorage.getItem('theme');
+    
+    if(val == 'dark'){
+      import('./assets/scss/dark.scss');
+    } else {
+      import('./assets/scss/app.scss');
+    }
+
     this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get("token")}`;
     if (this.$cookies.get("token")) {
       this.axios.get('https://api.codedevents.com/admin/auth/user')
       .then((res) => {
           console.log(res);
           // console.log($cookies.get("token"));
+          
       })
       .catch((err) => {
           // this.error = true

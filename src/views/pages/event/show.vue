@@ -242,21 +242,29 @@ export default {
                   <b-tab title="Vendors" active>
                     <div class="row">
                       <div class="col-sm-9 col-md-10">
-                        <div class="text-muted p-2">
-                        <ul v-for="vendor in eventData.vendors" :key="vendor.id" class="list-unstyled product-desc-list text-muted">
-                          <li><i class="uil uil-store me-1"></i> {{vendor.name}}</li>
-                          <p><i class="uil uil-phone me-1"></i> {{vendor.contact}}</p>
-                        </ul>
-
-                          <!-- <div>
-                            <h5 class="font-size-16 mb-1">Documnts:</h5>
-                            <ul class="list-unstyled product-desc-list text-muted" v-for="document in eventData.documents" :key="document.id">
-                              <li>
-                                <p>{{document.filename}}<a :href="document.path" class="btn sm btn-soft-primary font-size-12 ms-2">View</a></p>
-                                
-                              </li>
-                            </ul>
-                          </div> -->
+                        <div class="table-responsive">
+                          <table class="table table-nowrap mb-0">
+                            <tbody>
+                              <tr>
+                                <th scope="row" style="width: 20%">Vendor name</th>
+                                <th scope="row" style="width: 20%">Contact</th>
+                                <th scope="row" style="width: 20%">Contact Type</th>
+                                <th scope="row" style="width: 20%">Category</th>
+                                <th scope="row" style="width: 20%">Date</th>
+                              </tr>
+                              <tr v-for="vendor in eventData.vendors" :key="vendor.id">
+                                <td>{{vendor.name}}</td>
+                                <td>{{vendor.contact}}</td>
+                                <td>{{vendor.contact_type}}</td>
+                                <td>{{vendor.category.name}}</td>
+                                <td>{{vendor.created_at | formatDate}}</td>
+                              </tr>
+                              <tr v-if="eventData.vendors.length == 0">
+                                <td></td>
+                                  <p class="pt-5 pb-5 text-center">No Vendors</p>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </div>
@@ -280,6 +288,10 @@ export default {
                             <td>{{location.date | formatDay}}</td>
                             <td>{{location.time}}</td>
                           </tr>
+                          <tr v-if="eventData.locations.length == 0">
+                            <td></td>
+                              <p class="pt-5 pb-5 text-center">No Locations</p>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -296,6 +308,9 @@ export default {
                             <td>{{document.filename}}</td>
                             <td><a :href="document.path" class="btn sm btn-soft-primary font-size-12 ms-2">View</a></td>
                           </tr>
+                          <tr v-if="eventData.documents.length == 0">
+                              <p class="pt-5 pb-5 text-center">No Documents</p>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -305,77 +320,70 @@ export default {
             </div>
 
             <div class="mt-4">
-              <h5 class="font-size-14 mb-3">Reviews :</h5>
-              <!-- <div class="text-muted mb-3">
-                <span class="badge bg-success font-size-14 me-1"
-                  ><i class="mdi mdi-star"></i> 4.2</span
-                >
-                234 Reviews
-              </div> -->
+              <h5 class="font-size-14 mb-3">Other Informations :</h5>
+              
                   <b-tabs
                     class="nav-tabs-custom"
                     content-class="border border-top-0 p-4"
                   >
                   <b-tab title="Donations" active>
-                    <div class="border p-4 rounded" v-for="donation in eventData.donations" :key="donation.id">
-                      <div class="border-bottom pb-3">
-                        <p class="float-sm-right text-muted font-size-13">
-                          {{donation.created_at | formatDate}}
-                        </p>
-                        <div class="badge bg-success mb-2" :class="{
-                          'bg-soft-danger': donation.status === 'failed',
-                          'bg-soft-warning': donation.status === 'pending',
-                          'bg-soft-success': donation.status === 'success',
-                        }">
-                          {{donation.status}}
-                        </div>
-                        <div class=" mt-2 media">
-                          <div class="media-body">
-                            <h5 class="font-size-15 mb-0">{{donation.name}}</h5>
-                          </div>
-                        </div>
-                        <p class="text-muted mt-4">
-                          Email: {{donation.email}}
-                        </p>
-                        <p class="text-muted mt-2">
-                          Phone: {{donation.phone}}
-                        </p>
-                        <p class="text-muted mb-4 mt-2">
-                          Amount: {{donation.amount}}
-                        </p>
-                        
-                      </div>
+                    <div class="table-responsive">
+                      <table class="table table-nowrap mb-0">
+                        <tbody>
+                          <tr>
+                            <th scope="row" style="width: 20%">Name</th>
+                            <th scope="row" style="width: 20%">Email</th>
+                            <th scope="row" style="width: 20%">Amount</th>
+                            <th scope="row" style="width: 20%">Phone</th>
+                            <th scope="row" style="width: 20%">Status</th>
+                            <th scope="row" style="width: 20%">Date</th>
+                          </tr>
+                          <tr v-for="donation in eventData.donations" :key="donation.id">
+                            <td>{{donation.name}}</td>
+                            <td>{{donation.email}}</td>
+                            <td>{{donation.amount}}</td>
+                            <td>{{donation.phone}}</td>
+                            <td> <span class="badge bg-success mb-2" 
+                                  :class="{
+                                    'bg-soft-danger': donation.status === 'failed',
+                                    'bg-soft-warning': donation.status === 'pending',
+                                    'bg-soft-success': donation.status === 'success',
+                                  }"
+                                >
+                              {{donation.status}}</span>
+                            </td>
+                            <td>{{donation.created_at | formatDate}}</td>
+                          </tr>
+                          <tr v-if="eventData.donations.length == 0">
+                            <td></td>
+                              <p class="pt-5 pb-5 text-center">No Donations</p>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </b-tab>
                   <b-tab title="Comments">
-                    <div class="border p-4 rounded" v-for="donation in eventData.donations" :key="donation.id">
-                      <div class="border-bottom pb-3">
-                        <p class="float-sm-right text-muted font-size-13">
-                          {{donation.created_at | formatDate}}
-                        </p>
-                        <div class="badge bg-success mb-2" :class="{
-                          'bg-soft-danger': donation.status === 'failed',
-                          'bg-soft-warning': donation.status === 'pending',
-                          'bg-soft-success': donation.status === 'success',
-                        }">
-                          {{donation.status}}
-                        </div>
-                        <div class=" mt-2 media">
-                          <div class="media-body">
-                            <h5 class="font-size-15 mb-0">{{donation.name}}</h5>
-                          </div>
-                        </div>
-                        <p class="text-muted mt-4">
-                          Email: {{donation.email}}
-                        </p>
-                        <p class="text-muted mt-2">
-                          Phone: {{donation.phone}}
-                        </p>
-                        <p class="text-muted mb-4 mt-2">
-                          Amount: {{donation.amount}}
-                        </p>
-                        
-                      </div>
+                    <div class="table-responsive">
+                      <table class="table table-nowrap mb-0">
+                        <tbody>
+                          <tr>
+                            <th scope="row" style="width: 20%">Name</th>
+                            <th scope="row" style="width: 20%">Email</th>
+                            <th scope="row" style="width: 20%">Message</th>
+                            <th scope="row" style="width: 20%">Date</th>
+                          </tr>
+                          <tr v-for="comment in eventData.comments" :key="comment.id">
+                            <td>{{comment.name}}</td>
+                            <td>{{comment.email}}</td>
+                            <td>{{comment.message}}</td>
+                            <td>{{comment.created_at | formatDate}}</td>
+                          </tr>
+                          <tr v-if="eventData.comments.length == 0">
+                            <td></td>
+                              <p class="pt-5 pb-5 text-center">No Comments</p>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </b-tab>
                 </b-tabs>
@@ -393,7 +401,7 @@ export default {
             ><i
               class="mdi mdi-loading mdi-spin font-size-20 align-middle me-2"
             ></i>
-            Loading
+            Loading...
           </a>
         </div>
       </div>
