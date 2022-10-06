@@ -55,22 +55,25 @@ export default {
                     price: "$112.00",
                 },
             ],
-            user: null,
+            dashboard: null,
         };
     },
-    mounted() {
-        this.axios.get('https://api.codedevents.com/admin/auth/user')
+    methods: {
+        getDashboardData(){
+            this.axios.get('https://api.codedevents.com/admin/dashboard')
             .then((res) => {
-                console.log(res);
-                this.user = res.data.data;
+                this.dashboard = res.data.data
             })
             .catch((err) => {
-                // this.error = true
                 console.log(err);
             })
-            .finally(() => {
-                    // this.loading =  false
-            });
+            .finally({
+
+            })
+        }
+    },
+    mounted(){
+        this.getDashboardData();
     }
 };
 </script>
@@ -79,7 +82,7 @@ export default {
 <div class="col-xl-4">
     <div class="card">
         <div class="card-body">
-            <div class="float-end">
+            <!-- <div class="float-end">
                 <b-dropdown variant="white" toggle-class="p-0" menu-class="dropdown-menu-end">
                     <template v-slot:button-content>
                         <span class="text-muted">
@@ -91,34 +94,34 @@ export default {
                     <b-dropdown-item href="#">Revenue</b-dropdown-item>
                     <b-dropdown-item href="#">Join Date</b-dropdown-item>
                 </b-dropdown>
-            </div>
-            <h4 class="card-title mb-4">Top Users </h4>
+            </div> -->
+            <h4 class="card-title mb-4">Recent Donations </h4>
 
             <div data-simplebar style="max-height: 336px;">
                 <div class="table-responsive">
                     <table class="table table-borderless table-centered table-nowrap">
                         <tbody>
-                            <tr v-for="(item, index) in users" :key="index">
-                                <td style="width: 20px;">
+                            <tr v-for="(item, index) in dashboard.recent_donations" :key="index">
+                                <!-- <td style="width: 20px;">
                                     <img :src="item.profile" class="avatar-xs rounded-circle" alt="..." />
-                                </td>
+                                </td> -->
                                 <td>
                                     <h6 class="font-size-15 mb-1 fw-normal">{{item.name}}</h6>
                                     <p class="text-muted font-size-13 mb-0">
                                         <i class="mdi mdi-map-marker"></i>
-                                        {{item.location}}
+                                        events
                                     </p>
                                 </td>
                                 <td>
                                     <span class="badge font-size-12" :class="{
-                                        'bg-soft-success': item.status === 'Success',
-                                        'bg-soft-danger': item.status === 'Cancel',
-                                        'bg-soft-info': item.status === 'Active',
+                                        'bg-soft-success': item.status === 'success',
+                                        'bg-soft-danger': item.status === 'cancel',
+                                        'bg-soft-info': item.status === 'active',
                                         'bg-soft-warning': item.status === 'Pending'}">{{item.status}}</span>
                                 </td>
                                 <td class="text-muted fw-semibold text-end">
                                     <i class="icon-xs icon me-2 text-success" data-feather="trending-up"></i>
-                                    {{item.price}}
+                                    ₦{{item.amount}}
                                 </td>
                             </tr>
                         </tbody>

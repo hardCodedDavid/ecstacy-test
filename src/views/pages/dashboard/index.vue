@@ -4,8 +4,8 @@ import PageHeader from "@/components/page-header";
 import appConfig from "@/app.config";
 
 import Stat from "@/components/widgets/stat";
-import SalesAnalytics from "./sales-analytics";
-import SellingProduct from './selling-product';
+// import SalesAnalytics from "./sales-analytics";
+// import SellingProduct from './selling-product';
 import TopUsers from './top-users';
 import Activity from './activity';
 import SocialSource from './social-source';
@@ -24,8 +24,8 @@ export default {
     Layout,
     PageHeader,
     Stat,
-    SalesAnalytics,
-    SellingProduct,
+    // SalesAnalytics,
+    // SellingProduct,
     TopUsers,
     Activity,
     SocialSource
@@ -43,10 +43,21 @@ export default {
         },
       ],
       eventData: null,
+      dashboard: null,
     };
   },
     mounted() {
-      
+      this.axios.get('https://api.codedevents.com/admin/dashboard')
+      .then((res) => {
+          this.dashboard = res.data.data
+      })
+      .catch((err) => {
+          console.log(err);
+      })
+      .finally({
+
+      })
+
       this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=50')
       .then((res) => {
           console.log(res.data.data);
@@ -74,8 +85,20 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
+    <div class="row" v-if="!dashboard">
+          <div class="col-xl-12">
+            <div class="text-center my-3">
+              <a href="javascript:void(0);" class="text-primary"
+                ><i
+                  class="mdi mdi-loading mdi-spin font-size-20 align-middle me-2"
+                ></i>
+                Loading
+              </a>
+            </div>
+          </div>
+        </div>
     <Stat />
-    <div class="row">
+    <!-- <div class="row">
       <SalesAnalytics />
        <div class="col-xl-4">
             <div class="card bg-primary">
@@ -98,13 +121,11 @@ export default {
                         </div>
                     </div>
                 </div>
-                <!-- end card-body-->
             </div>
-            <!-- end card-->
             <SellingProduct />
         </div>
-    </div>
-    <div class="row">
+    </div> -->
+    <div class="row" v-if="dashboard">
         <TopUsers />
         <Activity />
         <SocialSource />
