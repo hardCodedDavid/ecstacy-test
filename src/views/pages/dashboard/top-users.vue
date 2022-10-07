@@ -55,7 +55,7 @@ export default {
                     price: "$112.00",
                 },
             ],
-            dashboard: null,
+            dashboard: 888,
         };
     },
     methods: {
@@ -108,8 +108,8 @@ export default {
                                 <td>
                                     <h6 class="font-size-15 mb-1 fw-normal">{{item.name}}</h6>
                                     <p class="text-muted font-size-13 mb-0">
-                                        <i class="mdi mdi-map-marker"></i>
-                                        events
+                                        <i class="uil-file-alt"></i>
+                                        {{item.event.title}}
                                     </p>
                                 </td>
                                 <td>
@@ -117,7 +117,7 @@ export default {
                                         'bg-soft-success': item.status === 'success',
                                         'bg-soft-danger': item.status === 'cancel',
                                         'bg-soft-info': item.status === 'active',
-                                        'bg-soft-warning': item.status === 'Pending'}">{{item.status}}</span>
+                                        'bg-soft-warning': item.status === 'pending'}">{{item.status}}</span>
                                 </td>
                                 <td class="text-muted fw-semibold text-end">
                                     <i class="icon-xs icon me-2 text-success" data-feather="trending-up"></i>

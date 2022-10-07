@@ -148,7 +148,7 @@ export default {
                     }
                 }
             },
-            dashboard: null,
+            dashboard: 888,
         };
     },
     methods: {

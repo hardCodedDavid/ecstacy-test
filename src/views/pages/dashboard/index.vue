@@ -53,6 +53,9 @@ export default {
       })
       .catch((err) => {
           console.log(err);
+          localStorage.removeItem('user');
+          this.$cookies.remove('token');
+          this.$router.push('/login');
       })
       .finally({
 
@@ -85,18 +88,7 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-    <div class="row" v-if="!dashboard">
-          <div class="col-xl-12">
-            <div class="text-center my-3">
-              <a href="javascript:void(0);" class="text-primary"
-                ><i
-                  class="mdi mdi-loading mdi-spin font-size-20 align-middle me-2"
-                ></i>
-                Loading
-              </a>
-            </div>
-          </div>
-        </div>
+   
     <Stat />
     <!-- <div class="row">
       <SalesAnalytics />
@@ -124,7 +116,19 @@ export default {
             </div>
             <SellingProduct />
         </div>
-    </div> -->
+    </div> --> 
+    <div class="row" v-if="!dashboard">
+      <div class="col-xl-12">
+        <div class="text-center my-3">
+          <a href="javascript:void(0);" class="text-primary"
+            ><i
+              class="mdi mdi-loading mdi-spin font-size-20 align-middle me-2"
+            ></i>
+            Loading
+          </a>
+        </div>
+      </div>
+    </div>
     <div class="row" v-if="dashboard">
         <TopUsers />
         <Activity />
