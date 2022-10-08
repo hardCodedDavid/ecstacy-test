@@ -8,7 +8,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import VueSlideBar from 'vue-slide-bar'
 import Vuelidate from 'vuelidate'
 import i18n from './i18n'
-import store from '@/state/store'
+import store from '@/state/store' 
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -20,20 +20,20 @@ import ToggleButton from 'vue-js-toggle-button'
 
 import App from './App.vue'
 // As a plugin
-import VueMask from 'v-mask'
+// import VueMask from 'v-mask'
 Vue.config.productionTip = false
 
-import * as VueGoogleMaps from "vue2-google-maps";
+// import * as VueGoogleMaps from "vue2-google-maps";
 import Lightbox from 'vue-easy-lightbox'
  
 Vue.use(Lightbox)
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: "AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE",
-    libraries: "places"
-  },
-  installComponents: true
-});
+// Vue.use(VueGoogleMaps, {
+//   load: {
+//     key: "AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE",
+//     libraries: "places"
+//   },
+//   installComponents: true
+// });
 
 import { initFirebaseBackend } from './helpers/firebase/authUtils';
 
@@ -95,7 +95,7 @@ Vue.use(Vuelidate)
 Vue.use(VueSweetalert2);
 
 Vue.use(require("vue-chartist"));
-Vue.use(VueMask);
+// Vue.use(VueMask);
 
 new Vue({
   router,
