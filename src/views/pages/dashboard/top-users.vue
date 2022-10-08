@@ -97,7 +97,7 @@ export default {
             </div> -->
             <h4 class="card-title mb-4">Recent Donations </h4>
 
-            <div data-simplebar style="max-height: 336px;">
+            <div data-simplebar style="height: 336px;">
                 <div class="table-responsive">
                     <table class="table table-borderless table-centered table-nowrap">
                         <tbody>
