@@ -5,8 +5,11 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import '@/assets/scss/app.scss'
   
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 import appConfig from "@/app.config";
 import { notificationMethods } from "@/state/helpers";
 
@@ -33,6 +36,7 @@ export default {
     },
   },
   mounted() {
+<<<<<<< HEAD
     
     let val = localStorage.getItem('theme');
     
@@ -42,13 +46,18 @@ export default {
       import('./assets/scss/app.scss');
     }
 
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get("token")}`;
     if (this.$cookies.get("token")) {
       this.axios.get('https://api.codedevents.com/admin/auth/user')
       .then((res) => {
           console.log(res);
           // console.log($cookies.get("token"));
+<<<<<<< HEAD
           
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       })
       .catch((err) => {
           // this.error = true
@@ -63,7 +72,10 @@ export default {
 
     
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     // document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
   }
 };

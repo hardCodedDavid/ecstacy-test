@@ -38,8 +38,12 @@ export default {
     };
   },
   methods: {
+<<<<<<< HEAD
     forgotPasswords(e) {
       e.preventDefault();
+=======
+    forgotPasswords() {
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       this.loading = true
       this.error = false
       this.messageSent = false
@@ -73,8 +77,12 @@ export default {
             });
     },
 
+<<<<<<< HEAD
     verifyToken(e) {
       e.preventDefault();
+=======
+    verifyToken() {
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       this.loading = true
       this.error = false
       this.messageSent = true
@@ -102,8 +110,12 @@ export default {
             });
     },
 
+<<<<<<< HEAD
     changePasswords(e) {
       e.preventDefault();
+=======
+    changePasswords() {
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       this.loading = true
       this.error = false
 
@@ -129,8 +141,11 @@ export default {
               }
           })
           .catch(err => {
+<<<<<<< HEAD
               this.errorMsg = "An error occured while changing password !"
               this.error = true
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               console.log(err);
           })
           .finally(() => {
@@ -174,7 +189,11 @@ export default {
                 <div class="card-body p-4">
                   <div class="text-center mt-2">
                     <h5 class="text-primary">Reset Password</h5>
+<<<<<<< HEAD
                     <p class="text-muted">Reset Password with Coded Events.</p>
+=======
+                    <p class="text-muted">Reset Password with Minible.</p>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </div>
                   <div class="p-2 mt-4">
                     <div
@@ -184,10 +203,17 @@ export default {
                       {{sentMsg}}
                     </div>
 
+<<<<<<< HEAD
                     <!-- <div class="loader" v-if="loading">
                       <p class="text-center text-success font-bold">Loading...</p>
                     </div> -->
                     <form method="post" @submit="forgotPasswords">
+=======
+                    <div class="loader" v-if="loading">
+                      <p class="text-center text-success font-bold">Loading...</p>
+                    </div>
+
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                       <div class="mb-3">
                         <label for="useremail" v-if="!messageSent">Email</label>
                         <input
@@ -195,20 +221,33 @@ export default {
                           class="form-control"
                           v-bind:class="{ 'is-invalid': error }"
                           id="useremail"
+<<<<<<< HEAD
                           placeholder="Enter recovery email"
+=======
+                          placeholder="Enter email"
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                           v-model="email"
                         />
                         <span class="text-danger" v-if="error">{{errorMsg}}</span>
                       </div>
 
+<<<<<<< HEAD
                       <div class="mt-3 text-end" v-if="!messageSent && !loading">
                         <button
                           class="btn btn-primary w-sm waves-effect waves-light"
                           type="submit">
+=======
+                      <div class="mt-3 text-end" v-if="!messageSent">
+                        <button
+                          class="btn btn-primary w-sm waves-effect waves-light"
+                          type="submit"
+                          @click="forgotPasswords()">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                           Reset
                         </button>
                       </div>
 
+<<<<<<< HEAD
                       <div v-if="loading" class="mt-3 text-end">
                         <div class="btn btn-primary w-sm waves-effect waves-light">
                           <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
@@ -216,6 +255,8 @@ export default {
                         </div>
                       </div>
 
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                       <div class="mt-4 text-center">
                         <p class="mb-0">
                           Remember It ?
@@ -227,7 +268,11 @@ export default {
                           >
                         </p>
                       </div>
+<<<<<<< HEAD
                     </form>
+=======
+                    <!-- </form> -->
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </div>
                 </div>
               </div>
@@ -236,7 +281,11 @@ export default {
                 <div class="card-body p-4">
                   <div class="text-center mt-2">
                     <h5 class="text-primary">Reset Password</h5>
+<<<<<<< HEAD
                     <p class="text-muted">Reset Password with Coded Events.</p>
+=======
+                    <p class="text-muted">Reset Password with Minible.</p>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </div>
                   <div class="p-2 mt-4">
                     <div
@@ -246,8 +295,17 @@ export default {
                       {{sentMsg}}
                     </div>
 
+<<<<<<< HEAD
                     <form method="post" @submit="verifyToken">
                       <div class="mb-3">
+=======
+                    <div class="loader" v-if="loading">
+                      <p class="text-center text-success font-bold">Loading...</p>
+                    </div>
+
+                      <div class="mb-3">
+
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         <label v-if="messageSent" for="useremail">Verify OTP</label>
                         <input
                           type="number"
@@ -260,14 +318,23 @@ export default {
                         <span class="text-danger" v-if="error">{{errorMsg}}</span>
                       </div>
 
+<<<<<<< HEAD
                       <div class="mt-3 text-end" v-if="messageSent && !loading">
                         <button
                           class="btn btn-primary w-sm waves-effect waves-light"
                           type="submit">
+=======
+                      <div class="mt-3 text-end" v-if="messageSent">
+                        <button
+                          class="btn btn-primary w-sm waves-effect waves-light"
+                          type="submit"
+                          @click="verifyToken()">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                           Verify OTP
                         </button>
                       </div>
 
+<<<<<<< HEAD
                       <div v-if="loading" class="mt-3 text-end">
                         <div class="btn btn-primary w-sm waves-effect waves-light">
                           <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
@@ -275,6 +342,8 @@ export default {
                         </div>
                       </div>
 
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                       <div class="mt-4 text-center">
                         <p class="mb-0">
                           Remember It ?
@@ -286,7 +355,11 @@ export default {
                           >
                         </p>
                       </div>
+<<<<<<< HEAD
                     </form>
+=======
+                    <!-- </form> -->
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </div>
                 </div>
               </div>
@@ -299,7 +372,13 @@ export default {
                   </div>
                   <div class="p-2 mt-4">
 
+<<<<<<< HEAD
                     <form @submit="changePasswords" method="post">
+=======
+                    <div class="loader" v-if="loading">
+                      <p class="text-center text-success font-bold">Loading...</p>
+                    </div>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                       <div class="mb-3">
                         <label for="password">New Password</label>
                         <input
@@ -328,15 +407,24 @@ export default {
                         
                       </div>
 
+<<<<<<< HEAD
                       <div class="mt-3 text-end" v-if="!loading">
                         <button
                           class="btn btn-primary w-sm waves-effect waves-light"
                           type="submit"
+=======
+                      <div class="mt-3 text-end">
+                        <button
+                          class="btn btn-primary w-sm waves-effect waves-light"
+                          type="submit"
+                          @click="changePasswords()"
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                           >
                           Change Password
                         </button>
                       </div>
 
+<<<<<<< HEAD
                       <div v-if="loading" class="mt-3 text-end">
                         <div class="btn btn-primary w-sm waves-effect waves-light">
                           <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
@@ -344,6 +432,8 @@ export default {
                         </div>
                       </div>
 
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                       <div class="mt-4 text-center">
                         <p class="mb-0">
                           Remember It ?
@@ -355,17 +445,25 @@ export default {
                           >
                         </p>
                       </div>
+<<<<<<< HEAD
                     </form>
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </div>
                 </div>
               </div>
 
               <div class="mt-5 text-center">
                 <p>
+<<<<<<< HEAD
                   <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
                   <span>© All rights reserved Coded Events</span> 
                   <br>
                   <span>Produced by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a></span>
+=======
+                  © {{ new Date().getFullYear() }} Minible. Crafted with
+                  <i class="mdi mdi-heart text-danger"></i> by Themesbrand
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                 </p>
               </div>
             </div>

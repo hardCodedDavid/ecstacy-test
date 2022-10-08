@@ -1,9 +1,15 @@
 <script>
 import simplebar from "simplebar-vue";
+<<<<<<< HEAD
 
 export default {
   components: {
     simplebar
+=======
+export default {
+  components: {
+    simplebar,
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
   },
   data() {
     return {
@@ -39,6 +45,7 @@ export default {
       text: null,
       flag: null,
       value: null,
+<<<<<<< HEAD
       notData: [],
       lightMode: false,
       darkMode: false,
@@ -53,6 +60,11 @@ export default {
       this.lightMode = true
     }
 
+=======
+    };
+  },
+  mounted() {
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     this.value = this.languages.find((x) => x.language === this.$i18n.locale);
     this.text = this.value.title;
     this.flag = this.value.flag;
@@ -73,13 +85,17 @@ export default {
     } else {
         localStorage.removeItem('user');
     }
+<<<<<<< HEAD
 
     this.fetchNotifications();
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
   },
   methods: {
     /**
      * Toggle menu
      */
+<<<<<<< HEAD
     fetchNotifications(){
       this.axios.get('https://api.codedevents.com/admin/notifications')
       .then((res) => {
@@ -91,6 +107,8 @@ export default {
       });
 
     },
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     toggleMenu() {
       this.$parent.toggleMenu();
     },
@@ -138,6 +156,7 @@ export default {
       this.flag = flag;
     },
     logoutUser() {
+<<<<<<< HEAD
       localStorage.removeItem('user');
       this.$cookies.remove('token');
       this.$router.push('/login');
@@ -147,6 +166,12 @@ export default {
     },
     launchDarkMode() {
       localStorage.setItem('theme', 'dark');
+=======
+      this.logout();
+      this.$router.push({
+        path: "/account/login",
+      });
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     },
   },
 };
@@ -176,6 +201,10 @@ export default {
             </span>
           </router-link>
         </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
         <button
           @click="toggleMenu"
           type="button"
@@ -199,7 +228,11 @@ export default {
       </div>
 
       <div class="d-flex">
+<<<<<<< HEAD
         <!-- <b-dropdown
+=======
+        <b-dropdown
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           variant="white"
           class="d-inline-block d-lg-none ms-2"
           toggle-class="header-item noti-icon"
@@ -313,7 +346,11 @@ export default {
               </div>
             </div>
           </div>
+<<<<<<< HEAD
         </b-dropdown> -->
+=======
+        </b-dropdown>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 
         <div class="dropdown d-none d-lg-inline-block ms-1">
           <button
@@ -335,7 +372,11 @@ export default {
         >
           <template v-slot:button-content>
             <i class="uil-bell"></i>
+<<<<<<< HEAD
             <!-- <span class="badge bg-danger rounded-pill">3</span> -->
+=======
+            <span class="badge bg-danger rounded-pill">3</span>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           </template>
 
           <div class="p-3">
@@ -345,13 +386,18 @@ export default {
                   {{ $t("navbar.dropdown.notification.text") }}
                 </h5>
               </div>
+<<<<<<< HEAD
               <div class="col-auto" v-if="notData.length >= 1">
+=======
+              <div class="col-auto">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                 <a href="#!" class="small">{{
                   $t("navbar.dropdown.notification.subtext")
                 }}</a>
               </div>
             </div>
           </div>
+<<<<<<< HEAD
           <simplebar style="max-height: 230px" data-simplebar v-if="notData">
             <a v-for="notify in notData" :key="notify.id" href class="text-reset notification-item">
                 <div class="media">
@@ -384,6 +430,109 @@ export default {
           </simplebar>
           <div class="p-2 border-top" v-if="notData">
             <div class="d-grid" v-if="notData.length >= 5">
+=======
+          <simplebar style="max-height: 230px" data-simplebar>
+            <a href class="text-reset notification-item">
+              <div class="media">
+                <div class="avatar-xs me-3">
+                  <span
+                    class="avatar-title bg-primary rounded-circle font-size-16"
+                  >
+                    <i class="uil-shopping-basket"></i>
+                  </span>
+                </div>
+                <div class="media-body">
+                  <h6 class="mt-0 mb-1">
+                    {{ $t("navbar.dropdown.notification.order.title") }}
+                  </h6>
+                  <div class="font-size-12 text-muted">
+                    <p class="mb-1">
+                      {{ $t("navbar.dropdown.notification.order.text") }}
+                    </p>
+                    <p class="mb-0">
+                      <i class="mdi mdi-clock-outline"></i>
+                      {{ $t("navbar.dropdown.notification.order.time") }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href class="text-reset notification-item">
+              <div class="media">
+                <img
+                  src="@/assets/images/users/avatar-3.jpg"
+                  class="me-3 rounded-circle avatar-xs"
+                  alt="user-pic"
+                />
+                <div class="media-body">
+                  <h6 class="mt-0 mb-1">
+                    {{ $t("navbar.dropdown.notification.james.title") }}
+                  </h6>
+                  <div class="font-size-12 text-muted">
+                    <p class="mb-1">
+                      {{ $t("navbar.dropdown.notification.james.text") }}
+                    </p>
+                    <p class="mb-0">
+                      <i class="mdi mdi-clock-outline"></i>
+                      {{ $t("navbar.dropdown.notification.james.time") }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href class="text-reset notification-item">
+              <div class="media">
+                <div class="avatar-xs me-3">
+                  <span
+                    class="avatar-title bg-success rounded-circle font-size-16"
+                  >
+                    <i class="uil-truck"></i>
+                  </span>
+                </div>
+                <div class="media-body">
+                  <h6 class="mt-0 mb-1">
+                    {{ $t("navbar.dropdown.notification.item.title") }}
+                  </h6>
+                  <div class="font-size-12 text-muted">
+                    <p class="mb-1">
+                      {{ $t("navbar.dropdown.notification.item.text") }}
+                    </p>
+                    <p class="mb-0">
+                      <i class="mdi mdi-clock-outline"></i>
+                      {{ $t("navbar.dropdown.notification.item.time") }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a href class="text-reset notification-item">
+              <div class="media">
+                <img
+                  src="@/assets/images/users/avatar-4.jpg"
+                  class="me-3 rounded-circle avatar-xs"
+                  alt="user-pic"
+                />
+                <div class="media-body">
+                  <h6 class="mt-0 mb-1">
+                    {{ $t("navbar.dropdown.notification.salena.title") }}
+                  </h6>
+                  <div class="font-size-12 text-muted">
+                    <p class="mb-1">
+                      {{ $t("navbar.dropdown.notification.salena.text") }}
+                    </p>
+                    <p class="mb-0">
+                      <i class="mdi mdi-clock-outline"></i>
+                      {{ $t("navbar.dropdown.notification.salena.time") }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </simplebar>
+          <div class="p-2 border-top">
+            <div class="d-grid">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               <a
                 class="btn btn-sm btn-link font-size-14 text-center"
                 href="javascript:void(0)"
@@ -402,9 +551,18 @@ export default {
           variant="white"
           menu-class="dropdown-menu-end"
         >
+<<<<<<< HEAD
           <template v-slot:button-content v-if="user">
             <img v-if="user.profile_photo" :src="user.profile_photo" class="rounded-circle header-profile-user" />
             <img v-else :src="user.thumbnail" alt class="rounded-circle header-profile-user" />
+=======
+          <template v-slot:button-content>
+            <img
+              class="rounded-circle header-profile-user"
+              src="@/assets/images/users/avatar-4.jpg"
+              alt="Header Avatar"
+            />
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <span
               class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"
               >{{user.name}}</span
@@ -413,23 +571,37 @@ export default {
           </template>
 
           <!-- item-->
+<<<<<<< HEAD
           <router-link to="/profile/admin" class="dropdown-item">
+=======
+          <a class="dropdown-item" href="#">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <i
               class="uil uil-user-circle font-size-18 align-middle text-muted me-1"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.profile")
             }}</span>
+<<<<<<< HEAD
           </router-link>
           <!-- <a class="dropdown-item" href="#">
+=======
+          </a>
+          <a class="dropdown-item" href="#">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <i
               class="uil uil-wallet font-size-18 align-middle me-1 text-muted"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.mywallet")
             }}</span>
+<<<<<<< HEAD
           </a> -->
           <!-- <a class="dropdown-item d-block" href="#">
+=======
+          </a>
+          <a class="dropdown-item d-block" href="#">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <i
               class="uil uil-cog font-size-18 align-middle me-1 text-muted"
             ></i>
@@ -437,16 +609,26 @@ export default {
               $t("navbar.dropdown.marcus.list.settings")
             }}</span>
             <span class="badge bg-soft-success rounded-pill mt-1 ms-2">03</span>
+<<<<<<< HEAD
           </a> -->
           <!-- <a class="dropdown-item" href="#">
+=======
+          </a>
+          <a class="dropdown-item" href="#">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <i
               class="uil uil-lock-alt font-size-18 align-middle me-1 text-muted"
             ></i>
             <span class="align-middle">{{
               $t("navbar.dropdown.marcus.list.lockscreen")
             }}</span>
+<<<<<<< HEAD
           </a> -->
           <a href @click="logoutUser" class="dropdown-item">
+=======
+          </a>
+          <a class="dropdown-item" href="/logout">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <i
               class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"
             ></i>
@@ -456,6 +638,7 @@ export default {
           </a>
         </b-dropdown>
 
+<<<<<<< HEAD
         <div class="dropdown d-inline-block" v-if="lightMode">
           <a href>
             <button
@@ -478,6 +661,16 @@ export default {
             <i class="uil-sun toggle-right"></i>
           </button>
           </a>
+=======
+        <div class="dropdown d-inline-block">
+          <button
+            type="button"
+            class="btn header-item noti-icon right-bar-toggle toggle-right"
+            @click="toggleRightSidebar"
+          >
+            <i class="uil-cog toggle-right"></i>
+          </button>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
         </div>
       </div>
     </div>

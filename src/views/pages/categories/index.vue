@@ -193,7 +193,11 @@ export default {
 
           <button
             type="button"
+<<<<<<< HEAD
             class="btn btn-success mb-3 brand-primary"
+=======
+            class="btn btn-success mb-3"
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             v-b-modal.modal-add-category
             data-toggle="modal"
           >

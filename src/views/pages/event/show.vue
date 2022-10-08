@@ -30,8 +30,11 @@ export default {
         },
       ],
       eventData: null,
+<<<<<<< HEAD
       userEvent: null,
       copied: false,
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     };
   },
   middleware: "authentication",
@@ -48,6 +51,7 @@ export default {
             .finally(() => {
                 // this.isBusy =  false
             });
+<<<<<<< HEAD
         },
         fetchUserData(){
             this.axios.get('https://api.codedevents.com/admin/events/user/'+ this.$route.params.id)
@@ -69,11 +73,16 @@ export default {
           } catch($e) {
             alert('Cannot copy');
           }
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
         }
   },
   mounted(){
         this.fetchData();
+<<<<<<< HEAD
         this.fetchUserData();
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
   }
 };
 </script>
@@ -134,10 +143,17 @@ export default {
                   <h4 class="font-size-20 mb-3">{{ eventData.title }}</h4>
                   <div class="text-muted">
                     <span v-if="eventData.status == 'draft'" class="badge bg-success font-size-14 ms-2">{{eventData.status}}</span>
+<<<<<<< HEAD
                     <span v-if="eventData.status == 'pending'" class="badge bg-warning font-size-14 ms-2">{{eventData.status}}</span>
                     <span v-if="eventData.status == 'expired'" class="badge bg-danger font-size-14 ms-2">{{eventData.status}}</span>
                         
                     {{ eventData.visitors }} Visitors
+=======
+                <span v-if="eventData.status == 'pending'" class="badge bg-warning font-size-14 ms-2">{{eventData.status}}</span>
+                <span v-if="eventData.status == 'expired'" class="badge bg-danger font-size-14 ms-2">{{eventData.status}}</span>
+                    
+                    234 Reviews
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </div>
 
                   <!-- <h5 class="mb-4 pt-2">
@@ -149,7 +165,11 @@ export default {
                     >
                   </h5> -->
                   <p class="text-muted mb-4">
+<<<<<<< HEAD
                     {{eventData.description}}
+=======
+                    {{eventData.description}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, magnam consequatur! Saepe, soluta officia corrupti necessitatibus sint eum assumenda veritatis ab commodi vel atque? Culpa repudiandae rerum totam eveniet! Commodi.
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </p>
                   <div class="row">
                     <div class="col-md-6">
@@ -159,9 +179,13 @@ export default {
                             <i
                               class="uil uil-eye text-primary me-2 font-size-16 align-middle"
                             ></i>
+<<<<<<< HEAD
                              Event Link: <a href="javascript:void(0)">{{eventData.link}}</a>
                              <span v-if="!copied" style="cursor: pointer;" @click="copyURL(eventData.link)" class="badge bg-primary ms-1">Copy Link</span>
                              <span v-if="copied" class="badge bg-success ms-1">Copied!</span>
+=======
+                            View Event: <a :href="eventData.link" target="_blank">{{eventData.link}}</a>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                           </p>
                           <p>
                             <i
@@ -184,7 +208,11 @@ export default {
                         <h5 class="font-size-14">Specifications :</h5>
 
                         <p><span class="me-2">Category: </span>{{eventData.category.name}}</p>
+<<<<<<< HEAD
                         <!-- <p><span class="me-2">Visitors: </span>{{eventData.visitors}}</p> -->
+=======
+                        <p><span class="me-2">Visitors: </span>{{eventData.visitors}}</p>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         <p><span class="me-2">Accept Donations: </span>
                           <span v-if="eventData.accept_donations" class="badge bg-success ms-1">Active</span>
                           <span v-if="!eventData.accept_donations" class="badge bg-danger ms-1">Inactive</span>
@@ -197,12 +225,15 @@ export default {
                           <span v-if="eventData.access_code_activated" class="badge bg-success ms-1">Active</span>
                           <span v-if="!eventData.access_code_activated" class="badge bg-danger ms-1">Inactive</span>
                         </p>
+<<<<<<< HEAD
                         <p><span class="me-2">Plan: </span>
                           <span>{{eventData.plan.name}}</span>
                         </p>
                         <p><span class="me-2">Total Donations: </span>
                           <span>{{eventData.total_donations}}</span>
                         </p>
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         <!-- <ul v-for="location in eventData.locations" :key="location.id" class="list-unstyled product-desc-list text-muted" >
                           <li>
                             <i
@@ -242,6 +273,7 @@ export default {
                   <b-tab title="Vendors" active>
                     <div class="row">
                       <div class="col-sm-9 col-md-10">
+<<<<<<< HEAD
                         <div class="table-responsive">
                           <table class="table table-nowrap mb-0">
                             <tbody>
@@ -265,6 +297,23 @@ export default {
                               </tr>
                             </tbody>
                           </table>
+=======
+                        <div class="text-muted p-2">
+                        <ul v-for="vendor in eventData.vendors" :key="vendor.id" class="list-unstyled product-desc-list text-muted">
+                          <li><i class="uil uil-store me-1"></i> {{vendor.name}}</li>
+                          <p><i class="uil uil-phone me-1"></i> {{vendor.contact}}</p>
+                        </ul>
+
+                          <!-- <div>
+                            <h5 class="font-size-16 mb-1">Documnts:</h5>
+                            <ul class="list-unstyled product-desc-list text-muted" v-for="document in eventData.documents" :key="document.id">
+                              <li>
+                                <p>{{document.filename}}<a :href="document.path" class="btn sm btn-soft-primary font-size-12 ms-2">View</a></p>
+                                
+                              </li>
+                            </ul>
+                          </div> -->
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         </div>
                       </div>
                     </div>
@@ -288,10 +337,13 @@ export default {
                             <td>{{location.date | formatDay}}</td>
                             <td>{{location.time}}</td>
                           </tr>
+<<<<<<< HEAD
                           <tr v-if="eventData.locations.length == 0">
                             <td></td>
                               <p class="pt-5 pb-5 text-center">No Locations</p>
                           </tr>
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         </tbody>
                       </table>
                     </div>
@@ -308,9 +360,12 @@ export default {
                             <td>{{document.filename}}</td>
                             <td><a :href="document.path" class="btn sm btn-soft-primary font-size-12 ms-2">View</a></td>
                           </tr>
+<<<<<<< HEAD
                           <tr v-if="eventData.documents.length == 0">
                               <p class="pt-5 pb-5 text-center">No Documents</p>
                           </tr>
+=======
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         </tbody>
                       </table>
                     </div>
@@ -320,13 +375,24 @@ export default {
             </div>
 
             <div class="mt-4">
+<<<<<<< HEAD
               <h5 class="font-size-14 mb-3">Other Informations :</h5>
               
+=======
+              <h5 class="font-size-14 mb-3">Reviews :</h5>
+              <!-- <div class="text-muted mb-3">
+                <span class="badge bg-success font-size-14 me-1"
+                  ><i class="mdi mdi-star"></i> 4.2</span
+                >
+                234 Reviews
+              </div> -->
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   <b-tabs
                     class="nav-tabs-custom"
                     content-class="border border-top-0 p-4"
                   >
                   <b-tab title="Donations" active>
+<<<<<<< HEAD
                     <div class="table-responsive">
                       <table class="table table-nowrap mb-0">
                         <tbody>
@@ -384,6 +450,67 @@ export default {
                           </tr>
                         </tbody>
                       </table>
+=======
+                    <div class="border p-4 rounded" v-for="donation in eventData.donations" :key="donation.id">
+                      <div class="border-bottom pb-3">
+                        <p class="float-sm-right text-muted font-size-13">
+                          {{donation.created_at | formatDate}}
+                        </p>
+                        <div class="badge bg-success mb-2" :class="{
+                          'bg-soft-danger': donation.status === 'failed',
+                          'bg-soft-warning': donation.status === 'pending',
+                          'bg-soft-success': donation.status === 'success',
+                        }">
+                          {{donation.status}}
+                        </div>
+                        <div class=" mt-2 media">
+                          <div class="media-body">
+                            <h5 class="font-size-15 mb-0">{{donation.name}}</h5>
+                          </div>
+                        </div>
+                        <p class="text-muted mt-4">
+                          Email: {{donation.email}}
+                        </p>
+                        <p class="text-muted mt-2">
+                          Phone: {{donation.phone}}
+                        </p>
+                        <p class="text-muted mb-4 mt-2">
+                          Amount: {{donation.amount}}
+                        </p>
+                        
+                      </div>
+                    </div>
+                  </b-tab>
+                  <b-tab title="Comments">
+                    <div class="border p-4 rounded" v-for="donation in eventData.donations" :key="donation.id">
+                      <div class="border-bottom pb-3">
+                        <p class="float-sm-right text-muted font-size-13">
+                          {{donation.created_at | formatDate}}
+                        </p>
+                        <div class="badge bg-success mb-2" :class="{
+                          'bg-soft-danger': donation.status === 'failed',
+                          'bg-soft-warning': donation.status === 'pending',
+                          'bg-soft-success': donation.status === 'success',
+                        }">
+                          {{donation.status}}
+                        </div>
+                        <div class=" mt-2 media">
+                          <div class="media-body">
+                            <h5 class="font-size-15 mb-0">{{donation.name}}</h5>
+                          </div>
+                        </div>
+                        <p class="text-muted mt-4">
+                          Email: {{donation.email}}
+                        </p>
+                        <p class="text-muted mt-2">
+                          Phone: {{donation.phone}}
+                        </p>
+                        <p class="text-muted mb-4 mt-2">
+                          Amount: {{donation.amount}}
+                        </p>
+                        
+                      </div>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                     </div>
                   </b-tab>
                 </b-tabs>
@@ -401,7 +528,11 @@ export default {
             ><i
               class="mdi mdi-loading mdi-spin font-size-20 align-middle me-2"
             ></i>
+<<<<<<< HEAD
             Loading...
+=======
+            Loading
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           </a>
         </div>
       </div>

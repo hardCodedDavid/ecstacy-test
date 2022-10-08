@@ -140,10 +140,15 @@ export default {
               </div>
               <div class="mt-5 text-center">
                 <p>
+<<<<<<< HEAD
                   <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
                   <span>© All rights reserved Coded Events</span> 
                   <br>
                   <span>Produced by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a></span>
+=======
+                  © {{ new Date().getFullYear() }} Minible. Crafted with
+                  <i class="mdi mdi-heart text-danger"></i> by Themesbrand
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                 </p>
               </div>
             </div>

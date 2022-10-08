@@ -1,4 +1,9 @@
 {
+<<<<<<< HEAD
   "title": "Coded Events Admin",
   "description": "Coded Events is a fully featured premium Vuejs admin dashboard template built on top of awesome Bootstrap 5.0.0"
+=======
+  "title": "Minible is a fully featured premium Vuejs admin dashboard template built on top of awesome Bootstrap 5.0.0",
+  "description": "Minible is a fully featured premium Vuejs admin dashboard template built on top of awesome Bootstrap 5.0.0"
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 }

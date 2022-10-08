@@ -147,6 +147,7 @@ export default {
                         }
                     }
                 }
+<<<<<<< HEAD
             },
             dashboard: 888,
         };
@@ -167,6 +168,10 @@ export default {
     },
     mounted(){
         this.getDashboardData();
+=======
+            }
+        };
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     }
 };
 </script>
@@ -181,17 +186,28 @@ export default {
                 </div>
                 <div>
                     <h4 class="mb-1 mt-1">
+<<<<<<< HEAD
                         <span data-plugin="counterup">
                             <countTo :startVal="10" :endVal="dashboard.total_revenue" :duration="2000"></countTo>
+=======
+                        $
+                        <span data-plugin="counterup">
+                            <countTo :startVal="1000" :endVal="34152" :duration="2000"></countTo>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         </span>
                     </h4>
                     <p class="text-muted mb-0">Total Revenue</p>
                 </div>
+<<<<<<< HEAD
                 <!-- <p class="text-muted mt-3 mb-0">
+=======
+                <p class="text-muted mt-3 mb-0">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                     <span class="text-success me-1">
                         <i class="mdi mdi-arrow-up-bold me-1"></i>2.65%
                     </span>
                     since last week
+<<<<<<< HEAD
                 </p> -->
             </div>
         </div>
@@ -292,6 +308,9 @@ export default {
                     </span>
                     since last week
                 </p> -->
+=======
+                </p>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             </div>
         </div>
     </div>
@@ -304,17 +323,30 @@ export default {
                 <div>
                     <h4 class="mb-1 mt-1">
                         <span data-plugin="counterup">
+<<<<<<< HEAD
                             <countTo :startVal="100" :endVal="dashboard.total_subscriptions" :duration="2000"></countTo>
                         </span>
                     </h4>
                     <p class="text-muted mb-0">Total subscriptions</p>
                 </div>
                 <!-- <p class="text-muted mt-3 mb-0">
+=======
+                            <countTo :startVal="100" :endVal="5643" :duration="2000"></countTo>
+                        </span>
+                    </h4>
+                    <p class="text-muted mb-0">Orders</p>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                     <span class="text-danger me-1">
                         <i class="mdi mdi-arrow-down-bold me-1"></i>0.82%
                     </span>
                     since last week
+<<<<<<< HEAD
                 </p> -->
+=======
+                </p>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             </div>
         </div>
     </div>
@@ -329,17 +361,30 @@ export default {
                 <div>
                     <h4 class="mb-1 mt-1">
                         <span data-plugin="counterup">
+<<<<<<< HEAD
                             <countTo :startVal="1000" :endVal="dashboard.total_events" :duration="2000"></countTo>
                         </span>
                     </h4>
                     <p class="text-muted mb-0">Total events</p>
                 </div>
                 <!-- <p class="text-muted mt-3 mb-0">
+=======
+                            <countTo :startVal="1000" :endVal="45254" :duration="2000"></countTo>
+                        </span>
+                    </h4>
+                    <p class="text-muted mb-0">Customers</p>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                     <span class="text-danger me-1">
                         <i class="mdi mdi-arrow-down-bold me-1"></i>6.24%
                     </span>
                     since last week
+<<<<<<< HEAD
                 </p> -->
+=======
+                </p>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             </div>
         </div>
     </div>
@@ -351,6 +396,7 @@ export default {
                 </div>
                 <div>
                     <h4 class="mb-1 mt-1">
+<<<<<<< HEAD
                         <span data-plugin="counterup">
                             <countTo :startVal="1000" :endVal="dashboard.total_donations" :duration="2000"></countTo>
                         </span>
@@ -358,11 +404,23 @@ export default {
                     <p class="text-muted mb-0">Total donations</p>
                 </div>
                 <!-- <p class="text-muted mt-3 mb-0">
+=======
+                        +
+                        <span data-plugin="counterup">12.58</span>%
+                    </h4>
+                    <p class="text-muted mb-0">Growth</p>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                     <span class="text-success me-1">
                         <i class="mdi mdi-arrow-up-bold me-1"></i>10.51%
                     </span>
                     since last week
+<<<<<<< HEAD
                 </p> -->
+=======
+                </p>
+>>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             </div>
         </div>
     </div>
