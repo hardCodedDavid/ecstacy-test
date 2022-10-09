@@ -25,8 +25,8 @@ export default {
       user: {
                 // email: this.email, 
                 // password: this.paasword,
-                email: "admin@codedevents.com", 
-                password: "password",
+                email: "", 
+                password: "",
             },
       loading: false,
       error: false,
