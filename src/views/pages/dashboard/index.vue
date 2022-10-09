@@ -4,13 +4,8 @@ import PageHeader from "@/components/page-header";
 import appConfig from "@/app.config";
 
 import Stat from "@/components/widgets/stat";
-<<<<<<< HEAD
 // import SalesAnalytics from "./sales-analytics";
 // import SellingProduct from './selling-product';
-=======
-import SalesAnalytics from "./sales-analytics";
-import SellingProduct from './selling-product';
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 import TopUsers from './top-users';
 import Activity from './activity';
 import SocialSource from './social-source';
@@ -29,13 +24,8 @@ export default {
     Layout,
     PageHeader,
     Stat,
-<<<<<<< HEAD
     // SalesAnalytics,
     // SellingProduct,
-=======
-    SalesAnalytics,
-    SellingProduct,
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     TopUsers,
     Activity,
     SocialSource
@@ -45,18 +35,13 @@ export default {
       title: "Dashboard",
       items: [
         {
-<<<<<<< HEAD
           text: "Overview",
-=======
-          text: "Minible",
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
         },
         {
           text: "Dashboard",
           active: true,
         },
       ],
-<<<<<<< HEAD
       eventData: null,
       dashboard: null,
     };
@@ -85,11 +70,6 @@ export default {
           console.log(err);
       });
       
-=======
-    };
-  },
-    mounted() {
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       this.axios.get('https://api.codedevents.com/admin/auth/user')
       .then((res) => {
           console.log(res);
@@ -108,14 +88,9 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-<<<<<<< HEAD
    
     <Stat />
     <!-- <div class="row">
-=======
-    <Stat />
-    <div class="row">
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       <SalesAnalytics />
        <div class="col-xl-4">
             <div class="card bg-primary">
@@ -138,7 +113,6 @@ export default {
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
             </div>
             <SellingProduct />
         </div>
@@ -156,15 +130,6 @@ export default {
       </div>
     </div>
     <div class="row" v-if="dashboard">
-=======
-                <!-- end card-body-->
-            </div>
-            <!-- end card-->
-            <SellingProduct />
-        </div>
-    </div>
-    <div class="row">
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
         <TopUsers />
         <Activity />
         <SocialSource />

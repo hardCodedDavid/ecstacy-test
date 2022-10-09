@@ -11,11 +11,8 @@ export default {
   data() {
     return {
       menuItems: menuItems,
-<<<<<<< HEAD
       badgePay: this.badgePay,
       badgeWit: this.badgeWit,
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     };
   },
   props: {
@@ -32,7 +29,6 @@ export default {
     simplebar,
   },
   mounted: function () {
-<<<<<<< HEAD
 
     this.axios.get('https://api.codedevents.com/admin/transactions/payments')
     .then((res) => {
@@ -49,8 +45,6 @@ export default {
     .catch((err) => {
         console.log(err);
     });
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     // eslint-disable-next-line no-unused-vars
     var menuRef = new MetisMenu("#side-menu");
     this._activateMenuDropdown();
@@ -291,7 +285,6 @@ export default {
               >
                 <i :class="`${item.icon}`" v-if="item.icon"></i>
                 <span>{{ $t(item.label) }}</span>
-<<<<<<< HEAD
 
                 <span
                   :class="`badge rounded-pill bg-${item.badgePay.variant} float-end`"
@@ -302,12 +295,6 @@ export default {
                   :class="`badge rounded-pill bg-${item.badgeWit.variant} float-end`"
                   v-if="item.badgeWit && badgeWit >= 1"
                   >{{ badgeWit }}</span
-=======
-                <span
-                  :class="`badge rounded-pill bg-${item.badge.variant} float-end`"
-                  v-if="item.badge"
-                  >{{ $t(item.badge.text) }}</span
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                 >
               </router-link>
 

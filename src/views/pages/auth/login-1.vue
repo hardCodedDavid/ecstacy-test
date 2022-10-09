@@ -1,18 +1,12 @@
 <script>
 import appConfig from "@/app.config";
-<<<<<<< HEAD
 import VueToastr from "vue-toastr";
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 
 /**
  * Login-1 component
  */
 export default {
-<<<<<<< HEAD
   components: { VueToastr },
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
   page: {
     title: "Login",
     meta: [
@@ -36,13 +30,10 @@ export default {
             },
       loading: false,
       error: false,
-<<<<<<< HEAD
       errorMsg: null,
       twoFA: false,
       token: this.token,
       userData: this.userData,
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     };
   },
   methods: {
@@ -50,7 +41,6 @@ export default {
           e.preventDefault();
           this.loading = true
           this.error = false
-<<<<<<< HEAD
 
           // if (this.user.email == "") {
           //   this.error = true
@@ -80,26 +70,10 @@ export default {
                 //Redirect User when done
                 this.$router.push('/');
               }
-=======
-          // this.axios.post('http://localhost:8000/api/login', this.user)
-
-          //::POST Login Request
-          this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
-          .then((res) => {
-            //Store token to localStorage
-              localStorage.setItem('user', JSON.stringify(res.data));
-            //Add token to Authorization header
-              this.axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.data.token}`;
-              this.$cookies.set("token", res.data.data.token, 60 * 60 * 2);
-              
-            //Redirect User when done
-              this.$router.push('/');
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               
               // console.log(res);
           })
           .catch((err) => {
-<<<<<<< HEAD
               // this.error = true
               this.$refs.mytoast.Add({
                   msg: err.response.data.error,
@@ -109,15 +83,11 @@ export default {
                   type: "error",
               });
               // this.errorMsg = "Invalid Credential"
-=======
-              this.error = true
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               console.log(err);
           })
           .finally(() => {
                 this.loading =  false
           });
-<<<<<<< HEAD
           
       },
       verify2FA(e) {
@@ -174,8 +144,6 @@ export default {
             });
             console.log(err);
           })
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       }
   }
 };
@@ -183,10 +151,7 @@ export default {
 
 <template>
   <div>
-<<<<<<< HEAD
     <vue-toastr ref="mytoast"></vue-toastr>
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
     <div class="home-btn d-none d-sm-block">
       <router-link to="/" class="text-dark"
         ><i class="mdi mdi-home-variant h2"></i
@@ -216,22 +181,11 @@ export default {
         </div>
         <div class="row align-items-center justify-content-center">
           <div class="col-md-8 col-lg-6 col-xl-5">
-<<<<<<< HEAD
             <div class="card" v-if="!twoFA">
               <div class="card-body p-4">
                 <div class="text-center mt-2">
                   <h5 style="color: #761300;">Welcome Back !</h5>{{twofa}}
                   <p class="text-muted">Sign in to continue to Coded Events.</p>
-=======
-            <div class="card">
-              <div class="card-body p-4">
-                <div class="text-center mt-2">
-                  <h5 class="text-primary">Welcome Back !</h5>
-                  <p class="text-muted">Sign in to continue to Minible.</p>
-                </div>
-                <div class="loader" v-if="loading">
-                  <p class="text-center text-success font-bold">Loading...</p>
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                 </div>
                 <div class="p-2 mt-4">
                   <form method="post" @submit="loginUser">
@@ -239,7 +193,6 @@ export default {
                         <label for="username">Email</label>
                       
                       <input
-<<<<<<< HEAD
                         type="email"
                         class="form-control"
                         id="username"
@@ -259,25 +212,6 @@ export default {
                         required
                       />
                       <span class="text-danger" v-if="error">{{errorMsg}}</span>
-=======
-                        type="text"
-                        class="form-control"
-                        id="username"
-                        placeholder="Enter username"
-                        v-model="user.email"
-                        v-if="!error"
-                      />
-
-                      <input
-                        type="text"
-                        class="form-control is-invalid"
-                        id="username"
-                        placeholder="Enter username"
-                        v-model="user.email"
-                        v-if="error"
-                      />
-                      <span class="text-danger" v-if="error">Invalid credentials</span>
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                     </div>
 
                     <div class="mb-3">
@@ -293,10 +227,7 @@ export default {
                         id="userpassword"
                         placeholder="Enter password"
                         v-model="user.password"
-<<<<<<< HEAD
                         required
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                       />
                     </div>
 
@@ -311,22 +242,15 @@ export default {
                       >
                     </div>
 
-<<<<<<< HEAD
                     <div v-if="!loading" class="mt-3 text-end">
                       <button
                         class="brand-primary btn btn-primary w-sm waves-effect waves-light"
-=======
-                    <div class="mt-3 text-end">
-                      <button
-                        class="btn btn-primary w-sm waves-effect waves-light"
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                         type="submit"
                       >
                         Log In
                       </button>
                     </div>
 
-<<<<<<< HEAD
                     <div v-if="loading" class="mt-3 text-end">
                       <div class="brand-primary btn btn-primary w-sm waves-effect waves-light">
                         <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
@@ -374,52 +298,6 @@ export default {
                         <span>Loading...</span>
                       </div>
                     </div>
-=======
-                    <!-- <div class="mt-4 text-center">
-                      <div class="signin-other-title">
-                        <h5 class="font-size-14 mb-3 title">Sign in with</h5>
-                      </div>
-
-                      <ul class="list-inline">
-                        <li class="list-inline-item">
-                          <a
-                            href="javascript:void()"
-                            class="social-list-item bg-primary text-white border-primary"
-                          >
-                            <i class="mdi mdi-facebook"></i>
-                          </a>
-                        </li>
-                        <li class="list-inline-item">
-                          <a
-                            href="javascript:void()"
-                            class="social-list-item bg-info text-white border-info"
-                          >
-                            <i class="mdi mdi-twitter"></i>
-                          </a>
-                        </li>
-                        <li class="list-inline-item">
-                          <a
-                            href="javascript:void()"
-                            class="social-list-item bg-danger text-white border-danger"
-                          >
-                            <i class="mdi mdi-google"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div> -->
-
-                    <!-- <div class="mt-4 text-center">
-                      <p class="mb-0">
-                        Don't have an account ?
-                        <router-link
-                          to="/auth/register-1"
-                          class="fw-medium text-primary"
-                        >
-                          Signup now</router-link
-                        >
-                      </p>
-                    </div> -->
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                   </form>
                 </div>
               </div>
@@ -427,7 +305,6 @@ export default {
 
             <div class="mt-5 text-center">
               <p>
-<<<<<<< HEAD
                 <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
                 <span>© All rights reserved Coded Events</span> 
                 <br>
@@ -436,12 +313,6 @@ export default {
             </div>
 
             
-=======
-                © {{ new Date().getFullYear() }} Minible. Crafted with
-                <i class="mdi mdi-heart text-danger"></i> by Themesbrand
-              </p>
-            </div>
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           </div>
         </div>
         <!-- end row -->

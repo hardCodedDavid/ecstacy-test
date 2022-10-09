@@ -32,13 +32,8 @@
           transactionData: [],
           totalRows: 1,
           currentPage: 1,
-<<<<<<< HEAD
           perPage: 50,
           pageOptions: [50, 100, 200, 500],
-=======
-          perPage: 10,
-          pageOptions: [10, 25, 50, 100],
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           filter: null,
           filterOn: [],
           sortBy: "age",
@@ -53,11 +48,7 @@
               label: "S/N",
             },
             {
-<<<<<<< HEAD
               key: "user",
-=======
-              key: "user.name",
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               label: "Name",
               sortable: true,
             },
@@ -226,10 +217,7 @@
                 :filter="filter"
                 :filter-included-fields="filterOn"
                 @filtered="onFiltered"
-<<<<<<< HEAD
                 show-empty
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               >
               <template #table-busy>
                 <div class="text-center text-primary my-2">
@@ -237,7 +225,6 @@
                 <strong>Loading...</strong>
                 </div>
             </template>
-<<<<<<< HEAD
             <template #empty="scope">
                     <p class="text-center p-3">{{ scope.emptyText }}</p>
                 </template>
@@ -247,11 +234,6 @@
             <template v-slot:cell(user)="data">
                 <router-link :to="{ name: 'user-details', params: { id: data.item.user.id }}" style="max-width: 200px;"  class="d-inline-block text-truncate text-primary">{{data.item.user.name}}</router-link>
             </template>
-=======
-            <template v-slot:cell(index)="data">
-              {{ data.index + 1 }}
-            </template>
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                 <template v-slot:cell(check)="data">
                   <div class="custom-control custom-checkbox text-center">
                     <input

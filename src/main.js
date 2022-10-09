@@ -8,17 +8,12 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import VueSlideBar from 'vue-slide-bar'
 import Vuelidate from 'vuelidate'
 import i18n from './i18n'
-<<<<<<< HEAD
 import store from '@/state/store' 
-=======
-import store from '@/state/store'
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookies from 'vue-cookies'
 import moment from 'moment';
-<<<<<<< HEAD
 import VueToastr from "vue-toastr";
 import ToggleButton from 'vue-js-toggle-button'
 
@@ -39,25 +34,6 @@ Vue.use(Lightbox)
 //   },
 //   installComponents: true
 // });
-=======
-
-import App from './App.vue'
-// As a plugin
-import VueMask from 'v-mask'
-Vue.config.productionTip = false
-
-import * as VueGoogleMaps from "vue2-google-maps";
-import Lightbox from 'vue-easy-lightbox'
- 
-Vue.use(Lightbox)
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: "AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE",
-    libraries: "places"
-  },
-  installComponents: true
-});
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 
 import { initFirebaseBackend } from './helpers/firebase/authUtils';
 
@@ -80,11 +56,7 @@ if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
   configureFakeBackend();
 }
 
-<<<<<<< HEAD
 // import '@/assets/scss/app.scss'
-=======
-import '@/assets/scss/app.scss'
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
  
 Vue.component('VueSlideBar', VueSlideBar) 
 
@@ -101,7 +73,6 @@ Vue.filter('formatDay', function(value) {
       return moment(String(value)).format('DD MMMM, YYYY')
   }
 });
-<<<<<<< HEAD
 Vue.component("vue-toastr", VueToastr);
 Vue.use(ToggleButton);
 
@@ -115,8 +86,6 @@ var filter = function(text, length, clamp){
 };
 
 Vue.filter('truncate', filter);
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 
 
 Vue.use(BootstrapVue)
@@ -126,11 +95,7 @@ Vue.use(Vuelidate)
 Vue.use(VueSweetalert2);
 
 Vue.use(require("vue-chartist"));
-<<<<<<< HEAD
 // Vue.use(VueMask);
-=======
-Vue.use(VueMask);
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 
 new Vue({
   router,

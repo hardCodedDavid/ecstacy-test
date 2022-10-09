@@ -32,13 +32,8 @@ export default {
       data: [],
       totalRows: 1,
       currentPage: 1,
-<<<<<<< HEAD
       perPage: 50,
       pageOptions: [50, 100, 200, 500],
-=======
-      perPage: 10,
-      pageOptions: [10, 25, 50, 100],
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -48,17 +43,10 @@ export default {
           key: "index",
           label: "S/N",
         },
-<<<<<<< HEAD
         // {
         //   key: "image",
         //   label: "Image",
         // },
-=======
-        {
-          key: "image",
-          label: "Image",
-        },
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
         {
           key: "title",
           label: "Title",
@@ -74,7 +62,6 @@ export default {
           sortable: true,
         },
         {
-<<<<<<< HEAD
           key: "views",
           label: "Views",
           sortable: true,
@@ -85,8 +72,6 @@ export default {
           sortable: true,
         },
         {
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           key: "action",
           label: "Action",
         },
@@ -113,11 +98,7 @@ export default {
   methods: {
     fetchBlog(){
         this.toggleBusy();
-<<<<<<< HEAD
         this.axios.get('https://api.codedevents.com/admin/blog?page=1&per_page=10000')
-=======
-        this.axios.get('https://api.codedevents.com/admin/blog?page=1&per_page=50')
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
         .then((res) => {
             console.log(res.data.data);
             this.data = res.data.data;
@@ -190,30 +171,18 @@ export default {
       <div class="col-12">
         <div>
           <div class="float-end">
-<<<<<<< HEAD
             <!-- <form class="d-inline-flex mb-3">
-=======
-            <form class="d-inline-flex mb-3">
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               <label class="my-1 me-2" for="order-selectinput">Blogs</label>
               <select class="form-select" id="order-selectinput">
                 <option selected="">All</option>
                 <option value="1">Active</option>
                 <option value="2">Unpaid</option>
               </select>
-<<<<<<< HEAD
             </form> -->
           </div>
           <button
             type="button"
             class="btn btn-success mb-3 brand-primary"
-=======
-            </form>
-          </div>
-          <button
-            type="button"
-            class="btn btn-success mb-3"
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           >
           <router-link :to="{ name: 'blog-create'}" class="text-white"><i class="mdi mdi-plus me-1"></i> Add New Blog</router-link>
             
@@ -322,11 +291,7 @@ export default {
               <router-link :to="{ name: 'blog-details', params: { id: data.item.id }}">{{ data.item.title }}</router-link>
             </template>
             <template v-slot:cell(body)="data">
-<<<<<<< HEAD
               <p class="text-truncate" style="max-width: 450px;">{{ data.item.body | truncate(80, '...') }}</p>
-=======
-              <div class="d-inline-block text-truncate" style="max-width: 450px; max-height: 60px;" v-html="data.item.body"></div>
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             </template>
             <template v-slot:cell(status)="data">
               <div
@@ -339,14 +304,11 @@ export default {
                 {{ data.item.status }}
               </div>
             </template>
-<<<<<<< HEAD
             <template v-slot:cell(created_at)="data">
               <div >
                 {{ data.item.created_at | formatDate }}
               </div>
             </template>
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <template v-slot:cell(action)="data">
               <ul class="list-inline mb-0">
                 <li class="list-inline-item">

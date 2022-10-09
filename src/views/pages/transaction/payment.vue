@@ -32,13 +32,8 @@
           paymentData: [],
           totalRows: 1,
           currentPage: 1,
-<<<<<<< HEAD
           perPage: 50,
           pageOptions: [50, 100, 200, 500],
-=======
-          perPage: 10,
-          pageOptions: [10, 25, 50, 100],
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
           filter: null,
           filterOn: [],
           sortBy: "age",
@@ -107,11 +102,7 @@
       methods: {
         fetchPayments(){
             this.isBusy = !this.isBusy
-<<<<<<< HEAD
             this.axios.get('https://api.codedevents.com/admin/transactions/payments?page=1&per_page=10000')
-=======
-            this.axios.get('https://api.codedevents.com/admin/transactions/payments')
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             .then((res) => {
                 console.log(res.data.data);
                 this.paymentData = res.data.data;
@@ -250,10 +241,7 @@
                 :filter="filter"
                 :filter-included-fields="filterOn"
                 @filtered="onFiltered"
-<<<<<<< HEAD
                 show-empty
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
               >
               <template #table-busy>
                 <div class="text-center text-primary my-2">
@@ -261,12 +249,9 @@
                 <strong>Loading...</strong>
                 </div>
             </template>
-<<<<<<< HEAD
             <template #empty="scope">
                     <p class="text-center p-3">{{ scope.emptyText }}</p>
                 </template>
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
             <template v-slot:cell(index)="data">
               {{ data.index + 1 }}
             </template>
@@ -313,11 +298,7 @@
                 </template>
                 <template v-slot:cell(action)="{ item }">
                   <ul class="list-inline mb-0">
-<<<<<<< HEAD
                     <li v-if="item.status == 'pending'" class="list-inline-item">
-=======
-                    <li class="list-inline-item">
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-success"

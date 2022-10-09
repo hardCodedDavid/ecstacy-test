@@ -31,10 +31,7 @@ function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
     this.$cookies.remove('token');
-<<<<<<< HEAD
     this.$router.push('/login');
-=======
->>>>>>> fa72f8d02fa6a3d0881114fc34d75efa15ce1e68
 }
 
 function register(user) {
