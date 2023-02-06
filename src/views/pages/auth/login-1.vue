@@ -2,6 +2,8 @@
 import appConfig from "@/app.config";
 import VueToastr from "vue-toastr";
 
+import { BASE_URL } from "../../../baseconstant"
+
 /**
  * Login-1 component
  */

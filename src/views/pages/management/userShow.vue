@@ -2,6 +2,7 @@
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
 import appConfig from '@/app.config'
+import { BASE_URL } from "../../../baseconstant"
 
 /**
  * Profile component

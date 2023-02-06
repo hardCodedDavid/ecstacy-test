@@ -4,6 +4,7 @@ import PageHeader from '@/components/page-header'
 // import Switches from "vue-switches";
 import VueToastr from 'vue-toastr'
 import appConfig from '@/app.config'
+import { BASE_URL } from "../../../baseconstant"
 
 /**
  * Profile component
