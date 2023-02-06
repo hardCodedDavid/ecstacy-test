@@ -91,7 +91,7 @@ export default {
     if (this.$cookies.get('token')) {
       this.axios
         .get(
-          'http://127.0.0.1:8000/api/v1/admin/view-user/' +
+          'https://api.ecstasynigeria.com/api/v1/admin/view-user/' +
             this.$route.params.id +
             '?page=' +
             this.currentPage +

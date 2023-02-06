@@ -95,7 +95,7 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .get(
-          'http://127.0.0.1:8000/api/v1/admin/transactions?page='+this.currentPage+'&per_page='+this.perPage
+          'https://api.ecstasynigeria.com/api/v1/admin/transactions?page='+this.currentPage+'&per_page='+this.perPage
         )
         .then((res) => {
           const dataResponse = res.data.data
