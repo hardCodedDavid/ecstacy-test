@@ -25,8 +25,8 @@ export default {
     return {
       title: "Log in",
       user: {
-                email: "sixpathdev@gmail.com", 
-                password: "sixpathdev",
+                email: "softwebdigial@gmail.com", 
+                password: "",
             },
       loading: false,
       error: false,
