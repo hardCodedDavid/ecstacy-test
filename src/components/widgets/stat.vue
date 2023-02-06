@@ -4,6 +4,17 @@ import countTo from "vue-count-to";
  * Stat component
  */
 export default {
+    props:{
+        total_users: {
+            default: 0
+        },
+        total_transactions: {
+            default: 0
+        },
+        total_topup_amount: {
+            default: 0
+        }
+    },
     components: {
         countTo
     },
@@ -152,21 +163,29 @@ export default {
         };
     },
     methods: {
-        getDashboardData(){
-            this.axios.get('https://api.codedevents.com/admin/dashboard')
-            .then((res) => {
-                this.dashboard = res.data.data
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally({
+        // getDashboardData(){
+        //     this.axios.get('http://127.0.0.1:8000/api/v1/admin/dashboard')
+        //     .then((res) => {
+        //         // console.log(res.data.data)
+        //         this.dashboard = res.data.data
+        //     })
+        //     .catch((err) => {
+        //         // console.log(err.response);
+        //         this.$refs.mytoast.Add({
+        //           msg: err.response.data.message,
+        //           clickClose: false,
+        //           timeout: 5000,
+        //           position: "toast-top-right",
+        //           type: "error",
+        //       });
+        //     })
+        //     .finally({
 
-            })
-        }
+        //     })
+        // }
     },
     mounted(){
-        this.getDashboardData();
+        // this.getDashboardData();
     }
 };
 </script>
@@ -182,17 +201,29 @@ export default {
                 <div>
                     <h4 class="mb-1 mt-1">
                         <span data-plugin="counterup">
-                            <countTo :startVal="10" :endVal="dashboard.total_revenue" :duration="2000"></countTo>
+                            <countTo :startVal="10" :endVal="total_users" :duration="2000"></countTo>
                         </span>
                     </h4>
-                    <p class="text-muted mb-0">Total Revenue</p>
+                    <p class="text-muted mb-0">Total Users</p>
                 </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-success me-1">
-                        <i class="mdi mdi-arrow-up-bold me-1"></i>2.65%
-                    </span>
-                    since last week
-                </p> -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="float-end mt-2">
+                    <apexchart class="apex-charts" type="radialBar" dir="ltr" width="45" height="45" :options="orderRadial" :series="orderseries"></apexchart>
+                </div>
+                <div>
+                    <h4 class="mb-1 mt-1">
+                        ₦
+                        <span data-plugin="counterup">
+                            <countTo :startVal="10" :endVal="total_topup_amount" :duration="2000"></countTo>
+                        </span>
+                    </h4>
+                    <p class="text-muted mb-0">Total Wallet Topup</p>
+                </div>
             </div>
         </div>
     </div>
@@ -209,44 +240,14 @@ export default {
                             <countTo :startVal="10" :endVal="dashboard.total_active_subscriptions_amount" :duration="2000"></countTo>
                         </span>
                     </h4>
-                    <p class="text-muted mb-0">Total active subscriptions</p>
+                    <p class="text-muted mb-0">Total Withdrawals</p>
                 </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-danger me-1">
-                        <i class="mdi mdi-arrow-down-bold me-1"></i>0.82%
-                    </span>
-                    since last week
-                </p> -->
             </div>
         </div>
     </div>
     <!-- end col-->
 
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="float-end mt-2">
-                    <apexchart class="apex-charts" type="radialBar" dir="ltr" width="45" height="45" :options="customerRadial" :series="customerseries"></apexchart>
-                </div>
-                <div>
-                    <h4 class="mb-1 mt-1">
-                        ₦
-                        <span data-plugin="counterup">
-                            <countTo :startVal="10" :endVal="dashboard.total_donations_amount" :duration="2000"></countTo>
-                        </span>
-                    </h4>
-                    <p class="text-muted mb-0">Total donations</p>
-                </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-danger me-1">
-                        <i class="mdi mdi-arrow-down-bold me-1"></i>6.24%
-                    </span>
-                    since last week
-                </p> -->
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
+    <!-- <div class="col-md-6 col-xl-3">
         <div class="card">
             <div class="card-body">
                 <div class="float-end mt-2">
@@ -261,64 +262,11 @@ export default {
                     </h4>
                     <p class="text-muted mb-0">Pending Withdrawals</p>
                 </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-success me-1">
-                        <i class="mdi mdi-arrow-up-bold me-1"></i>10.51%
-                    </span>
-                    since last week
-                </p> -->
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- end col-->
 
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="float-end mt-2">
-                    <apexchart class="apex-charts" dir="ltr" width="70" height="40" :options="chartOptions" :series="series"></apexchart>
-                </div>
-                <div>
-                    <h4 class="mb-1 mt-1">
-                        <span data-plugin="counterup">
-                            <countTo :startVal="10" :endVal="dashboard.total_users" :duration="2000"></countTo>
-                        </span>
-                    </h4>
-                    <p class="text-muted mb-0">Total Users</p>
-                </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-success me-1">
-                        <i class="mdi mdi-arrow-up-bold me-1"></i>2.65%
-                    </span>
-                    since last week
-                </p> -->
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="float-end mt-2">
-                    <apexchart class="apex-charts" type="radialBar" dir="ltr" width="45" height="45" :options="orderRadial" :series="orderseries"></apexchart>
-                </div>
-                <div>
-                    <h4 class="mb-1 mt-1">
-                        <span data-plugin="counterup">
-                            <countTo :startVal="100" :endVal="dashboard.total_subscriptions" :duration="2000"></countTo>
-                        </span>
-                    </h4>
-                    <p class="text-muted mb-0">Total subscriptions</p>
-                </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-danger me-1">
-                        <i class="mdi mdi-arrow-down-bold me-1"></i>0.82%
-                    </span>
-                    since last week
-                </p> -->
-            </div>
-        </div>
-    </div>
-    <!-- end col-->
 
     <div class="col-md-6 col-xl-3">
         <div class="card">
@@ -329,43 +277,15 @@ export default {
                 <div>
                     <h4 class="mb-1 mt-1">
                         <span data-plugin="counterup">
-                            <countTo :startVal="1000" :endVal="dashboard.total_events" :duration="2000"></countTo>
+                            <countTo :startVal="1000" :endVal="total_transactions" :duration="2000"></countTo>
                         </span>
                     </h4>
-                    <p class="text-muted mb-0">Total events</p>
+                    <p class="text-muted mb-0">Total Transactions</p>
                 </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-danger me-1">
-                        <i class="mdi mdi-arrow-down-bold me-1"></i>6.24%
-                    </span>
-                    since last week
-                </p> -->
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="float-end mt-2">
-                    <apexchart class="apex-charts" dir="ltr" width="70" height="40" :options="growthChartOptions" :series="series"></apexchart>
-                </div>
-                <div>
-                    <h4 class="mb-1 mt-1">
-                        <span data-plugin="counterup">
-                            <countTo :startVal="1000" :endVal="dashboard.total_donations" :duration="2000"></countTo>
-                        </span>
-                    </h4>
-                    <p class="text-muted mb-0">Total donations</p>
-                </div>
-                <!-- <p class="text-muted mt-3 mb-0">
-                    <span class="text-success me-1">
-                        <i class="mdi mdi-arrow-up-bold me-1"></i>10.51%
-                    </span>
-                    since last week
-                </p> -->
-            </div>
-        </div>
-    </div>
+    
     <!-- end col-->
 </div>
 <!-- end row-->

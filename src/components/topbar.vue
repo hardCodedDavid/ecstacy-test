@@ -56,72 +56,75 @@ export default {
     this.value = this.languages.find((x) => x.language === this.$i18n.locale);
     this.text = this.value.title;
     this.flag = this.value.flag;
-    if (this.$cookies.get("token")) {
-      this.axios.get('https://api.codedevents.com/admin/auth/user')
-      .then((res) => {
-        this.user = res.data.data
-          // console.log(res);
-          // console.log($cookies.get("token"));
-      })
-      .catch((err) => {
-          // this.error = true
-          console.log(err);
-      })
-      .finally(() => {
-            // this.loading =  false
-      });
-    } else {
-        localStorage.removeItem('user');
-    }
+    const {user} = JSON.parse(localStorage.getItem('user'));
+    this.user = user
+    // console.log(user)
+    // if (this.$cookies.get("token")) {
+    //   this.axios.get('https://api.codedevents.com/admin/auth/user')
+    //   .then((res) => {
+    //     this.user = res.data.data
+    //       // console.log(res);
+    //       // console.log($cookies.get("token"));
+    //   })
+    //   .catch((err) => {
+    //       // this.error = true
+    //       console.log(err);
+    //   })
+    //   .finally(() => {
+    //         // this.loading =  false
+    //   });
+    // } else {
+    //     localStorage.removeItem('user');
+    // }
 
-    this.fetchNotifications();
+    // this.fetchNotifications();
   },
   methods: {
     /**
      * Toggle menu
      */
-    fetchNotifications(){
-      this.axios.get('https://api.codedevents.com/admin/notifications')
-      .then((res) => {
-          console.log(res.data.data);
-          this.notData = res.data.data;
-      })
-      .catch((err) => {
-          console.log(err);
-      });
+    // fetchNotifications(){
+    //   this.axios.get('https://api.codedevents.com/admin/notifications')
+    //   .then((res) => {
+    //       console.log(res.data.data);
+    //       this.notData = res.data.data;
+    //   })
+    //   .catch((err) => {
+    //       console.log(err);
+    //   });
 
-    },
+    // },
     toggleMenu() {
       this.$parent.toggleMenu();
     },
-    initFullScreen() {
-      document.body.classList.toggle("fullscreen-enable");
-      if (
-        !document.fullscreenElement &&
-        /* alternative standard method */
-        !document.mozFullScreenElement &&
-        !document.webkitFullscreenElement
-      ) {
-        // current working methods
-        if (document.documentElement.requestFullscreen) {
-          document.documentElement.requestFullscreen();
-        } else if (document.documentElement.mozRequestFullScreen) {
-          document.documentElement.mozRequestFullScreen();
-        } else if (document.documentElement.webkitRequestFullscreen) {
-          document.documentElement.webkitRequestFullscreen(
-            Element.ALLOW_KEYBOARD_INPUT
-          );
-        }
-      } else {
-        if (document.cancelFullScreen) {
-          document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        }
-      }
-    },
+    // initFullScreen() {
+    //   document.body.classList.toggle("fullscreen-enable");
+    //   if (
+    //     !document.fullscreenElement &&
+    //     /* alternative standard method */
+    //     !document.mozFullScreenElement &&
+    //     !document.webkitFullscreenElement
+    //   ) {
+    //     // current working methods
+    //     if (document.documentElement.requestFullscreen) {
+    //       document.documentElement.requestFullscreen();
+    //     } else if (document.documentElement.mozRequestFullScreen) {
+    //       document.documentElement.mozRequestFullScreen();
+    //     } else if (document.documentElement.webkitRequestFullscreen) {
+    //       document.documentElement.webkitRequestFullscreen(
+    //         Element.ALLOW_KEYBOARD_INPUT
+    //       );
+    //     }
+    //   } else {
+    //     if (document.cancelFullScreen) {
+    //       document.cancelFullScreen();
+    //     } else if (document.mozCancelFullScreen) {
+    //       document.mozCancelFullScreen();
+    //     } else if (document.webkitCancelFullScreen) {
+    //       document.webkitCancelFullScreen();
+    //     }
+    //   }
+    // },
     /**
      * Toggle rightsidebar
      */
@@ -315,7 +318,7 @@ export default {
           </div>
         </b-dropdown> -->
 
-        <div class="dropdown d-none d-lg-inline-block ms-1">
+        <!-- <div class="dropdown d-none d-lg-inline-block ms-1">
           <button
             type="button"
             class="btn header-item noti-icon waves-effect"
@@ -324,7 +327,7 @@ export default {
           >
             <i class="uil-minus-path"></i>
           </button>
-        </div>
+        </div> -->
 
         <b-dropdown
           variant="white"

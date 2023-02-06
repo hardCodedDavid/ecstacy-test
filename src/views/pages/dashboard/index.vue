@@ -1,21 +1,22 @@
 <script>
-import Layout from "../../layouts/main";
-import PageHeader from "@/components/page-header";
-import appConfig from "@/app.config";
+import Layout from '../../layouts/main'
+import PageHeader from '@/components/page-header'
+import appConfig from '@/app.config'
 
-import Stat from "@/components/widgets/stat";
+import Stat from '@/components/widgets/stat'
 // import SalesAnalytics from "./sales-analytics";
 // import SellingProduct from './selling-product';
-import TopUsers from './top-users';
-import Activity from './activity';
-import SocialSource from './social-source';
+
+import TopUsers from './top-users'
+import Activity from './activity'
+import SocialSource from './social-source'
 
 export default {
   page: {
-    title: "Dashboard",
+    title: 'Dashboard',
     meta: [
       {
-        name: "description",
+        name: 'description',
         content: appConfig.description,
       },
     ],
@@ -24,99 +25,48 @@ export default {
     Layout,
     PageHeader,
     Stat,
-    // SalesAnalytics,
-    // SellingProduct,
     TopUsers,
     Activity,
-    SocialSource
+    SocialSource,
   },
   data() {
     return {
-      title: "Dashboard",
+      title: 'Dashboard',
       items: [
         {
-          text: "Overview",
+          text: 'Overview',
         },
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           active: true,
         },
       ],
       eventData: null,
       dashboard: null,
-    };
-  },
-    mounted() {
-      this.axios.get('https://api.codedevents.com/admin/dashboard')
-      .then((res) => {
-          this.dashboard = res.data.data
-      })
-      .catch((err) => {
-          console.log(err);
-          localStorage.removeItem('user');
-          this.$cookies.remove('token');
-          this.$router.push('/login');
-      })
-      .finally({
-
-      })
-
-      this.axios.get('https://api.codedevents.com/admin/events?page=1&per_page=50')
-      .then((res) => {
-          console.log(res.data.data);
-          this.eventData = res.data.data
-      })
-      .catch((err) => {
-          console.log(err);
-      });
-      
-      this.axios.get('https://api.codedevents.com/admin/auth/user')
-      .then((res) => {
-          console.log(res);
-      })
-      .catch((err) => {
-          // this.error = true
-          console.log(err);
-      })
-      .finally(() => {
-            // this.loading =  false
-      });
     }
-};
+  },
+  mounted() {
+    this.axios
+      .get('http://127.0.0.1:8000/api/v1/admin/dashboard')
+      .then((res) => {
+        console.log(res.data.data)
+        this.dashboard = res.data.data
+      })
+      .catch((err) => {
+        console.log(err.response)
+        // localStorage.removeItem('user')
+        // this.$cookies.remove('token')
+        // this.$router.push('/login');
+      })
+      .finally({})
+  },
+}
 </script>
 
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-   
-    <Stat />
-    <!-- <div class="row">
-      <SalesAnalytics />
-       <div class="col-xl-4">
-            <div class="card bg-primary">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-sm-8">
-                            <p class="text-white font-size-18">
-                                Enhance your
-                                <b>Campaign</b> for better outreach
-                                <i class="mdi mdi-arrow-right"></i>
-                            </p>
-                            <div class="mt-4">
-                                <a href="javascript: void(0);" class="btn btn-success waves-effect waves-light">Upgrade Account!</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mt-4 mt-sm-0">
-                                <img src="@/assets/images/setup-analytics-amico.svg" class="img-fluid" alt />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SellingProduct />
-        </div>
-    </div> --> 
+    <Stat :total_users="dashboard.total_users" :total_transactions="dashboard.total_transactions" :total_topup_amount="dashboard.total_topup_amount" />
     <div class="row" v-if="!dashboard">
       <div class="col-xl-12">
         <div class="text-center my-3">
@@ -130,9 +80,9 @@ export default {
       </div>
     </div>
     <div class="row" v-if="dashboard">
-        <TopUsers />
-        <Activity />
-        <SocialSource />
+      <TopUsers :recent_users="dashboard.recent_users" />
+      <Activity :recent_transactions="dashboard.recent_transactions" />
+      <SocialSource />
     </div>
   </Layout>
 </template>

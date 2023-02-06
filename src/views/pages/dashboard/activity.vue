@@ -1,79 +1,21 @@
-<script>
+ag<script>
     /**
      * Top-users component
      */
     export default {
+        props: {
+            recent_transactions: {
+                default: []
+            }
+        },
         data() {
             return {
-                users: [{
-                        profile: require("@/assets/images/users/avatar-4.jpg"),
-                        name: "Glenn Holden",
-                        location: "Nevada",
-                        status: "Cancel",
-                        price: "$250.00",
-                    },
-                    {
-                        profile: require("@/assets/images/users/avatar-5.jpg"),
-                        name: "Lolita Hamill",
-                        location: "Texas",
-                        status: "Success",
-                        price: "$110.00",
-                    },
-                    {
-                        profile: require("@/assets/images/users/avatar-6.jpg"),
-                        name: "Robert Mercer",
-                        location: "California",
-                        status: "Active",
-                        price: "$420.00",
-                    },
-                    {
-                        profile: require("@/assets/images/users/avatar-7.jpg"),
-                        name: "Marie Kim",
-                        location: "Montana",
-                        status: "Pending",
-                        price: "$120.00",
-                    },
-                    {
-                        profile: require("@/assets/images/users/avatar-8.jpg"),
-                        name: "Sonya Henshaw",
-                        location: "Colorado",
-                        status: "Active",
-                        price: "$112.00",
-                    },
-                    {
-                        profile: require("@/assets/images/users/avatar-2.jpg"),
-                        name: "Marie Kim",
-                        location: "Australia",
-                        status: "Success",
-                        price: "$120.00",
-                    },
-                    {
-                        profile: require("@/assets/images/users/avatar-1.jpg"),
-                        name: "Sonya Henshaw",
-                        location: "India",
-                        status: "Cancel",
-                        price: "$112.00",
-                    },
-                ],
                 dashboard: null,
             };
         },
         methods: {
-            getDashboardData(){
-                this.axios.get('https://api.codedevents.com/admin/dashboard')
-                .then((res) => {
-                    this.dashboard = res.data.data
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally({
-    
-                })
-            }
         },
         mounted(){
-            this.getDashboardData();
         }
     };
     </script>
@@ -82,46 +24,37 @@
     <div class="col-xl-4">
         <div class="card">
             <div class="card-body">
-                <!-- <div class="float-end">
-                    <b-dropdown variant="white" toggle-class="p-0" menu-class="dropdown-menu-end">
-                        <template v-slot:button-content>
-                            <span class="text-muted">
-                                All Members
-                                <i class="mdi mdi-chevron-down ms-1"></i>
-                            </span>
-                        </template>
-                        <b-dropdown-item href="#">Locations</b-dropdown-item>
-                        <b-dropdown-item href="#">Revenue</b-dropdown-item>
-                        <b-dropdown-item href="#">Join Date</b-dropdown-item>
-                    </b-dropdown>
-                </div> -->
-                <h4 class="card-title mb-4">New events </h4>
+                <h4 class="card-title mb-4">Recent Transactions </h4>
     
                 <div data-simplebar style="max-height: 336px;">
                     <div class="table-responsive">
                         <table class="table table-borderless table-centered table-nowrap">
                             <tbody>
-                                <tr v-for="(item, index) in dashboard.new_events" :key="index">
-                                    <td style="width: 20px;">
+                                <tr v-for="(item) in recent_transactions" :key="item.id">
+                                    <!-- <td style="width: 20px;">
                                         <img :src="item.banner" class="avatar-xs rounded-circle" alt="..." />
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <h6 class="font-size-15 mb-1 fw-normal">{{item.title}}</h6>
-                                        <p class="text-muted font-size-13 mb-0">
+                                        <!-- <p class="text-muted font-size-13 mb-0">
                                             <i class="uil-user-circle"></i>
-                                            {{item.user.name}}
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <span class="badge font-size-12" :class="{
-                                            'bg-soft-success': item.status === 'active',
-                                            'bg-soft-danger': item.status === 'restricted',
-                                            'bg-soft-info': item.status === 'draft',
-                                            'bg-soft-warning': item.status === 'pending'}">{{item.status}}</span>
+                                            {{item.title}}
+                                        </p> -->
                                     </td>
                                     <td class="text-muted fw-semibold text-end">
                                         <i class="icon-xs icon me-2 text-success" data-feather="trending-up"></i>
-                                        {{item.amount}}
+                                        ₦{{item.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}}
+                                    </td>
+                                    <td>
+                                        <span class="badge font-size-12" :class="{
+                                            'bg-soft-success': item.status === 'delivered',
+                                            'bg-soft-danger': item.status === ('fail' || 'failed'),
+                                            'bg-soft-warning': item.status === 'pending'}">{{item.status}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge font-size-12" :class="{
+                                            'bg-soft-danger': item.transaction_type === 'outflow',
+                                            'bg-soft-success': item.status === 'inflow'}">{{item.transaction_type}}</span>
                                     </td>
                                 </tr>
                             </tbody>

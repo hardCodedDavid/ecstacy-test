@@ -23,15 +23,12 @@ export default {
     return {
       title: "Log in",
       user: {
-                // email: this.email, 
-                // password: this.paasword,
-                email: "", 
-                password: "",
+                email: "sixpathdev@gmail.com", 
+                password: "sixpathdev",
             },
       loading: false,
       error: false,
       errorMsg: null,
-      twoFA: false,
       token: this.token,
       userData: this.userData,
     };
@@ -47,13 +44,15 @@ export default {
           //   this.errorMsg = 'Email field'
           // }
           //::POST Login Request
-          this.axios.post('https://api.codedevents.com/admin/auth/login', this.user)
+          this.axios.post('http://127.0.0.1:8000/api/v1/admin/auth/login', this.user)
           .then((res) => {
+            const {token, user} = res.data.data
+            console.log(user)
             this.userData = res.data
-              if(res.data.data.admin.two_factor_enabled === true) {
-                this.twoFA = true
-                this.send2FA();
-              } else {
+              // if(res.data.data.admin.two_factor_enabled === true) {
+              //   this.twoFA = true
+              //   this.send2FA();
+              // } else {
                 this.$refs.mytoast.Add({
                     msg: "Login Successful",
                     clickClose: false,
@@ -62,28 +61,28 @@ export default {
                     type: "success",
                 })
                 //Store token to localStorage
-                localStorage.setItem('user', JSON.stringify(res.data));
+                localStorage.setItem('user', JSON.stringify(res.data.data));
                 //Add token to Authorization header
-                this.axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.data.token}`;
-                this.$cookies.set("token", res.data.data.token, 60 * 60 * 2);
+                this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                this.$cookies.set("token", token, 60 * 60 * 2);
                 
                 //Redirect User when done
                 this.$router.push('/');
-              }
+              
               
               // console.log(res);
           })
           .catch((err) => {
               // this.error = true
               this.$refs.mytoast.Add({
-                  msg: err.response.data.error,
+                  msg: err.response.data.message,
                   clickClose: false,
                   timeout: 5000,
                   position: "toast-top-right",
                   type: "error",
               });
               // this.errorMsg = "Invalid Credential"
-              console.log(err);
+              // console.log(err);
           })
           .finally(() => {
                 this.loading =  false
@@ -181,11 +180,11 @@ export default {
         </div>
         <div class="row align-items-center justify-content-center">
           <div class="col-md-8 col-lg-6 col-xl-5">
-            <div class="card" v-if="!twoFA">
+            <div class="card">
               <div class="card-body p-4">
                 <div class="text-center mt-2">
-                  <h5 style="color: #761300;">Welcome Back !</h5>{{twofa}}
-                  <p class="text-muted">Sign in to continue to Coded Events.</p>
+                  <h5 style="color: #761300;">Welcome Back !</h5>
+                  <p class="text-muted">Sign in to continue to Ecstasy.</p>
                 </div>
                 <div class="p-2 mt-4">
                   <form method="post" @submit="loginUser">
@@ -262,7 +261,7 @@ export default {
               </div>
             </div>
 
-            <div class="card" v-if="twoFA">
+            <!-- <div class="card" v-if="twoFA">
               <div class="card-body p-4">
                 <div class="text-center mt-2">
                   <h5 style="color: #761300;">Verify 2FA</h5>
@@ -301,7 +300,7 @@ export default {
                   </form>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="mt-5 text-center">
               <p>

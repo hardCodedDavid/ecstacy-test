@@ -7,6 +7,7 @@ export default [{
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
+        // console.log(store.getters['auth/loggedIn'])
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
           next({
@@ -102,9 +103,9 @@ export default [{
   {
     path: '/',
     name: 'home',
-    meta: {
-      authRequired: true,
-    },
+    // meta: {
+    //   authRequired: true,
+    // },
     component: () => import('../views/pages/dashboard/index')
   },
   {
@@ -276,7 +277,7 @@ export default [{
     component: () => import('../views/pages/management/role')
   },
   {
-    path: '/management/user',
+    path: '/management/users',
     name: 'user',
     meta: {
       authRequired: true,

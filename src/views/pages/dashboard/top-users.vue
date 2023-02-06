@@ -3,6 +3,11 @@
  * Top-users component
  */
 export default {
+    props:{
+        recent_users: {
+            default: []
+        }
+    },
     data() {
         return {
             users: [{
@@ -59,21 +64,22 @@ export default {
         };
     },
     methods: {
-        getDashboardData(){
-            this.axios.get('https://api.codedevents.com/admin/dashboard')
-            .then((res) => {
-                this.dashboard = res.data.data
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally({
+        // getDashboardData(){
+        //     this.axios.get('https://api.codedevents.com/admin/dashboard')
+        //     .then((res) => {
+        //         this.dashboard = res.data.data
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     })
+        //     .finally({
 
-            })
-        }
+        //     })
+        // }
     },
     mounted(){
-        this.getDashboardData();
+        console.log(this.recent_users)
+        // this.getDashboardData();
     }
 };
 </script>
@@ -95,34 +101,40 @@ export default {
                     <b-dropdown-item href="#">Join Date</b-dropdown-item>
                 </b-dropdown>
             </div> -->
-            <h4 class="card-title mb-4">Recent Donations </h4>
+            <h4 class="card-title mb-4">Recent Users </h4>
 
             <div data-simplebar style="height: 336px;">
                 <div class="table-responsive">
                     <table class="table table-borderless table-centered table-nowrap">
                         <tbody>
-                            <tr v-for="(item, index) in dashboard.recent_donations" :key="index">
-                                <!-- <td style="width: 20px;">
-                                    <img :src="item.profile" class="avatar-xs rounded-circle" alt="..." />
-                                </td> -->
+                            <tr v-for="(item) in recent_users" :key="item.id">
+                                <td style="width: 20px;">
+                                    <img :src="item.photo" class="avatar-xs rounded-circle" alt="..." />
+                                </td>
                                 <td>
-                                    <h6 class="font-size-15 mb-1 fw-normal">{{item.name}}</h6>
-                                    <p class="text-muted font-size-13 mb-0">
+                                    <h6 class="font-size-15 mb-1 fw-normal">{{item.first_name+' '+item.last_name}}</h6>
+                                    <!-- <p class="text-muted font-size-13 mb-0">
                                         <i class="uil-file-alt"></i>
                                         {{item.event.title}}
-                                    </p>
+                                    </p> -->
+                                </td>
+                                <td>
+                                    <h6 class="font-size-15 mb-1 fw-normal">{{item.email}}</h6>
+                                    <!-- <p class="text-muted font-size-13 mb-0">
+                                        <i class="uil-file-alt"></i>
+                                        {{item.event.title}}
+                                    </p> -->
                                 </td>
                                 <td>
                                     <span class="badge font-size-12" :class="{
-                                        'bg-soft-success': item.status === 'success',
-                                        'bg-soft-danger': item.status === 'cancel',
-                                        'bg-soft-info': item.status === 'active',
-                                        'bg-soft-warning': item.status === 'pending'}">{{item.status}}</span>
+                                        'bg-soft-success': item.email_verified_at !== null,
+                                        'bg-soft-danger': item.email_verified_at === null,
+                                        'bg-soft-warning': item.status === 'pending'}">{{item.email_verified_at === null ? 'unverified':'verified'}}</span>
                                 </td>
-                                <td class="text-muted fw-semibold text-end">
+                                <!-- <td class="text-muted fw-semibold text-end">
                                     <i class="icon-xs icon me-2 text-success" data-feather="trending-up"></i>
                                     ₦{{item.amount}}
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>

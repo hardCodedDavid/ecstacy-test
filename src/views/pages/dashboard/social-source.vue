@@ -9,21 +9,21 @@
             };
         },
         methods: {
-            getDashboardData(){
-                this.axios.get('https://api.codedevents.com/admin/dashboard')
-                .then((res) => {
-                    this.dashboard = res.data.data
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally({
+            // getDashboardData(){
+            //     this.axios.get('https://api.codedevents.com/admin/dashboard')
+            //     .then((res) => {
+            //         this.dashboard = res.data.data
+            //     })
+            //     .catch((err) => {
+            //         console.log(err);
+            //     })
+            //     .finally({
     
-                })
-            }
+            //     })
+            // }
         },
         mounted(){
-            this.getDashboardData();
+            // this.getDashboardData();
         }
     };
     </script>
@@ -47,12 +47,11 @@
 
             <h4 class="card-title mb-4">Recent Comments</h4>
 
-            <ol class="activity-feed mb-0 ps-2" data-simplebar style="max-height: 336px;">
+            <!-- <ol class="activity-feed mb-0 ps-2" data-simplebar style="max-height: 336px;">
                 <li class="feed-item" v-for="comment in dashboard.recent_comments" :key="comment.id">
                     <div class="feed-item-list">
                         <p class="text-muted mb-1 font-size-13">
                             {{comment.created_at | formatDate}}
-                            <!-- <small class="d-inline-block ms-1">12:20 pm</small> -->
                         </p>
                         <p class="mt-0 mb-0">
                             {{comment.message}}
@@ -62,7 +61,7 @@
                         </p>
                     </div>
                 </li>
-            </ol>
+            </ol> -->
         </div>
     </div>
 </div>

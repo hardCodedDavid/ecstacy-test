@@ -22,22 +22,22 @@
       },
       data() {
         return {
-          title: "User",
+          title: "Manage Users",
           isBusy: false,
           items: [
             {
               text: "App",
             },
             {
-              text: "User",
+              text: "Users",
               active: true,
             },
           ],
           adminData: [],
           totalRows: 1,
           currentPage: 1,
-          perPage: 50,
-          pageOptions: [50, 100, 200, 500],
+          perPage: 10,
+          pageOptions: [10, 20, 30, 50],
           filter: null,
           filterOn: [],
           sortBy: "age",
@@ -47,10 +47,6 @@
               key: "index",
               label: "S/N",
             },
-            // {
-            //   key: "thumbnail",
-            //   label: "Image",
-            // },
             {
               key: "name",
               label: "Name",
@@ -68,14 +64,6 @@
             {
               key: "country",
               label: "Country",
-            },
-            {
-              key: "total_events",
-              label: "No of Events",
-            },
-            {
-              key: "email_verified",
-              label: "Verification",
             },
             {
               key: "status",
@@ -115,37 +103,30 @@
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get('https://api.codedevents.com/admin/users?page=1&per_page=10000')
+          this.axios.get('http://127.0.0.1:8000/api/v1/admin/users/all?page='+this.currentPage+'&per_page='+this.perPage,{})
           .then((res) => {
-              console.log(res.data.data);
-              this.adminData = res.data.data
-              this.fetchRoles();
-          })
-          .catch((err) => {
-              console.log(err);
-          })
-          .finally(() => {
-              this.isBusy =  false
-          });
-      },
-      approveUser(id) {
-        this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/approve')
-        .then((res) => {
-              console.log(res.data.data);
-              this.fetchData();
-              this.$refs.mytoast.Add({
-                msg: "User Approved Successfully",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
+              // console.log(res.data);
+              const users = res.data.data.data
+              const userArr = []
+              users.forEach(user => {
+                let u = {}
+                u.name = user.first_name+' '+user.last_name
+                u.id = user.id
+                u.email = user.email
+                u.phone = user.phone
+                u.country = user.country
+                u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.created_at = user.created_at
+
+                userArr.push(u)
               });
+              this.adminData = userArr
+              // this.fetchRoles();
           })
           .catch((err) => {
-              console.log(err);
+              // console.log(err.response);
               this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+                msg: err.response.message || err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -156,34 +137,89 @@
               this.isBusy =  false
           });
       },
-      restrictUser(id) {
+      deleteUser(id) {
         this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/restrict')
-        .then((res) => {
-              console.log(res.data.data);
-              this.fetchData();
-              this.$refs.mytoast.Add({
-                msg: "User Restricted Successfully",
+          this.axios.delete('http://127.0.0.1:8000/api/v1/admin/delete-user/'+id,{})
+          .then((res) => {
+            this.$refs.mytoast.Add({
+                msg: res.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
                 type: "success",
               });
+              this.fetchData()
           })
           .catch((err) => {
-              console.log(err);
-              this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+            this.$refs.mytoast.Add({
+                msg: err.response.message || err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
                 type: "error",
               });
+              // console.log(err.response);
           })
           .finally(() => {
               this.isBusy =  false
           });
       },
+      // approveUser(id) {
+      //   this.isBusy =  true
+      //   this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/approve')
+      //   .then((res) => {
+      //         console.log(res.data.data);
+      //         this.fetchData();
+              // this.$refs.mytoast.Add({
+              //   msg: "User Approved Successfully",
+              //   clickClose: false,
+              //   timeout: 5000,
+              //   position: "toast-top-right",
+              //   type: "success",
+              // });
+      //     })
+      //     .catch((err) => {
+      //         console.log(err);
+      //         this.$refs.mytoast.Add({
+      //           msg: err.response.data.details,
+      //           clickClose: false,
+      //           timeout: 5000,
+      //           position: "toast-top-right",
+      //           type: "error",
+      //         });
+      //     })
+      //     .finally(() => {
+      //         this.isBusy =  false
+      //     });
+      // },
+      // restrictUser(id) {
+      //   this.isBusy =  true
+      //   this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/restrict')
+      //   .then((res) => {
+      //         console.log(res.data.data);
+      //         this.fetchData();
+      //         this.$refs.mytoast.Add({
+      //           msg: "User Restricted Successfully",
+      //           clickClose: false,
+      //           timeout: 5000,
+      //           position: "toast-top-right",
+      //           type: "success",
+      //         });
+      //     })
+      //     .catch((err) => {
+      //         console.log(err);
+      //         this.$refs.mytoast.Add({
+      //           msg: err.response.data.details,
+      //           clickClose: false,
+      //           timeout: 5000,
+      //           position: "toast-top-right",
+      //           type: "error",
+      //         });
+      //     })
+      //     .finally(() => {
+      //         this.isBusy =  false
+      //     });
+      // },
   
         /**
          * Search the table data with search input
@@ -324,7 +360,7 @@
                 <template v-slot:cell(index)="data">
                   {{ data.index + 1 }}
                 </template>
-                <template v-slot:cell(thumbnail)="data">
+                <!-- <template v-slot:cell(thumbnail)="data">
                 <img
                       v-if="data.item.thumbnail"
                       :src="data.item.thumbnail"
@@ -341,10 +377,10 @@
                         <i class="mdi mdi-account-circle m-0"></i>
                       </div>
                     </div>
-              </template>
+              </template> -->
     
                 <template v-slot:cell(name)="data">
-                  <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate text-primary">{{data.item.name}}</router-link>
+                  <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate text-dark">{{data.item.name}}</router-link>
                 </template>
   
                 <template v-slot:cell(created_at)="data">
@@ -353,20 +389,20 @@
                   </div>
                 </template>
   
-                <template v-slot:cell(email_verified)="data">
+                <template v-slot:cell(status)="data">
                   <div
                     class="badge bg-pill font-size-12"
                     :class="{
-                      'bg-soft-success': data.item.email_verified == true,
-                      'bg-soft-danger': data.item.email_verified == false,
+                      'bg-soft-success': data.item.status === 'verified',
+                      'bg-soft-danger': data.item.status === 'unverified',
                     }"
                   >
-                    <span v-if="data.item.email_verified">Verified</span>
-                    <span v-if="!data.item.email_verified">Unverified</span>
+                    <span v-if="data.item.status">{{data.item.status}}</span>
+                    <!-- <span v-if="!data.item.status">Unverified</span> -->
                   </div>
                 </template>
 
-                <template v-slot:cell(status)="data">
+                <!-- <template v-slot:cell(status)="data">
                   <div
                     class="badge bg-pill font-size-12"
                     :class="{
@@ -377,7 +413,7 @@
                   >
                     <span>{{data.item.status}}</span>
                   </div>
-                </template>
+                </template> -->
                 
                 <template v-slot:cell(start_date)="data">
                   <p>{{data.item.start_date | formatDate}}</p>
@@ -399,7 +435,20 @@
                         
                       </a>
                     </li>
-                    <li v-if="item.status == 'restricted' || item.status == 'pending' " class="list-inline-item">
+                    <li class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-primary"
+                        v-b-tooltip.hover
+                        title="Delete"
+                        v-b-modal.modal-edit-admin
+                        @click="deleteUser(item.id)"
+                      >
+                        <i class="uil uil-trash font-size-18 text-danger"></i>
+                      </a>
+                    </li>
+
+                    <!-- <li v-if="item.status == 'unverified' " class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
@@ -410,8 +459,9 @@
                       >
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
-                    </li>
-                    <li v-if="item.status == 'approved' || item.status == 'pending' " class="list-inline-item">
+                    </li> -->
+                    
+                    <!-- <li v-if="item.status == 'verified'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
@@ -422,7 +472,7 @@
                       >
                         <i class="uil uil-info-circle font-size-18 text-danger"></i>
                       </a>
-                    </li>
+                    </li> -->
                   </ul>
                 </template>
               </b-table>

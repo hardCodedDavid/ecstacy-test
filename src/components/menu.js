@@ -17,92 +17,92 @@ export const menuItems = [
         },
         link: "/"
     },
-    {
-        id: 3,
-        label: "menuitems.apps.text",
-        isTitle: true
-    },
-    {
-        id: 4,
-        label: "Events",
-        icon: "uil-file-alt",
-        subItems: [
-            {
-                id: 4,
-                label: "Events",
-                link: "/events",
-                parentId: 4
-            },
-            {
-                id: 1,
-                label: "Active Events",
-                link: "/events/active",
-                parentId: 4
-            },
-            {
-                id: 2,
-                label: "Inactive Events",
-                link: "/events/inactive",
-                parentId: 4
-            },
-            {
-                id: 3,
-                label: "Restricted Events",
-                link: "/events/restricted",
-                parentId: 4
-            },
-        ]
-    },
-    {
-        id: 5,
-        label: "Blog",
-        icon: "uil-comments-alt",
-        link: "/blog",
-    },
-    {
-        id: 18,
-        label: "Categories",
-        icon: "uil-copy-landscape",
-        subItems: [
-            {
-                id: 1,
-                label: "Event Categories",
-                link: "/categories/event",
-                parentId: 18
-            },
-            {
-                id: 2,
-                label: "Vendor Categories",
-                link: "/categories/vendor",
-                parentId: 18
-            },
-            {
-                id: 3,
-                label: "Blog Categories",
-                link: "/categories/blog",
-                parentId: 18
-            },
-        ]
-    },
-    {
-        id: 6,
-        label: "Plan",
-        icon: "uil-invoice",
-        subItems: [
-            {
-                id: 7,
-                label: "Plans",
-                link: "/plans",
-                parentId: 6
-            },
-            {
-                id: 8,
-                label: "Description",
-                link: "/description",
-                parentId: 6
-            },
-        ]
-    },
+    // {
+    //     id: 3,
+    //     label: "menuitems.apps.text",
+    //     isTitle: true
+    // },
+    // {
+    //     id: 4,
+    //     label: "Events",
+    //     icon: "uil-file-alt",
+    //     subItems: [
+    //         {
+    //             id: 4,
+    //             label: "Events",
+    //             link: "/events",
+    //             parentId: 4
+    //         },
+    //         {
+    //             id: 1,
+    //             label: "Active Events",
+    //             link: "/events/active",
+    //             parentId: 4
+    //         },
+    //         {
+    //             id: 2,
+    //             label: "Inactive Events",
+    //             link: "/events/inactive",
+    //             parentId: 4
+    //         },
+    //         {
+    //             id: 3,
+    //             label: "Restricted Events",
+    //             link: "/events/restricted",
+    //             parentId: 4
+    //         },
+    //     ]
+    // },
+    // {
+    //     id: 5,
+    //     label: "Blog",
+    //     icon: "uil-comments-alt",
+    //     link: "/blog",
+    // },
+    // {
+    //     id: 18,
+    //     label: "Categories",
+    //     icon: "uil-copy-landscape",
+    //     subItems: [
+    //         {
+    //             id: 1,
+    //             label: "Event Categories",
+    //             link: "/categories/event",
+    //             parentId: 18
+    //         },
+    //         {
+    //             id: 2,
+    //             label: "Vendor Categories",
+    //             link: "/categories/vendor",
+    //             parentId: 18
+    //         },
+    //         {
+    //             id: 3,
+    //             label: "Blog Categories",
+    //             link: "/categories/blog",
+    //             parentId: 18
+    //         },
+    //     ]
+    // },
+    // {
+    //     id: 6,
+    //     label: "Plan",
+    //     icon: "uil-invoice",
+    //     subItems: [
+    //         {
+    //             id: 7,
+    //             label: "Plans",
+    //             link: "/plans",
+    //             parentId: 6
+    //         },
+    //         {
+    //             id: 8,
+    //             label: "Description",
+    //             link: "/description",
+    //             parentId: 6
+    //         },
+    //     ]
+    // },
     {
         id: 8,
         label: "Finances",
@@ -139,12 +139,12 @@ export const menuItems = [
         label: "Management",
         isTitle: true
     },
-    {
-        id: 13,
-        label: "Admin",
-        icon: "uil-user-check",
-        link: "/management/admin",
-    },
+    // {
+    //     id: 13,
+    //     label: "Admin",
+    //     icon: "uil-user-check",
+    //     link: "/management/admin",
+    // },
     {
         id: 14,
         label: "Users",
@@ -152,8 +152,8 @@ export const menuItems = [
         subItems: [
             {
                 id: 1,
-                label: "All User",
-                link: "/management/user",
+                label: "All Users",
+                link: "/management/users",
                 parentId: 14
             },
             {
@@ -170,24 +170,24 @@ export const menuItems = [
             },
         ]
     },
-    {
-        id: 15,
-        label: "Role",
-        icon: "uil-user-circle",
-        link: "/management/role",
-    },
+    // {
+    //     id: 15,
+    //     label: "Role",
+    //     icon: "uil-user-circle",
+    //     link: "/management/role",
+    // },
     {
         id: 16,
         label: "Profile",
         icon: "uil-user-circle",
         link: "/profile/admin",
     },
-    {
-        id: 17,
-        label: "Notification",
-        icon: "uil-comment-alt-notes",
-        link: "/notification/subscribers",
-    },
+    // {
+    //     id: 17,
+    //     label: "Notification",
+    //     icon: "uil-comment-alt-notes",
+    //     link: "/notification/subscribers",
+    // },
 
 
 
