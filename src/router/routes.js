@@ -110,7 +110,7 @@ export default [{
   },
   {
     path: '/categories/blog',
-    name: 'blog-categories',
+  name: 'blog-categories',
     meta: {
       authRequired: true,
     },

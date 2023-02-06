@@ -103,7 +103,7 @@
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get('https://api.ecstasynigeria.com/api/v1/admin/users/unverified?page='+this.currentPage+'&per_page='+this.perPage,{})
+          this.axios.get(BASE_URL+'/api/v1/admin/users/unverified?page='+this.currentPage+'&per_page='+this.perPage,{})
           .then((res) => {
               console.log(res.data);
               const users = res.data.data.data
@@ -132,7 +132,7 @@
       },
       deleteUser(id) {
         this.isBusy =  true
-          this.axios.delete('https://api.ecstasynigeria.com/api/v1/admin/delete-user/'+id,{})
+          this.axios.delete(BASE_URL+'/api/v1/admin/delete-user/'+id,{})
           .then((res) => {
             this.$refs.mytoast.Add({
                 msg: res.data.message,

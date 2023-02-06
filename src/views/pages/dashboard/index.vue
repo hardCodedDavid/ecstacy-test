@@ -2,6 +2,7 @@
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
 import appConfig from '@/app.config'
+import { BASE_URL } from '../../../baseconstant'
 
 import Stat from '@/components/widgets/stat'
 // import SalesAnalytics from "./sales-analytics";
@@ -47,7 +48,7 @@ export default {
   },
   mounted() {
     this.axios
-      .get('https://api.ecstasynigeria.com/api/v1/admin/dashboard')
+      .get(BASE_URL+'/api/v1/admin/dashboard')
       .then((res) => {
         console.log(res.data.data)
         this.dashboard = res.data.data

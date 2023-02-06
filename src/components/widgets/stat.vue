@@ -164,7 +164,7 @@ export default {
     },
     methods: {
         // getDashboardData(){
-        //     this.axios.get('https://api.ecstasynigeria.com/api/v1/admin/dashboard')
+        //     this.axios.get(BASE_URL+'/api/v1/admin/dashboard')
         //     .then((res) => {
         //         // console.log(res.data.data)
         //         this.dashboard = res.data.data

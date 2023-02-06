@@ -2,6 +2,7 @@
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
 import appConfig from '@/app.config'
+import { BASE_URL } from '../../../baseconstant'
 
 /**
  * Orders component
@@ -100,7 +101,7 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .get(
-          'https://api.ecstasynigeria.com/api/v1/admin/payments?page=' +
+          BASE_URL+'/api/v1/admin/payments?page=' +
             this.currentPage +
             '&per_page=' +
             this.perPage

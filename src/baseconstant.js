@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://api.ecstasynigeria.com/api/v1'
+export const BASE_URL = BASE_URL+'/api/v1'

@@ -2,6 +2,7 @@
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
 import appConfig from '@/app.config'
+import { BASE_URL } from '../../../baseconstant'
 
 /**
  * Orders component
@@ -80,7 +81,7 @@ export default {
   watch: {
     currentPage: function() {
       this.fetchTransactions()
-    }
+    },
   },
   computed: {
     /**
@@ -101,7 +102,8 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .get(
-          'https://api.ecstasynigeria.com/api/v1/admin/transactions?page=' +
+          BASE_URL +
+            '/api/v1/admin/transactions?page=' +
             this.currentPage +
             '&per_page=' +
             this.perPage
@@ -110,6 +112,7 @@ export default {
           const dataResponse = res.data.data
           // console.log(dataResponse)
           const dataArrr = []
+
           dataResponse.data.forEach((record) => {
             const u = {}
             u.id = record.id
@@ -127,8 +130,8 @@ export default {
         .catch((err) => {
           // this.error = true
           // console.log(err.response)
-          if(err.response.status == 401) {
-            return this.$router.push({path: '/login'})
+          if (err.response.status == 401) {
+            return this.$router.push({ path: '/login' })
           }
         })
         .finally(() => {
