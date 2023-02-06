@@ -30,9 +30,9 @@ export default {
         },
       ],
       transactionData: [],
-      totalRows: 20,
+      totalRows: 1,
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       pageOptions: [20, 40, 50],
       filter: null,
       filterOn: [],
@@ -77,12 +77,18 @@ export default {
     }
   },
   middleware: 'authentication',
+  watch: {
+    currentPage: function() {
+      this.fetchTransactions()
+    }
+  },
   computed: {
     /**
      * Total no. of records
      */
     rows() {
-      return this.transactionData.length
+      return this.totalRows
+      // return this.transactionData.length
     },
   },
   mounted() {
@@ -95,13 +101,16 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .get(
-          'https://api.ecstasynigeria.com/api/v1/admin/transactions?page='+this.currentPage+'&per_page='+this.perPage
+          'http://127.0.0.1:8000/api/v1/admin/transactions?page=' +
+            this.currentPage +
+            '&per_page=' +
+            this.perPage
         )
         .then((res) => {
           const dataResponse = res.data.data
-          console.log(dataResponse)
+          // console.log(dataResponse)
           const dataArrr = []
-          dataResponse.data.forEach(record => {
+          dataResponse.data.forEach((record) => {
             const u = {}
             u.id = record.id
             u.title = record.title
@@ -111,12 +120,16 @@ export default {
             u.created_at = record.updated_at
 
             dataArrr.push(u)
-          });
+          })
           this.transactionData = dataArrr
+          this.totalRows = dataResponse.total
         })
         .catch((err) => {
           // this.error = true
-          console.log(err)
+          // console.log(err.response)
+          if(err.response.status == 401) {
+            return this.$router.push({path: '/login'})
+          }
         })
         .finally(() => {
           this.isBusy = false
