@@ -1,4 +1,4 @@
-# Coded Event Admin
+# Ecstasy Admin
 
 ## Project setup
 ```
