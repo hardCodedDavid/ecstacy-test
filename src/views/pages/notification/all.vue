@@ -102,15 +102,15 @@
                         <div class="row">
                             <div class="card col-sm-9 col-md-10">
                             <div class="text-muted p-2">
-                                <h6>Welcome to Coded Events</h6>
-                                <p>Dear David, You are welcome to Coded Events. It is great to have you on board. Explore our world!</p>
+                                <h6>Welcome to Ecstasy</h6>
+                                <p>Dear David, You are welcome to Ecstasy. It is great to have you on board. Explore our world!</p>
                                 <p>Sep 29, 2022|04:28 am</p>
                             </div>
                             </div>
                             <div class="card col-sm-9 col-md-10">
                             <div class="text-muted p-2">
-                                <h6>Welcome to Coded Events</h6>
-                                <p>Dear David, You are welcome to Coded Events. It is great to have you on board. Explore our world!</p>
+                                <h6>Welcome to Ecstasy</h6>
+                                <p>Dear David, You are welcome to Ecstasy. It is great to have you on board. Explore our world!</p>
                                 <p>Sep 29, 2022|04:28 am</p>
                             </div>
                             </div>
@@ -120,8 +120,8 @@
                             <div class="row">
                                 <div class="card col-sm-9 col-md-10">
                                 <div class="text-muted p-2">
-                                    <h6>Welcome to Coded Events</h6>
-                                    <p>Dear David, You are welcome to Coded Events. It is great to have you on board. Explore our world!</p>
+                                    <h6>Welcome to Ecstasy</h6>
+                                    <p>Dear David, You are welcome to Ecstasy. It is great to have you on board. Explore our world!</p>
                                     <p>Sep 29, 2022|04:28 am</p>
                                 </div>
                                 </div>
@@ -131,8 +131,8 @@
                             <div class="row">
                                 <div class="card col-sm-9 col-md-10">
                                 <div class="text-muted p-2">
-                                    <h6>Welcome to Coded Events</h6>
-                                    <p>Dear David, You are welcome to Coded Events. It is great to have you on board. Explore our world!</p>
+                                    <h6>Welcome to Ecstasy</h6>
+                                    <p>Dear David, You are welcome to Ecstasy. It is great to have you on board. Explore our world!</p>
                                     <p>Sep 29, 2022|04:28 am</p>
                                 </div>
                                 </div>

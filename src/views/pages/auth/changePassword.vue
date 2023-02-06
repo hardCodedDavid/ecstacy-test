@@ -140,8 +140,8 @@ export default {
               </div>
               <div class="mt-5 text-center">
                 <p>
-                  <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
-                  <span>© All rights reserved Coded Events</span> 
+                  <!-- © {{ new Date().getFullYear() }} © All rights reserved Ecstasy -->
+                  <span>© All rights reserved Ecstasy</span> 
                   <br>
                   <span>Produced by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a></span>
                 </p>

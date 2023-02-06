@@ -8,7 +8,7 @@ export default {
     <footer class="footer">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6">© All rights reserved Coded Events</div>
+            <div class="col-sm-6">© All rights reserved Ecstasy</div>
             <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">
                     Powered by

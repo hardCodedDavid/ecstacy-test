@@ -174,7 +174,7 @@ export default {
                 <div class="card-body p-4">
                   <div class="text-center mt-2">
                     <h5 class="text-primary">Reset Password</h5>
-                    <p class="text-muted">Reset Password with Coded Events.</p>
+                    <p class="text-muted">Reset Password with Ecstasy.</p>
                   </div>
                   <div class="p-2 mt-4">
                     <div
@@ -236,7 +236,7 @@ export default {
                 <div class="card-body p-4">
                   <div class="text-center mt-2">
                     <h5 class="text-primary">Reset Password</h5>
-                    <p class="text-muted">Reset Password with Coded Events.</p>
+                    <p class="text-muted">Reset Password with Ecstasy.</p>
                   </div>
                   <div class="p-2 mt-4">
                     <div
@@ -362,8 +362,8 @@ export default {
 
               <div class="mt-5 text-center">
                 <p>
-                  <!-- © {{ new Date().getFullYear() }} © All rights reserved Coded Events -->
-                  <span>© All rights reserved Coded Events</span> 
+                  <!-- © {{ new Date().getFullYear() }} © All rights reserved Ecstasy -->
+                  <span>© All rights reserved Ecstasy</span> 
                   <br>
                   <span>Produced by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a></span>
                 </p>
