@@ -25,7 +25,7 @@ export default {
     return {
       title: "Log in",
       user: {
-                email: "softwebdigial@gmail.com", 
+                email: "softwebdigital@gmail.com", 
                 password: "",
             },
       loading: false,
@@ -164,7 +164,13 @@ export default {
           <div class="col-lg-12">
             <div class="text-center">
               <router-link to="/" class="mb-5 d-block auth-logo">
-                <div class="h3" style="color: #761300;">ECSTASY</div>
+                <!-- <div class="h3" style="color: #761300;">ECSTASY</div> -->
+                <img
+                  src="https://www.softwebdigital.com/wp-content/uploads/2022/02/soft-web-digital-logo-medium.png"
+                  alt=""
+                  height="22"
+                  class="logo logo-dark"
+                />
                 <!-- <img
                   src="@/assets/images/logo-dark.png"
                   alt=""

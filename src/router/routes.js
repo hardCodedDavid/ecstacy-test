@@ -1,6 +1,7 @@
 import store from '@/state/store'
 
-export default [{
+export default [
+  {
     path: '/login',
     name: 'login',
     component: () => import('../views/pages/auth/login-1'),
@@ -11,7 +12,7 @@ export default [{
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
           next({
-            name: 'home'
+            name: 'home',
           })
         } else {
           // Continue to the login page
@@ -30,7 +31,7 @@ export default [{
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
           next({
-            name: 'home'
+            name: 'home',
           })
         } else {
           // Continue to the login page
@@ -49,7 +50,7 @@ export default [{
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
           next({
-            name: 'home'
+            name: 'home',
           })
         } else {
           // Continue to the login page
@@ -68,7 +69,7 @@ export default [{
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
           next({
-            name: 'home'
+            name: 'home',
           })
         } else {
           // Continue to the login page
@@ -83,38 +84,42 @@ export default [{
     meta: {
       authRequired: true,
       beforeResolve(routeTo, routeFrom, next) {
-        if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
+        if (process.env.VUE_APP_DEFAULT_AUTH === 'firebase') {
           store.dispatch('auth/logOut')
-        } else if (process.env.VUE_APP_DEFAULT_AUTH === "fakebackend") {
+        } else if (process.env.VUE_APP_DEFAULT_AUTH === 'fakebackend') {
           store.dispatch('authfack/logout')
         }
-        const authRequiredOnPreviousRoute = routeFrom.matched.some(
-          (route) => route.push('/login')
+        const authRequiredOnPreviousRoute = routeFrom.matched.some((route) =>
+          route.push('/login')
         )
         // Navigate back to previous page, or home as a fallback
-        next(authRequiredOnPreviousRoute ? {
-          name: 'home'
-        } : {
-          ...routeFrom
-        })
+        next(
+          authRequiredOnPreviousRoute
+            ? {
+                name: 'home',
+              }
+            : {
+                ...routeFrom,
+              }
+        )
       },
     },
-  }, 
+  },
   {
     path: '/',
     name: 'home',
     // meta: {
     //   authRequired: true,
     // },
-    component: () => import('../views/pages/dashboard/index')
+    component: () => import('../views/pages/dashboard/index'),
   },
   {
     path: '/categories/blog',
-  name: 'blog-categories',
+    name: 'blog-categories',
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/categories/blog')
+    component: () => import('../views/pages/categories/blog'),
   },
   {
     path: '/categories/event',
@@ -122,7 +127,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/categories/event')
+    component: () => import('../views/pages/categories/event'),
   },
   {
     path: '/categories/vendor',
@@ -130,7 +135,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/categories/vendor')
+    component: () => import('../views/pages/categories/vendor'),
   },
   {
     path: '/blog',
@@ -138,7 +143,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/blog/index')
+    component: () => import('../views/pages/blog/index'),
   },
   {
     path: '/blog/details/:id',
@@ -146,7 +151,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/blog/show')
+    component: () => import('../views/pages/blog/show'),
   },
   {
     path: '/blog/add',
@@ -154,7 +159,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/blog/create')
+    component: () => import('../views/pages/blog/create'),
   },
   {
     path: '/blog/edit/:id',
@@ -162,7 +167,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/blog/edit')
+    component: () => import('../views/pages/blog/edit'),
   },
   {
     path: '/events',
@@ -170,7 +175,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/event/index')
+    component: () => import('../views/pages/event/index'),
   },
   {
     path: '/events/active',
@@ -178,7 +183,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/event/active')
+    component: () => import('../views/pages/event/active'),
   },
   {
     path: '/events/inactive',
@@ -186,7 +191,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/event/inactive')
+    component: () => import('../views/pages/event/inactive'),
   },
   {
     path: '/events/restricted',
@@ -194,7 +199,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/event/restrict')
+    component: () => import('../views/pages/event/restrict'),
   },
   {
     path: '/events/show/:id',
@@ -202,7 +207,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/event/show')
+    component: () => import('../views/pages/event/show'),
   },
   {
     path: '/plans',
@@ -210,7 +215,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/plan/index')
+    component: () => import('../views/pages/plan/index'),
   },
   {
     path: '/plans/create',
@@ -218,7 +223,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/plan/create')
+    component: () => import('../views/pages/plan/create'),
   },
   {
     path: '/plans/edit/:id',
@@ -226,7 +231,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/plan/edit')
+    component: () => import('../views/pages/plan/edit'),
   },
   {
     path: '/transactions',
@@ -234,7 +239,8 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/transaction/index')
+    
+    component: () => import('../views/pages/transaction/index'),
   },
   {
     path: '/transaction/payments',
@@ -242,7 +248,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/transaction/payment')
+    component: () => import('../views/pages/transaction/payment'),
   },
   {
     path: '/transaction/withdrawals',
@@ -250,7 +256,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/transaction/withdrawal')
+    component: () => import('../views/pages/transaction/withdrawal'),
   },
   {
     path: '/profile/admin',
@@ -258,7 +264,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/profile/index')
+    component: () => import('../views/pages/profile/index'),
   },
   {
     path: '/management/admin',
@@ -266,7 +272,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/management/admin')
+    component: () => import('../views/pages/management/admin'),
   },
   {
     path: '/management/role',
@@ -274,7 +280,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/management/role')
+    component: () => import('../views/pages/management/role'),
   },
   {
     path: '/management/users',
@@ -282,7 +288,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/user/index')
+    component: () => import('../views/pages/user/index'),
   },
   {
     path: '/management/user/verified',
@@ -290,7 +296,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/user/verified')
+    component: () => import('../views/pages/user/verified'),
   },
   {
     path: '/management/user/unverified',
@@ -298,7 +304,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/user/unverified')
+    component: () => import('../views/pages/user/unverified'),
   },
   {
     path: '/management/user/:id',
@@ -306,7 +312,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/management/userShow')
+    component: () => import('../views/pages/management/userShow'),
   },
   {
     path: '/notification/subscribers',
@@ -314,7 +320,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/notification/index')
+    component: () => import('../views/pages/notification/index'),
   },
   {
     path: '/notification/all',
@@ -322,20 +328,17 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/notification/all')
+    component: () => import('../views/pages/notification/all'),
   },
   {
-      path: '/description',
-      name: 'description',
-      meta: {
-        authRequired: true,
-      },
-      component: () => import('../views/pages/permissions/index')
+    path: '/description',
+    name: 'description',
+    meta: {
+      authRequired: true,
     },
+    component: () => import('../views/pages/permissions/index'),
+  },
 
-
-
-  
   // {
   //   path: '/calendar',
   //   name: 'calendar',
@@ -859,7 +862,7 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/auth/login-1')
+    component: () => import('../views/pages/auth/login-1'),
   },
   {
     path: '/auth/register-1',
@@ -867,21 +870,22 @@ export default [{
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/auth/register-1')
-  },{
+    component: () => import('../views/pages/auth/register-1'),
+  },
+  {
     path: '/auth/lock-screen',
     name: 'lock-screen',
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/auth/lock-screen')
-  },{
+    component: () => import('../views/pages/auth/lock-screen'),
+  },
+  {
     path: '/auth/recoverpwd',
     name: 'recoverpwd',
     meta: {
       authRequired: true,
     },
-    component: () => import('../views/pages/auth/recoverpwd')
+    component: () => import('../views/pages/auth/recoverpwd'),
   },
-
 ]

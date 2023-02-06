@@ -88,7 +88,7 @@ export default {
     // this.fetchWallet();
     // this.fetchEvent();
     // this.fetchTransaction();
-    console.log(this.$cookies.get('token'))
+    // console.log(this.$cookies.get('token'))
     if (this.$cookies.get('token')) {
       this.axios
         .get(
