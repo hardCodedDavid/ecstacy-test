@@ -100,7 +100,7 @@
             this.isBusy = !this.isBusy
             this.axios
         .get(
-          'http://127.0.0.1:8000/api/v1/admin/withdrawals?page=' +
+          'https://api.ecstasynigeria.com/api/v1/admin/withdrawals?page=' +
             this.currentPage +
             '&per_page=' +
             this.perPage

@@ -72,7 +72,7 @@ export default {
       } else {
         this.axios
           .put(
-            'http://127.0.0.1:8000/api/v1/admin/password/change',
+            'https://api.ecstasynigeria.com/api/v1/admin/password/change',
             this.password
           )
           .then(() => {
@@ -175,7 +175,7 @@ export default {
       e.preventDefault()
       this.isLoading = true
       this.axios
-        .put('http://127.0.0.1:8000/api/v1/admin/profile/update', this.admin)
+        .put('https://api.ecstasynigeria.com/api/v1/admin/profile/update', this.admin)
         .then(() => {
           //   console.log(res)
           this.getUser()
@@ -213,7 +213,7 @@ export default {
       formData.append('photo', this.profile_photo)
 
       this.axios
-        .post('http://127.0.0.1:8000/api/v1/admin/profile/photo', formData, {
+        .post('https://api.ecstasynigeria.com/api/v1/admin/profile/photo', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -248,7 +248,7 @@ export default {
     getUser() {
       if (this.$cookies.get('token')) {
         this.axios
-          .get('http://127.0.0.1:8000/api/v1/admin/profile')
+          .get('https://api.ecstasynigeria.com/api/v1/admin/profile')
           .then((res) => {
             console.log(res.data.data)
             this.user = res.data.data

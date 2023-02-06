@@ -44,7 +44,7 @@ export default {
           //   this.errorMsg = 'Email field'
           // }
           //::POST Login Request
-          this.axios.post('http://127.0.0.1:8000/api/v1/admin/auth/login', this.user)
+          this.axios.post('https://api.ecstasynigeria.com/api/v1/admin/auth/login', this.user)
           .then((res) => {
             const {token, user} = res.data.data
             console.log(user)
