@@ -139,12 +139,12 @@ export const menuItems = [
         label: "Management",
         isTitle: true
     },
-    // {
-    //     id: 13,
-    //     label: "Admin",
-    //     icon: "uil-user-check",
-    //     link: "/management/admin",
-    // },
+    {
+        id: 13,
+        label: "Admin",
+        icon: "uil-user-check",
+        link: "/management/admin",
+    },
     {
         id: 14,
         label: "Users",
@@ -170,31 +170,24 @@ export const menuItems = [
             },
         ]
     },
-    // {
-    //     id: 15,
-    //     label: "Role",
-    //     icon: "uil-user-circle",
-    //     link: "/management/role",
-    // },
+    {
+        id: 15,
+        label: "Role",
+        icon: "uil-user-circle",
+        link: "/management/role",
+    },
     {
         id: 16,
         label: "Profile",
         icon: "uil-user-circle",
         link: "/profile/admin",
     },
-    // {
-    //     id: 17,
-    //     label: "Notification",
-    //     icon: "uil-comment-alt-notes",
-    //     link: "/notification/subscribers",
-    // },
-
-
-
-
-
-
-
+    {
+        id: 17,
+        label: "Notification",
+        icon: "uil-comment-alt-notes",
+        link: "/notification/subscribers",
+    },
 
     // {
     //     id: 5,
