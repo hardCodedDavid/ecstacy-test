@@ -49,8 +49,8 @@ export default {
           label: 'S/N',
         },
         {
-          key: 'title',
-          label: 'Title',
+          key: 'reference',
+          label: 'Reference',
           sortable: true,
         },
         {
@@ -113,9 +113,10 @@ export default {
           dataResponse.data.forEach((record) => {
             const u = {}
             u.id = record.id
-            u.title = record.title
+            u.reference = record.request_id ? record.request_id:'N/A'
             u.amount = record.amount
-            u.type = record.transaction_type
+            u.type = record.title
+            // u.type = record.transaction_type
             u.status = record.status
             u.created_at = record.updated_at
 

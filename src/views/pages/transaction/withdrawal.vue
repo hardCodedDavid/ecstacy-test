@@ -2,7 +2,7 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
-import { BASE_URL } from '../../../baseconstant'
+import { BASE_URL } from "../../../baseconstant"
     
     /**
      * Orders component
@@ -32,9 +32,9 @@ import { BASE_URL } from '../../../baseconstant'
           ],
           paymentData: [],
           totalRows: 1,
-      currentPage: 1,
-      perPage: 20,
-      pageOptions: [20, 40, 50],
+          currentPage: 1,
+          perPage: 20,
+          pageOptions: [20, 50, 100, 200],
           filter: null,
           filterOn: [],
           sortBy: "age",
@@ -44,53 +44,62 @@ import { BASE_URL } from '../../../baseconstant'
           paymentId: null,
           paymentRef: null,
           fields: [
-        {
-          key: 'index',
-          label: 'S/N',
-        },
-        {
-          key: 'title',
-          label: 'Title',
-          sortable: true,
-        },
-        {
-          key: 'amount',
-          label: 'Amount',
-          sortable: true,
-        },
-        {
-          key: 'type',
-          label: 'Type',
-          sortable: true,
-        },
-        {
-          key: 'status',
-          label: 'Payment Status',
-          sortable: true,
-        },
-        {
-          key: 'created_at',
-          label: 'Date',
-          sortable: true,
-        },
-        // "action",
-      ],
+            {
+              key: "index",
+              label: "S/N",
+            },
+            {
+              key: "bank",
+              label: "Bank",
+            },
+            {
+              key: "amount",
+              label: "Amount",
+              sortable: true,
+            },
+            {
+              key: "account_name",
+              label: "Amount Name",
+              sortable: true,
+            },
+            {
+              key: "account_number",
+              label: "Amount Number",
+              sortable: true,
+            },
+            {
+              key: "user.name",
+              label: "User Name",
+              sortable: true,
+            },
+            {
+              key: "user.email",
+              label: "User Email",
+              sortable: true,
+            },
+            {
+              key: "status",
+              label: "Payment Status",
+              sortable: true,
+            },
+            {
+              key: "created_at",
+              label: "Date",
+              sortable: true,
+            },
+            "action",
+          ],
         };
       },
       middleware: "authentication",
-      watch: {
-    currentPage: function() {
-      this.fetchPayments()
-    },
-  },
-  computed: {
-    /**
-     * Total no. of records
-     */
-    rows() {
-      return this.totalRows
-    },
-  },
+      computed: {
+        /**
+         * Total no. of records
+         */
+        rows() {
+          return this.paymentData.length;
+        },
+      },
       mounted() {
         // Set the initial number of items
         this.totalRows = this.items.length;
@@ -99,42 +108,18 @@ import { BASE_URL } from '../../../baseconstant'
       methods: {
         fetchPayments(){
             this.isBusy = !this.isBusy
-            this.axios
-        .get(
-          BASE_URL+'/api/v1/admin/withdrawals?page=' +
-            this.currentPage +
-            '&per_page=' +
-            this.perPage
-        )
-        .then((res) => {
-          const dataResponse = res.data.data
-          // console.log(dataResponse)
-          const dataArrr = []
-          dataResponse.data.forEach((record) => {
-            const u = {}
-            u.id = record.id
-            u.title = record.title
-            u.amount = record.amount
-            u.type = record.transaction_type
-            u.status = record.status
-            u.created_at = record.updated_at
-
-            dataArrr.push(u)
-          })
-          this.paymentData = dataArrr
-          this.totalRows = dataResponse.total
-        })
-        .catch((err) => {
-          // this.error = true
-          console.log(err)
-          // console.log(err.response)
-          if(err.response.status == 401) {
-            return this.$router.push({path: '/login'})
-          }
-        })
-        .finally(() => {
-          this.isBusy = false
-        })
+            this.axios.get(BASE_URL+'/api/v1/admin/withdrawals?page=1&per_page=10000')
+            .then((res) => {
+                console.log(res.data.data);
+                this.paymentData = res.data.data;
+            })
+            .catch((err) => {
+                // this.error = true
+                console.log(err);
+            })
+            .finally(() => {
+                this.isBusy =  false
+            });
         },
         approveWithdrawal(id){
             this.isBusy = !this.isBusy

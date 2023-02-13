@@ -50,7 +50,7 @@ export default {
         },
         {
           key: 'title',
-          label: 'Title',
+          label: 'Name',
           sortable: true,
         },
         {
@@ -115,10 +115,12 @@ export default {
 
           dataResponse.data.forEach((record) => {
             const u = {}
+            console.log(record)
             u.id = record.id
-            u.title = record.title
+            u.title = record.user.first_name+' '+record.user.last_name
             u.amount = record.amount
-            u.type = record.transaction_type
+            u.type = record.title
+            // u.type = record.transaction_type
             u.status = record.status
             u.created_at = record.updated_at
 

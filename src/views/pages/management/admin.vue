@@ -5,6 +5,7 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
+import { BASE_URL } from '../../../baseconstant';
     
     /**
      * Orders component
@@ -66,7 +67,7 @@
               sortable: true,
             },
             {
-              key: "role.name",
+              key: "role",
               label: "Role",
             },
             {
@@ -102,10 +103,11 @@
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get('https://api.codedevents.com/admin/all?page=1&per_page=50')
+          this.axios.get(BASE_URL+'/api/v1/admin/all?page=1&per_page=50')
           .then((res) => {
-              console.log(res.data.data);
-              this.adminData = res.data.data
+              // console.log(res.data.data);
+              console.log(res.data.data.data);
+              this.adminData = res.data.data.data
               this.fetchRoles();
           })
           .catch((err) => {
@@ -397,13 +399,13 @@
                 </template>
                 <template v-slot:cell(thumbnail)="data">
                 <img
-                      v-if="data.item.thumbnail"
-                      :src="data.item.thumbnail"
+                      v-if="data.item.photo"
+                      :src="data.item.photo"
                       alt
                       class="avatar-xs rounded-circle me-2"
                     />
                     <div
-                      v-if="!data.item.thumbnail"
+                      v-if="!data.item.photo"
                       class="avatar-xs d-inline-block me-2"
                     >
                       <div
@@ -426,7 +428,7 @@
                   <div
                     class="badge bg-pill font-size-12"
                     :class="{
-                      'bg-soft-success': data.item.status === 'approved',
+                      'bg-soft-success': data.item.status === 'active',
                       'bg-soft-danger': data.item.status === 'restricted',
                       'bg-soft-warning': data.item.status === 'pending',
                     }"
@@ -438,7 +440,7 @@
                   <p>{{data.item.start_date | formatDate}}</p>
                 </template>
                 <template v-slot:cell(action)="{ item }">
-                  <ul class="list-inline mb-0" v-if="item.role.name !== 'Super Admin' && item.role.name !== 'Admin'">
+                  <ul class="list-inline mb-0" v-if="item.role !== 'superadmin' && item.role !== 'admin'">
                     <li v-if="item.status == 'restricted'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
@@ -451,7 +453,7 @@
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
                     </li>
-                    <li v-if="item.status == 'approved'" class="list-inline-item">
+                    <li v-if="item.status == 'active'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
