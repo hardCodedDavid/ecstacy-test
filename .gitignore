@@ -22,5 +22,5 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-src/baseconstant.js
-baseconstant.js
+src/basecondstant.js
+baseconstadnt.js
