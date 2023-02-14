@@ -5,6 +5,7 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
+import { BASE_URL } from "../../../baseconstant"
     
     /**
      * Orders component
@@ -12,7 +13,7 @@
     export default {
       components: { Layout, Multiselect, PageHeader, VueToastr },
       page: {
-        title: "Notifiaction",
+        title: "Notification",
         meta: [
           {
             name: "description",
@@ -22,17 +23,17 @@
       },
       data() {
         return {
-          title: "Notifiaction",
+          title: "Notification",
           items: [
             {
               text: "App",
             },
             {
-              text: "Notifiaction",
+              text: "Notification",
               active: true,
             },
           ],
-          channelOption: ['all'],
+          channelOption: ['email'],
           recipientOption: ['all'],
           notify: {
             channel: this.channel,
@@ -52,7 +53,7 @@
       methods: {
         submitForm() {
           this.submitted = true;
-          this.axios.post('https://api.codedevents.com/admin/notifications/send', this.notify)
+          this.axios.post(BASE_URL+'/api/v1/admin/notifications/send', this.notify)
           .then((res) => {
                 console.log(res.data);
                 this.submitted = false;

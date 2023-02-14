@@ -37,7 +37,7 @@ import { BASE_URL } from '../../../baseconstant';
           adminData: [],
           totalRows: 1,
           currentPage: 1,
-          perPage: 10,
+          perPage: 20,
           pageOptions: [10, 25, 50, 100],
           filter: null,
           filterOn: [],
@@ -77,13 +77,13 @@ import { BASE_URL } from '../../../baseconstant';
             "action",
           ],
           admin: {
-            id: this.id,
+            // id: this.id,
             name: this.name,
             email: this.email,
             phone: this.phone,
             role: this.role
           },
-          options: null,
+          options: [{name: 'admin', id:'admin'}],
         };
       },
       middleware: "authentication",
@@ -103,12 +103,12 @@ import { BASE_URL } from '../../../baseconstant';
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/all?page=1&per_page=50')
+          this.axios.get(BASE_URL+'/api/v1/admin/all?per_page=10000')
           .then((res) => {
               // console.log(res.data.data);
-              console.log(res.data.data.data);
+              // this.totalRows = res.data.data.total
               this.adminData = res.data.data.data
-              this.fetchRoles();
+              // this.fetchRoles();
           })
           .catch((err) => {
               console.log(err);
@@ -119,11 +119,12 @@ import { BASE_URL } from '../../../baseconstant';
       },
       addAdmin() {
         this.admin.role = this.admin.role.id
-        
         this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/create', this.admin)
-        .then((res) => {
-              console.log(res.data.data);
+        // console.log(this.admin)
+        // return
+        this.axios.post(BASE_URL+'/api/v1/admin/create', this.admin)
+        .then(() => {
+              // console.log(res.data.data);
               this.fetchData();
               this.$refs.mytoast.Add({
                 msg: "Admin Created Successfully",
@@ -134,9 +135,9 @@ import { BASE_URL } from '../../../baseconstant';
               });
           })
           .catch((err) => {
-              console.log(err);
+              // console.log(err.response);
               this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+                msg: err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -144,23 +145,24 @@ import { BASE_URL } from '../../../baseconstant';
               });
           })
           .finally(() => {
+              this.fetchData();
               this.isBusy =  false
           });
       },
-      fetchRoles() {
-        this.isBusy =  true
-        this.axios.get('https://api.codedevents.com/admin/roles')
-        .then((res) => {
-              console.log(res.data.data);
-              this.options = res.data.data;
-          })
-          .catch((err) => {
-              console.log(err);
-          })
-          .finally(() => {
-              this.isBusy =  false
-          });
-      },
+      // fetchRoles() {
+      //   this.isBusy =  true
+      //   this.axios.get('https://api.codedevents.com/admin/roles')
+      //   .then((res) => {
+      //         console.log(res.data.data);
+      //         this.options = res.data.data;
+      //     })
+      //     .catch((err) => {
+      //         console.log(err);
+      //     })
+      //     .finally(() => {
+      //         this.isBusy =  false
+      //     });
+      // },
       getAdminInfo(item) {
         this.admin.id = item.id;
         this.admin.name = item.name;
@@ -170,7 +172,7 @@ import { BASE_URL } from '../../../baseconstant';
       },
       deleteAdmin() {
         this.isBusy =  true
-        this.axios.delete('https://api.codedevents.com/admin/' + this.admin.id + '/delete')
+        this.axios.delete(BASE_URL+'/api/v1/admin/' + this.admin.id + '/delete')
         .then((res) => {
               console.log(res.data.data);
               this.fetchData();
@@ -185,7 +187,7 @@ import { BASE_URL } from '../../../baseconstant';
           .catch((err) => {
               console.log(err);
               this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+                msg: err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -198,7 +200,7 @@ import { BASE_URL } from '../../../baseconstant';
       },
       approveAdmin(id) {
         this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/' + id + '/actions/approve')
+        this.axios.post(BASE_URL+'/api/v1/admin/' + id + '/approve')
         .then((res) => {
               console.log(res.data.data);
               this.fetchData();
@@ -213,7 +215,7 @@ import { BASE_URL } from '../../../baseconstant';
           .catch((err) => {
               console.log(err);
               this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+                msg: err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -226,7 +228,7 @@ import { BASE_URL } from '../../../baseconstant';
       },
       restrictAdmin(id) {
         this.isBusy =  true
-        this.axios.post('https://api.codedevents.com/admin/' + id + '/actions/restrict')
+        this.axios.put(BASE_URL+'/api/v1/admin/' + id + '/restrict')
         .then((res) => {
               console.log(res.data.data);
               this.fetchData();
@@ -239,9 +241,9 @@ import { BASE_URL } from '../../../baseconstant';
               });
           })
           .catch((err) => {
-              console.log(err);
+              // console.log(err);
               this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+                msg: err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -287,7 +289,7 @@ import { BASE_URL } from '../../../baseconstant';
                 label="name"
               ></multiselect>
               
-              
+            
               <!-- <textarea v-model="admin.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
               <div class="modal-footer">
                   <button @click="addAdmin(), $bvModal.hide('modal-add-admin')" type="button" class="btn btn-primary">
@@ -420,9 +422,9 @@ import { BASE_URL } from '../../../baseconstant';
                   <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate">{{data.item.title}}</router-link>
                 </template>
   
-                <template v-slot:cell(plans)>
+                <!-- <template v-slot:cell(plans)>
                   <p>Premium Plan</p>
-                </template>
+                </template> -->
   
                 <template v-slot:cell(status)="data">
                   <div
@@ -440,7 +442,7 @@ import { BASE_URL } from '../../../baseconstant';
                   <p>{{data.item.start_date | formatDate}}</p>
                 </template>
                 <template v-slot:cell(action)="{ item }">
-                  <ul class="list-inline mb-0" v-if="item.role !== 'superadmin' && item.role !== 'admin'">
+                  <ul class="list-inline mb-0" v-if="item.role == 'admin'">
                     <li v-if="item.status == 'restricted'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"

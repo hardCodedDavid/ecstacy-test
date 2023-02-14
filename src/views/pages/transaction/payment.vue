@@ -101,10 +101,7 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .get(
-          BASE_URL+'/api/v1/admin/payments?page=' +
-            this.currentPage +
-            '&per_page=' +
-            this.perPage
+          BASE_URL+'/api/v1/admin/payments?per_page=10000'
         )
         .then((res) => {
           const dataResponse = res.data.data

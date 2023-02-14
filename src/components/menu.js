@@ -170,12 +170,12 @@ export const menuItems = [
             },
         ]
     },
-    {
-        id: 15,
-        label: "Role",
-        icon: "uil-user-circle",
-        link: "/management/role",
-    },
+    // {
+    //     id: 15,
+    //     label: "Role",
+    //     icon: "uil-user-circle",
+    //     link: "/management/role",
+    // },
     {
         id: 16,
         label: "Profile",

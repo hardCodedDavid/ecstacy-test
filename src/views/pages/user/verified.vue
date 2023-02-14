@@ -105,9 +105,9 @@ import { BASE_URL } from "../../../baseconstant"
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/users/verified?page='+this.currentPage+'&per_page='+this.perPage,{})
+          this.axios.get(BASE_URL+'/api/v1/admin/users/verified?per_page=10000',{})
           .then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
               const users = res.data.data.data
               const userArr = []
               users.forEach(user => {

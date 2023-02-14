@@ -34,7 +34,7 @@ export default {
       totalRows: 1,
       currentPage: 1,
       perPage: 20,
-      pageOptions: [20, 40, 50],
+      pageOptions: [10, 20, 40, 50],
       filter: null,
       filterOn: [],
       sortBy: 'age',
@@ -88,8 +88,8 @@ export default {
      * Total no. of records
      */
     rows() {
-      return this.totalRows
-      // return this.transactionData.length
+      // return this.totalRows
+      return this.transactionData.length
     },
   },
   mounted() {
@@ -103,10 +103,7 @@ export default {
       this.axios
         .get(
           BASE_URL +
-            '/api/v1/admin/transactions?page=' +
-            this.currentPage +
-            '&per_page=' +
-            this.perPage
+            '/api/v1/admin/transactions?per_page=10000'
         )
         .then((res) => {
           const dataResponse = res.data.data
@@ -115,7 +112,7 @@ export default {
 
           dataResponse.data.forEach((record) => {
             const u = {}
-            console.log(record)
+            // console.log(record)
             u.id = record.id
             u.title = record.user.first_name+' '+record.user.last_name
             u.amount = record.amount

@@ -37,7 +37,7 @@ import { BASE_URL } from "../../../baseconstant"
           adminData: [],
           totalRows: 1,
           currentPage: 1,
-          perPage: 10,
+          perPage: 20,
           pageOptions: [10, 20, 30, 50],
           filter: null,
           filterOn: [],
@@ -104,7 +104,7 @@ import { BASE_URL } from "../../../baseconstant"
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/users/all?page='+this.currentPage+'&per_page='+this.perPage,{})
+          this.axios.get(BASE_URL+'/api/v1/admin/users/all?per_page=10000',{})
           .then((res) => {
               // console.log(res.data);
               const users = res.data.data.data
