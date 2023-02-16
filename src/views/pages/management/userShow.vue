@@ -225,7 +225,7 @@ export default {
             <b-tab active>
               <template v-slot:title>
                 <i class="uil uil-user-circle font-size-20"></i>
-                <span class="d-none d-sm-block">Information</span>
+                <span class="d-none d-sm-block">Overview</span>
               </template>
               <div>
                 <div>
@@ -321,6 +321,80 @@ export default {
               <template v-slot:title>
                 <i class="uil uil-money-bill-stack font-size-20"></i>
                 <span class="d-none d-sm-block">Transactions</span>
+              </template>
+              <div>
+                <div>
+                  <div class="table-responsive">
+                    <table class="table table-nowrap table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Amount</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        v-for="(transaction, index) in transactions"
+                        :key="transaction.id"
+                      >
+                        <tr>
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>
+                            <p class="badge bg-pill font-size-12 text-center rounded" :class="{
+                                'bg-soft-success':
+                                  transaction.transaction_type === 'inflow',
+                                'bg-soft-danger':
+                                  transaction.transaction_type === 'outflow',
+                              }">{{ transaction.transaction_type }}</p>
+                          </td>
+                          <td>
+                            <p>{{ transaction.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</p>
+                          </td>
+                          <td>
+                            <p>
+                              {{
+                                transaction.user.first_name +
+                                  ' ' +
+                                  transaction.user.last_name
+                              }}
+                            </p>
+                          </td>
+                          <tb>
+                            <span
+                              class="badge bg-pill font-size-12"
+                              :class="{
+                                'bg-soft-success':
+                                  (transaction.status === 'delivered') || (transaction.status === 'success'),
+                                'bg-soft-danger':
+                                  transaction.status === 'failed',
+                                'bg-soft-warning':
+                                  transaction.status === 'pending',
+                              }"
+                              >{{ transaction.status }}</span
+                            >
+                          </tb>
+                          <td>
+                            <p>{{ transaction.created_at | formatDate }}</p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-if="transactions.length == 0">
+                        <p class="text-center pt-3 pb-5">
+                          No transactions has been made
+                        </p>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </b-tab>
+            <b-tab>
+              <template v-slot:title>
+                <i class="uil uil-money-stack font-size-20"></i>
+                <span class="d-none d-sm-block">Withdrawals</span>
               </template>
               <div>
                 <div>

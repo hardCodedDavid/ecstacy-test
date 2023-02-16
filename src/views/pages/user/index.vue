@@ -67,6 +67,10 @@ import { BASE_URL } from "../../../baseconstant"
               label: "Country",
             },
             {
+              key: "wallet_balance",
+              label: "Wallet Balance",
+            },
+            {
               key: "status",
               label: "Status",
             },
@@ -106,8 +110,8 @@ import { BASE_URL } from "../../../baseconstant"
           this.isBusy =  true
           this.axios.get(BASE_URL+'/api/v1/admin/users/all?per_page=10000',{})
           .then((res) => {
-              // console.log(res.data);
-              const users = res.data.data.data
+              console.log(res.data.data);
+              const users = res.data.data
               const userArr = []
               users.forEach(user => {
                 let u = {}
@@ -116,7 +120,9 @@ import { BASE_URL } from "../../../baseconstant"
                 u.email = user.email
                 u.phone = user.phone
                 u.country = user.country
-                u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.wallet_balance = user.wallet.balance
+                // u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.status = user.status === 'verified' ? 'verified':user.status === 'unverified' ? 'unverified':'restricted'
                 u.created_at = user.created_at
 
                 userArr.push(u)
@@ -165,62 +171,62 @@ import { BASE_URL } from "../../../baseconstant"
               this.isBusy =  false
           });
       },
-      // approveUser(id) {
-      //   this.isBusy =  true
-      //   this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/approve')
-      //   .then((res) => {
-      //         console.log(res.data.data);
-      //         this.fetchData();
-              // this.$refs.mytoast.Add({
-              //   msg: "User Approved Successfully",
-              //   clickClose: false,
-              //   timeout: 5000,
-              //   position: "toast-top-right",
-              //   type: "success",
-              // });
-      //     })
-      //     .catch((err) => {
-      //         console.log(err);
-      //         this.$refs.mytoast.Add({
-      //           msg: err.response.data.details,
-      //           clickClose: false,
-      //           timeout: 5000,
-      //           position: "toast-top-right",
-      //           type: "error",
-      //         });
-      //     })
-      //     .finally(() => {
-      //         this.isBusy =  false
-      //     });
-      // },
-      // restrictUser(id) {
-      //   this.isBusy =  true
-      //   this.axios.post('https://api.codedevents.com/admin/users/' + id + '/actions/restrict')
-      //   .then((res) => {
-      //         console.log(res.data.data);
-      //         this.fetchData();
-      //         this.$refs.mytoast.Add({
-      //           msg: "User Restricted Successfully",
-      //           clickClose: false,
-      //           timeout: 5000,
-      //           position: "toast-top-right",
-      //           type: "success",
-      //         });
-      //     })
-      //     .catch((err) => {
-      //         console.log(err);
-      //         this.$refs.mytoast.Add({
-      //           msg: err.response.data.details,
-      //           clickClose: false,
-      //           timeout: 5000,
-      //           position: "toast-top-right",
-      //           type: "error",
-      //         });
-      //     })
-      //     .finally(() => {
-      //         this.isBusy =  false
-      //     });
-      // },
+      approveUser(id) {
+        this.isBusy =  true
+        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/approve')
+        .then(() => {
+              // console.log(res.data.data);
+              this.fetchData();
+              this.$refs.mytoast.Add({
+                msg: "User Approved Successfully",
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
+          })
+          .catch((err) => {
+              console.log(err);
+              this.$refs.mytoast.Add({
+                msg: err.response.data.details,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
+          })
+          .finally(() => {
+              this.isBusy =  false
+          });
+      },
+      restrictUser(id) {
+        this.isBusy =  true
+        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/restrict')
+        .then(() => {
+              // console.log(res.data.data);
+              this.fetchData();
+              this.$refs.mytoast.Add({
+                msg: "User Restricted Successfully",
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
+          })
+          .catch((err) => {
+              console.log(err);
+              this.$refs.mytoast.Add({
+                msg: err.response.data.details,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
+          })
+          .finally(() => {
+              this.isBusy =  false
+          });
+      },
   
         /**
          * Search the table data with search input
@@ -396,6 +402,7 @@ import { BASE_URL } from "../../../baseconstant"
                     :class="{
                       'bg-soft-success': data.item.status === 'verified',
                       'bg-soft-danger': data.item.status === 'unverified',
+                      'bg-soft-warning': data.item.status === 'restricted',
                     }"
                   >
                     <span v-if="data.item.status">{{data.item.status}}</span>
@@ -448,8 +455,7 @@ import { BASE_URL } from "../../../baseconstant"
                         <i class="uil uil-trash font-size-18 text-danger"></i>
                       </a>
                     </li>
-
-                    <!-- <li v-if="item.status == 'unverified' " class="list-inline-item">
+                    <li v-if="item.status == 'unverified' || item.status == 'restricted' " class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
@@ -460,9 +466,8 @@ import { BASE_URL } from "../../../baseconstant"
                       >
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
-                    </li> -->
-                    
-                    <!-- <li v-if="item.status == 'verified'" class="list-inline-item">
+                    </li>
+                    <li v-if="item.status == 'verified'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
@@ -473,7 +478,7 @@ import { BASE_URL } from "../../../baseconstant"
                       >
                         <i class="uil uil-info-circle font-size-18 text-danger"></i>
                       </a>
-                    </li> -->
+                    </li>
                   </ul>
                 </template>
               </b-table>

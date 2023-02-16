@@ -50,8 +50,12 @@ export default {
         },
         {
           key: 'reference',
-          label: 'Reference',
+          label: 'Reference ID',
           sortable: true,
+        },
+        {
+          key: 'email',
+          label: 'Email',
         },
         {
           key: 'amount',
@@ -60,7 +64,7 @@ export default {
         },
         {
           key: 'type',
-          label: 'Type',
+          label: 'Payment Type',
           sortable: true,
         },
         {
@@ -73,7 +77,7 @@ export default {
           label: 'Date',
           sortable: true,
         },
-        // "action",
+        "action",
       ],
     }
   },
@@ -110,9 +114,11 @@ export default {
           dataResponse.data.forEach((record) => {
             const u = {}
             u.id = record.id
-            u.reference = record.request_id ? record.request_id:'N/A'
+            u.user_id = record.user.id
+            u.reference = record.request_id ? record.request_id:'Not available'
             u.amount = record.amount
             u.type = record.title
+            u.email = record.user.email
             // u.type = record.transaction_type
             u.status = record.status
             u.created_at = record.updated_at
@@ -137,8 +143,8 @@ export default {
     resolvePayment() {
       this.isBusy = !this.isBusy
       this.axios
-        .post(
-          'https://api.codedevents.com/admin/transactions/payments/' +
+        .put(
+          BASE_URL+'/api/v1/admin/transactions/payments/' +
             this.paymentId +
             '/resolve'
         )
@@ -174,6 +180,7 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
+        <vue-toastr ref="mytoast"></vue-toastr>
     <!-- ::START POST Resolve Payment Modal -->
 
     <b-modal
@@ -309,8 +316,17 @@ export default {
               }}</a>
             </template>
 
-            <template v-slot:cell(name)="data">
-              <a href="#" class="text-body">{{ data.item.name }}</a>
+            <template v-slot:cell(email)="data">
+              <router-link
+                :to="{
+                  name: 'user-details',
+                  params: { id: data.item.user_id },
+                }"
+                style="max-width: 200px;"
+                class="d-inline-block text-truncate text-info"
+                >{{ data.item.email }}</router-link
+              >
+              <!-- <a href="#" class="text-body">{{ data.item.email }}</a> -->
             </template>
             <template v-slot:cell(status)="data">
               <div
@@ -321,7 +337,8 @@ export default {
                   'bg-soft-success': data.item.status === 'success',
                 }"
               >
-                {{ data.item.status }}
+                <!-- {{ data.item.status }} -->
+                {{ data.item.status == 'failed' ? 'declined':data.item.status == 'pending' ? 'pending':'success' }}
               </div>
             </template>
             <template v-slot:cell(created_at)="data">
@@ -331,7 +348,7 @@ export default {
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">
-                <li v-if="item.status == 'pending'" class="list-inline-item">
+                <li v-if="(item.status == 'pending') || (item.status == 'failed')" class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-success"

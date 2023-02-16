@@ -2,6 +2,7 @@
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
 import appConfig from '@/app.config'
+    // import VueToastr from "vue-toastr";
 import { BASE_URL } from '../../../baseconstant'
 
 /**
@@ -49,7 +50,12 @@ export default {
           label: 'S/N',
         },
         {
-          key: 'title',
+          key: 'reference_id',
+          label: 'Reference ID',
+          sortable: true,
+        },
+        {
+          key: 'user_name',
           label: 'Name',
           sortable: true,
         },
@@ -60,7 +66,12 @@ export default {
         },
         {
           key: 'type',
-          label: 'Type',
+          label: 'Service Type',
+          sortable: true,
+        },
+        {
+          key: 'provider',
+          label: 'Service Provider',
           sortable: true,
         },
         {
@@ -73,16 +84,16 @@ export default {
           label: 'Date',
           sortable: true,
         },
-        // "action",
+        "action",
       ],
     }
   },
   middleware: 'authentication',
-  watch: {
-    currentPage: function() {
-      this.fetchTransactions()
-    },
-  },
+  // watch: {
+  //   currentPage: function() {
+  //     this.fetchTransactions()
+  //   },
+  // },
   computed: {
     /**
      * Total no. of records
@@ -109,14 +120,17 @@ export default {
           const dataResponse = res.data.data
           // console.log(dataResponse)
           const dataArrr = []
-
+          console.log(JSON.parse(dataResponse.data[51].meta_data).provider)
           dataResponse.data.forEach((record) => {
             const u = {}
             // console.log(record)
             u.id = record.id
-            u.title = record.user.first_name+' '+record.user.last_name
+            u.reference_id = record.request_id || 'Not available'
+            u.user_id = record.user_id
+            u.user_name = record.user.first_name+' '+record.user.last_name
             u.amount = record.amount
             u.type = record.title
+            u.provider = record.meta_data ? JSON.parse(record.meta_data).provider:'Not available'
             // u.type = record.transaction_type
             u.status = record.status
             u.created_at = record.updated_at
@@ -140,7 +154,43 @@ export default {
     getPaymentInfo(item) {
       this.paymentInfo = item
       this.paymentId = item.id
-      this.paymentRef = item.reference
+      this.paymentRef = item.reference_id
+    },
+    resolvePayment() {
+      this.isBusy =  true
+      this.axios
+        .put(
+          BASE_URL +
+            '/api/v1/admin/transactions/resolve/'+this.paymentRef
+        )
+        .then((res) => {
+              console.log(res.data.data);
+          this.fetchTransactions()
+          this.$refs.mytoast.Add({
+                msg: 'Transaction resolved successfully',
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
+        })
+        .catch((err) => {
+          // this.error = true
+          // console.log(err.response)
+          this.$refs.mytoast.Add({
+                msg: err.response.data.message,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
+          if (err.response.status == 401) {
+            return this.$router.push({ path: '/login' })
+          }
+        })
+        .finally(() => {
+          this.isBusy = false
+        })
     },
     /**
      * Search the table data with search input
@@ -157,6 +207,7 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
+        <vue-toastr ref="mytoast"></vue-toastr>
     <!-- ::START POST Resolve Payment Modal -->
 
     <b-modal
@@ -273,18 +324,18 @@ export default {
             <template v-slot:cell(index)="data">
               {{ data.index + 1 }}
             </template>
-            <template v-slot:cell(user)="data">
+            <!-- <template v-slot:cell(user_name)="data">
               <router-link
                 :to="{
                   name: 'user-details',
-                  params: { id: data.item.user.id },
+                  params: { id: data.item.id },
                 }"
                 style="max-width: 200px;"
-                class="d-inline-block text-truncate text-primary"
+                class="d-inline-block text-truncate text-danger"
                 >{{ data.item.user.name }}</router-link
               >
-            </template>
-            <template v-slot:cell(check)="data">
+            </template> -->
+            <!-- <template v-slot:cell(check)="data">
               <div class="custom-control custom-checkbox text-center">
                 <input
                   type="checkbox"
@@ -296,15 +347,24 @@ export default {
                   :for="`contacusercheck${data.item.id}`"
                 ></label>
               </div>
-            </template>
+            </template> -->
             <template v-slot:cell(id)="data">
               <a href="javascript: void(0);" class="text-dark fw-bold">{{
                 data.item.id
               }}</a>
             </template>
 
-            <template v-slot:cell(name)="data">
-              <a href="#" class="text-body">{{ data.item.name }}</a>
+            <template v-slot:cell(user_name)="data">
+              <router-link
+                :to="{
+                  name: 'user-details',
+                  params: { id: data.item.user_id },
+                }"
+                style="max-width: 200px;"
+                class="d-inline-block text-truncate text-info"
+                >{{ data.item.user_name }}</router-link
+              >
+              <!-- <a href="#" class="text-body text-danger">{{ data.item.user_name }}</a> -->
             </template>
             <template v-slot:cell(status)="data">
               <div
@@ -315,7 +375,8 @@ export default {
                   'bg-soft-success': data.item.status === 'success',
                 }"
               >
-                {{ data.item.status }}
+                <!-- {{ data.item.status == ('failed' || 'pending') ? data.item.status:'success' }} -->
+                {{ data.item.status == 'failed' ? 'declined':data.item.status == 'pending' ? 'pending':'success' }}
               </div>
             </template>
             <template v-slot:cell(created_at)="data">

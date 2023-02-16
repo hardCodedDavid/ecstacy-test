@@ -68,6 +68,10 @@ import { BASE_URL } from "../../../baseconstant"
               label: "Country",
             },
             {
+              key: "wallet_balance",
+              label: "Wallet Balance",
+            },
+            {
               key: "status",
               label: "Status",
             },
@@ -108,7 +112,7 @@ import { BASE_URL } from "../../../baseconstant"
           this.axios.get(BASE_URL+'/api/v1/admin/users/verified?per_page=10000',{})
           .then((res) => {
               // console.log(res.data);
-              const users = res.data.data.data
+              const users = res.data.data
               const userArr = []
               users.forEach(user => {
                 let u = {}
@@ -117,7 +121,9 @@ import { BASE_URL } from "../../../baseconstant"
                 u.email = user.email
                 u.phone = user.phone
                 u.country = user.country
-                u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.wallet_balance = user.wallet.balance
+                // u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.status = user.status === 'verified' ? 'verified':user.status === 'unverified' ? 'unverified':'restricted'
                 u.created_at = user.created_at
 
                 userArr.push(u)

@@ -49,27 +49,22 @@ import { BASE_URL } from "../../../baseconstant"
               label: "S/N",
             },
             {
-              key: "bank",
-              label: "Bank",
-            },
-            {
               key: "amount",
               label: "Amount",
               sortable: true,
             },
             {
-              key: "account_name",
-              label: "Amount Name",
-              sortable: true,
+              key: "bank",
+              label: "Bank Name",
             },
             {
               key: "account_number",
-              label: "Amount Number",
+              label: "Account Number",
               sortable: true,
             },
             {
-              key: "user.name",
-              label: "User Name",
+              key: "account_name",
+              label: "Account Name",
               sortable: true,
             },
             {
@@ -78,13 +73,13 @@ import { BASE_URL } from "../../../baseconstant"
               sortable: true,
             },
             {
-              key: "status",
-              label: "Payment Status",
+              key: "created_at",
+              label: "Date",
               sortable: true,
             },
             {
-              key: "created_at",
-              label: "Date",
+              key: "status",
+              label: "Payment Status",
               sortable: true,
             },
             "action",
@@ -171,6 +166,7 @@ import { BASE_URL } from "../../../baseconstant"
     <template>
       <Layout>
         <PageHeader :title="title" :items="items" />
+        <vue-toastr ref="mytoast"></vue-toastr>
         <!-- ::START POST Resolve Payment Modal -->
             <!-- {{paymentData}} -->
         <b-modal id="modal-resolve-payment" title="Resolve Payment" title-class="font-18" hide-footer>

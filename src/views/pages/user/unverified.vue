@@ -67,6 +67,10 @@ import { BASE_URL } from "../../../baseconstant"
               label: "Country",
             },
             {
+              key: "wallet_balance",
+              label: "Wallet Balance",
+            },
+            {
               key: "status",
               label: "Status"
             },
@@ -107,7 +111,7 @@ import { BASE_URL } from "../../../baseconstant"
           this.axios.get(BASE_URL+'/api/v1/admin/users/unverified?per_page=10000',{})
           .then((res) => {
               // console.log(res.data);
-              const users = res.data.data.data
+              const users = res.data.data
               const userArr = []
               users.forEach(user => {
                 let u = {}
@@ -116,7 +120,9 @@ import { BASE_URL } from "../../../baseconstant"
                 u.email = user.email
                 u.phone = user.phone
                 u.country = user.country
-                u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.wallet_balance = user.wallet.balance
+                // u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.status = user.status === 'verified' ? 'verified':user.status === 'unverified' ? 'unverified':'restricted'
                 u.created_at = user.created_at
 
                 userArr.push(u)
@@ -389,6 +395,7 @@ import { BASE_URL } from "../../../baseconstant"
                     :class="{
                       'bg-soft-success': data.item.status === 'verified',
                       'bg-soft-danger': data.item.status === 'unverified',
+                      'bg-soft-warning': data.item.status === 'restricted',
                     }"
                   >
                     <span v-if="data.item.status">{{data.item.status}}</span>
@@ -440,9 +447,7 @@ import { BASE_URL } from "../../../baseconstant"
                         <i class="uil uil-trash font-size-18 text-danger"></i>
                       </a>
                     </li>
-
-
-                    <!-- <li v-if="item.status == 'restricted' || item.status == 'pending' " class="list-inline-item">
+                    <li v-if="item.status == 'restricted' || item.status == 'pending' " class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
@@ -454,6 +459,9 @@ import { BASE_URL } from "../../../baseconstant"
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
                     </li>
+
+
+                    <!-- 
                     <li v-if="item.status == 'approved' || item.status == 'pending' " class="list-inline-item">
                       <a
                         href="javascript:void(0);"
