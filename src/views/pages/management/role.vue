@@ -5,6 +5,7 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
+import { BASE_URL } from '../../../baseconstant';
     
     /**
      * Orders component
@@ -93,7 +94,7 @@
         },
         fetchData() {
             this.isBusy =  true
-            this.axios.get('https://api.codedevents.com/admin/roles')
+            this.axios.get(BASE_URL+'/api/v1/admin/roles')
             .then((res) => {
                 console.log(res.data.data);
                 this.roleData = res.data.data
@@ -107,10 +108,14 @@
         },
         addRole() {
             this.isBusy =  true
+            console.log(this.role.permissions)
             let val = this.role.permissions.map(({ id }) => id).join(', ');
+            console.log(val)
             this.role.permissions = val.split(", ");
 
-            this.axios.post('https://api.codedevents.com/admin/roles', this.role)
+            // console.log(this.role.permissions)
+            console.log(this.role)
+            this.axios.post(BASE_URL+'/api/v1/admin/roles', this.role)
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchData();
@@ -174,7 +179,8 @@
             });
         },
         deleteRole() {
-            this.axios.delete('https://api.codedevents.com/admin/roles/' + this.role.id)
+          console.log(this.role.id)
+            this.axios.delete(BASE_URL+'/api/v1/admin/permissions/' + this.role.id)
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchData();
@@ -202,7 +208,7 @@
             });
         },
         fetchPermission(){
-          this.axios.get('https://api.codedevents.com/admin/roles/permissions')
+          this.axios.get(BASE_URL+'/api/v1/admin/permissions')
           .then((res) => {
                 console.log(res.data.data);
                 this.options = res.data.data;

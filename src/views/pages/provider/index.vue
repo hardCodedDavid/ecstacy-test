@@ -5,7 +5,7 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
-import { BASE_URL } from '../../../baseconstant';
+import { BASE_URL } from "../../../baseconstant"
     
     /**
      * Orders component
@@ -13,7 +13,7 @@ import { BASE_URL } from '../../../baseconstant';
     export default {
       components: { Layout, PageHeader, Multiselect, VueToastr },
       page: {
-        title: "Admin",
+        title: "Provider",
         meta: [
           {
             name: "description",
@@ -23,14 +23,14 @@ import { BASE_URL } from '../../../baseconstant';
       },
       data() {
         return {
-          title: "Admin",
+          title: "Manage Users",
           isBusy: false,
           items: [
             {
               text: "App",
             },
             {
-              text: "Admin",
+              text: "Users",
               active: true,
             },
           ],
@@ -38,7 +38,7 @@ import { BASE_URL } from '../../../baseconstant';
           totalRows: 1,
           currentPage: 1,
           perPage: 20,
-          pageOptions: [10, 25, 50, 100],
+          pageOptions: [10, 20, 30, 50],
           filter: null,
           filterOn: [],
           sortBy: "age",
@@ -47,10 +47,6 @@ import { BASE_URL } from '../../../baseconstant';
             {
               key: "index",
               label: "S/N",
-            },
-            {
-              key: "thumbnail",
-              label: "Image",
             },
             {
               key: "name",
@@ -67,23 +63,36 @@ import { BASE_URL } from '../../../baseconstant';
               sortable: true,
             },
             {
-              key: "role",
-              label: "Role",
+              key: "country",
+              label: "Country",
+            },
+            {
+              key: "wallet_balance",
+              label: "Wallet Balance",
+            },
+            {
+              key: "total_transactions",
+              label: "Total Transactions",
             },
             {
               key: "status",
               label: "Status",
             },
+            {
+              key: "created_at",
+              label: "Date",
+              sortable: true,
+            },
             "action",
           ],
           admin: {
-            // id: this.id,
+            id: this.id,
             name: this.name,
             email: this.email,
             phone: this.phone,
             role: this.role
           },
-          options: [{name: 'admin', id:'admin'}],
+          options: null,
         };
       },
       middleware: "authentication",
@@ -103,91 +112,33 @@ import { BASE_URL } from '../../../baseconstant';
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/all?per_page=10000')
+          this.axios.get(BASE_URL+'/api/v1/admin/users/all?per_page=10000',{})
           .then((res) => {
-              // console.log(res.data.data);
-              // this.totalRows = res.data.data.total
-              this.adminData = res.data.data.data
-              this.fetchRoles();
-          })
-          .catch((err) => {
-              console.log(err);
-          })
-          .finally(() => {
-              this.isBusy =  false
-          });
-      },
-      addAdmin() {
-        this.admin.role = this.admin.role.id
-        this.isBusy =  true
-        console.log(this.admin)
-        // return
-        this.axios.post(BASE_URL+'/api/v1/admin/create', this.admin)
-        .then(() => {
-              // console.log(res.data.data);
-              this.fetchData();
-              this.$refs.mytoast.Add({
-                msg: "Admin Created Successfully",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
+              console.log(res.data.data);
+              const users = res.data.data
+              const userArr = []
+              users.forEach(user => {
+                let u = {}
+                u.name = user.first_name+' '+user.last_name
+                u.id = user.id
+                u.email = user.email
+                u.phone = user.phone
+                u.country = user.country
+                u.wallet_balance = user.wallet.balance
+                u.total_transactions = user.account_transactions_count
+                // u.status = user.email_verified_at !== null ? 'verified':'unverified'
+                u.status = user.status === 'verified' ? 'verified':user.status === 'unverified' ? 'unverified':'restricted'
+                u.created_at = user.created_at
+
+                userArr.push(u)
               });
+              this.adminData = userArr
+              // this.fetchRoles();
           })
           .catch((err) => {
               // console.log(err.response);
               this.$refs.mytoast.Add({
-                msg: err.response.data.message,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-              });
-          })
-          .finally(() => {
-              this.fetchData();
-              this.isBusy =  false
-          });
-      },
-      fetchRoles() {
-        this.isBusy =  true
-        this.axios.get(BASE_URL+'/api/v1/admin/roles')
-        .then((res) => {
-              console.log(res.data.data);
-              this.options = res.data.data;
-          })
-          .catch((err) => {
-              console.log(err);
-          })
-          .finally(() => {
-              this.isBusy =  false
-          });
-      },
-      getAdminInfo(item) {
-        this.admin.id = item.id;
-        this.admin.name = item.name;
-        this.admin.email = item.email;
-        this.admin.phone = item.phone;
-        this.admin.role = item.role;
-      },
-      deleteAdmin() {
-        this.isBusy =  true
-        this.axios.delete(BASE_URL+'/api/v1/admin/' + this.admin.id + '/delete')
-        .then((res) => {
-              console.log(res.data.data);
-              this.fetchData();
-              this.$refs.mytoast.Add({
-                msg: "Admin Deleted Successfully",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
-              });
-          })
-          .catch((err) => {
-              console.log(err);
-              this.$refs.mytoast.Add({
-                msg: err.response.data.message,
+                msg: err.response.message || err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -198,14 +149,41 @@ import { BASE_URL } from '../../../baseconstant';
               this.isBusy =  false
           });
       },
-      approveAdmin(id) {
+      deleteUser(id) {
         this.isBusy =  true
-        this.axios.post(BASE_URL+'/api/v1/admin/' + id + '/approve')
-        .then((res) => {
-              console.log(res.data.data);
+          this.axios.delete(BASE_URL+'/api/v1/admin/delete-user/'+id,{})
+          .then((res) => {
+            this.$refs.mytoast.Add({
+                msg: res.data.message,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
+              this.fetchData()
+          })
+          .catch((err) => {
+            this.$refs.mytoast.Add({
+                msg: err.response.message || err.response.data.message,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
+              // console.log(err.response);
+          })
+          .finally(() => {
+              this.isBusy =  false
+          });
+      },
+      approveUser(id) {
+        this.isBusy =  true
+        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/approve')
+        .then(() => {
+              // console.log(res.data.data);
               this.fetchData();
               this.$refs.mytoast.Add({
-                msg: "Admin Approved Successfully",
+                msg: "User Approved Successfully",
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -215,7 +193,7 @@ import { BASE_URL } from '../../../baseconstant';
           .catch((err) => {
               console.log(err);
               this.$refs.mytoast.Add({
-                msg: err.response.data.message,
+                msg: err.response.data.details,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -226,14 +204,14 @@ import { BASE_URL } from '../../../baseconstant';
               this.isBusy =  false
           });
       },
-      restrictAdmin(id) {
+      restrictUser(id) {
         this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/' + id + '/restrict')
-        .then((res) => {
-              console.log(res.data.data);
+        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/restrict')
+        .then(() => {
+              // console.log(res.data.data);
               this.fetchData();
               this.$refs.mytoast.Add({
-                msg: "Admin Restricted Successfully",
+                msg: "User Restricted Successfully",
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -241,9 +219,9 @@ import { BASE_URL } from '../../../baseconstant';
               });
           })
           .catch((err) => {
-              // console.log(err);
+              console.log(err);
               this.$refs.mytoast.Add({
-                msg: err.response.data.message,
+                msg: err.response.data.details,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -289,7 +267,7 @@ import { BASE_URL } from '../../../baseconstant';
                 label="name"
               ></multiselect>
               
-            
+              
               <!-- <textarea v-model="admin.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
               <div class="modal-footer">
                   <button @click="addAdmin(), $bvModal.hide('modal-add-admin')" type="button" class="btn btn-primary">
@@ -326,15 +304,10 @@ import { BASE_URL } from '../../../baseconstant';
             </div>
         </b-modal>
         <!-- ::END DELETE Admin Modal -->
-
+        
         <div class="row">
           <div class="col-12">
-            <button
-            type="button"
-            class="btn btn-primary mb-3 brand-primary"
-            v-b-modal.modal-add-admin
-          ><i class="mdi mdi-plus me-1"></i> Add New Admin
-          </button>
+            
             <div class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline">
               <div class="row">
                 <div class="col-sm-12 col-md-6">
@@ -370,7 +343,7 @@ import { BASE_URL } from '../../../baseconstant';
                 <!-- End search -->
               </div>
               <!-- Table -->
-            
+              
               <b-table
                 :busy="isBusy"
                 table-class="table table-centered datatable table-card-list"
@@ -399,15 +372,15 @@ import { BASE_URL } from '../../../baseconstant';
                 <template v-slot:cell(index)="data">
                   {{ data.index + 1 }}
                 </template>
-                <template v-slot:cell(thumbnail)="data">
+                <!-- <template v-slot:cell(thumbnail)="data">
                 <img
-                      v-if="data.item.photo"
-                      :src="data.item.photo"
+                      v-if="data.item.thumbnail"
+                      :src="data.item.thumbnail"
                       alt
                       class="avatar-xs rounded-circle me-2"
                     />
                     <div
-                      v-if="!data.item.photo"
+                      v-if="!data.item.thumbnail"
                       class="avatar-xs d-inline-block me-2"
                     >
                       <div
@@ -416,67 +389,99 @@ import { BASE_URL } from '../../../baseconstant';
                         <i class="mdi mdi-account-circle m-0"></i>
                       </div>
                     </div>
-              </template>
+              </template> -->
     
-                <template v-slot:cell(title)="data">
-                  <router-link :to="{ name: 'event-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate">{{data.item.title}}</router-link>
+                <template v-slot:cell(name)="data">
+                  <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate text-dark">{{data.item.name}}</router-link>
                 </template>
   
-                <!-- <template v-slot:cell(plans)>
-                  <p>Premium Plan</p>
-                </template> -->
+                <template v-slot:cell(created_at)="data">
+                  <div >
+                    {{ data.item.created_at | formatDate }}
+                  </div>
+                </template>
   
                 <template v-slot:cell(status)="data">
                   <div
                     class="badge bg-pill font-size-12"
                     :class="{
-                      'bg-soft-success': data.item.status === 'active',
-                      'bg-soft-danger': data.item.status === 'restricted',
-                      'bg-soft-warning': data.item.status === 'pending',
+                      'bg-soft-success': data.item.status === 'verified',
+                      'bg-soft-danger': data.item.status === 'unverified',
+                      'bg-soft-warning': data.item.status === 'restricted',
                     }"
                   >
-                    {{ data.item.status }}
+                    <span v-if="data.item.status">{{data.item.status}}</span>
+                    <!-- <span v-if="!data.item.status">Unverified</span> -->
                   </div>
                 </template>
+
+                <!-- <template v-slot:cell(status)="data">
+                  <div
+                    class="badge bg-pill font-size-12"
+                    :class="{
+                      'bg-soft-success': data.item.status == 'approved',
+                      'bg-soft-danger': data.item.status == 'restricted',
+                      'bg-soft-warning': data.item.status == 'pending',
+                    }"
+                  >
+                    <span>{{data.item.status}}</span>
+                  </div>
+                </template> -->
+                
                 <template v-slot:cell(start_date)="data">
                   <p>{{data.item.start_date | formatDate}}</p>
                 </template>
                 <template v-slot:cell(action)="{ item }">
-                  <ul class="list-inline mb-0" v-if="item.role == 'admin'">
-                    <li v-if="item.status == 'restricted'" class="list-inline-item">
+                  <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="text-info"
+                        v-b-tooltip.hover
+                        title="User"
+                      ><router-link 
+                        class="text-info"
+                        :to="{ name: 'user-details', params: { id: item.id }}"
+                        v-b-tooltip.hover
+                        title="User"
+                      ><i class="uil uil-eye font-size-18"></i></router-link>
+                        
+                      </a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-primary"
+                        v-b-tooltip.hover
+                        title="Delete"
+                        v-b-modal.modal-edit-admin
+                        @click="deleteUser(item.id)"
+                      >
+                        <i class="uil uil-trash font-size-18 text-danger"></i>
+                      </a>
+                    </li>
+                    <li v-if="item.status == 'unverified' || item.status == 'restricted' " class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
                         v-b-tooltip.hover
                         title="Approve"
                         v-b-modal.modal-edit-admin
-                        @click="approveAdmin(item.id)"
+                        @click="approveUser(item.id)"
                       >
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
                     </li>
-                    <li v-if="item.status == 'active'" class="list-inline-item">
+                    <li v-if="item.status == 'verified'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
                         v-b-tooltip.hover
                         title="Restrict"
                         v-b-modal.modal-edit-admin
-                        @click="restrictAdmin(item.id)"
+                        @click="restrictUser(item.id)"
                       >
                         <i class="uil uil-info-circle font-size-18 text-danger"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a
-                        href="javascript:void(0);"
-                        class="px-2 text-danger"
-                        v-b-tooltip.hover
-                        title="Delete"
-                        v-b-modal.modal-delete-admin
-                        @click="getAdminInfo(item)"
-                      >
-                        <i class="uil uil-trash-alt font-size-18"></i>
                       </a>
                     </li>
                   </ul>

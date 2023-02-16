@@ -72,6 +72,10 @@ import { BASE_URL } from "../../../baseconstant"
               label: "Wallet Balance",
             },
             {
+              key: "total_transactions",
+              label: "Total Transactions",
+            },
+            {
               key: "status",
               label: "Status",
             },
@@ -121,6 +125,7 @@ import { BASE_URL } from "../../../baseconstant"
                 u.email = user.email
                 u.phone = user.phone
                 u.country = user.country
+                u.total_transactions = user.account_transactions_count
                 u.wallet_balance = user.wallet.balance
                 // u.status = user.email_verified_at !== null ? 'verified':'unverified'
                 u.status = user.status === 'verified' ? 'verified':user.status === 'unverified' ? 'unverified':'restricted'

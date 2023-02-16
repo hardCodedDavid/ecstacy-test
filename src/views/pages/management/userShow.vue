@@ -32,8 +32,10 @@ export default {
       ],
       user: null,
       wallet_balance: 0,
+      total_transactions: 0,
       event: [],
       transactions: [],
+      wdtransactions: [],
       totalRows: 1,
       currentPage: 1,
       per_page: 10,
@@ -103,10 +105,30 @@ export default {
         //   console.log('dd')
         //   console.log(res.data)
 
+        console.log(res.data.data.wdtransactions)
           this.user = res.data.data.user
           this.transactions = res.data.data.transactions
           this.wallet_balance = res.data.data.wallet_balance
-        //   console.log(this.user)
+          this.total_transactions = res.data.data.total_transactions
+          // this.wdtransactions = res.data.data.wdtransactions
+
+          const wdArr = []
+          res.data.data.wdtransactions.map((item) => {
+            const u = {}
+            u.id = item.id
+            u.title = item.title
+            u.status = item.status
+            u.amount = item.amount
+            u.bank_name = item.bank_name || 'Not available'
+            u.narration = item.narration || 'Not available'
+            u.created_at = item.created_at || 'Not available'
+            u.type = item.transaction_type || 'Not available'
+            u.account_name = item.account_name || 'Not available'
+            u.account_number = item.account_number || 'Not available'
+
+            wdArr.push(u)
+          })
+          this.wdtransactions = wdArr
         })
         .catch((err) => {
           // this.error = true
@@ -249,6 +271,14 @@ export default {
                           </td>
                           <td>
                             <p>{{ wallet_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <a href="#" class="text-dark">Total transactions</a>
+                          </td>
+                          <td>
+                            <p>{{ total_transactions }}</p>
                           </td>
                         </tr>
                         <tr>
@@ -403,42 +433,71 @@ export default {
                       <thead>
                         <tr>
                           <th scope="col">#</th>
-                          <th scope="col">Type</th>
                           <th scope="col">Amount</th>
-                          <th scope="col">Name</th>
+                          <th scope="col">Bank Name</th>
+                          <th scope="col">Account Name</th>
+                          <th scope="col">Account Number</th>
+                          <th scope="col">Narration</th>
                           <th scope="col">Status</th>
                           <th scope="col">Date</th>
                         </tr>
                       </thead>
                       <tbody
-                        v-for="(transaction, index) in transactions"
+                        v-for="(transaction, index) in wdtransactions"
                         :key="transaction.id"
                       >
                         <tr>
                           <th scope="row">{{ index + 1 }}</th>
-                          <td>
+
+            <!-- u.title = item.title
+            u.status = item.status
+            u.amount = item.amount
+            u.bank_name = item.bank_name || 'Not available'
+            u.narration = item.narration || 'Not available'
+            u.created_at = item.created_at || 'Not available'
+            u.type = item.transaction_type || 'Not available'
+            u.account_name = item.account_name || 'Not available'
+            u.account_number = item.account_number || 'Not available' -->
+                          <!-- <td>
                             <p class="badge bg-pill font-size-12 text-center rounded" :class="{
                                 'bg-soft-success':
                                   transaction.transaction_type === 'inflow',
                                 'bg-soft-danger':
                                   transaction.transaction_type === 'outflow',
                               }">{{ transaction.transaction_type }}</p>
-                          </td>
+                          </td> -->
                           <td>
                             <p>{{ transaction.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</p>
                           </td>
                           <td>
                             <p>
-                              {{
+                              {{ transaction.bank_name }}
+                            </p>
+                          </td>
+                          <td>
+                            <p>
+                              {{ transaction.account_name }}
+                              <!-- {{
                                 transaction.user.first_name +
                                   ' ' +
                                   transaction.user.last_name
-                              }}
+                              }} -->
+                            </p>
+                          </td>
+                          <td>
+                            <p>
+                              {{ transaction.account_number }}
+                            </p>
+                          </td>
+                          <td>
+                            <p>
+                              {{ transaction.narration }}
                             </p>
                           </td>
                           <tb>
                             <span
-                              class="badge bg-pill font-size-12"
+                              class="badge bg-pill font-size-12 d-flex items-center"
+                              style="position:relative;top:-6px;"
                               :class="{
                                 'bg-soft-success':
                                   (transaction.status === 'delivered') || (transaction.status === 'success'),
@@ -456,9 +515,11 @@ export default {
                         </tr>
                       </tbody>
                       <tbody v-if="transactions.length == 0">
-                        <p class="text-center pt-3 pb-5">
+                        <tr>
+                          <td colspan="7" class="text-center pt-3 pb-5">
                           No transactions has been made
-                        </p>
+                        </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>

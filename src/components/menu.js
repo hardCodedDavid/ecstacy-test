@@ -188,6 +188,12 @@ export const menuItems = [
         icon: "uil-comment-alt-notes",
         link: "/notification/subscribers",
     },
+    {
+        id: 17,
+        label: "Service Providers",
+        icon: "uil-file-alt",
+        link: "/provider",
+    },
 
     // {
     //     id: 5,

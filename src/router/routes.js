@@ -239,7 +239,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    
+
     component: () => import('../views/pages/transaction/index'),
   },
   {
@@ -321,6 +321,14 @@ export default [
       authRequired: true,
     },
     component: () => import('../views/pages/notification/index'),
+  },
+  {
+    path: '/provider',
+    name: 'provider',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/provider/index'),
   },
   {
     path: '/notification/all',
