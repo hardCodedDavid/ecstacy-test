@@ -148,7 +148,7 @@ import { BASE_URL } from '../../../baseconstant';
             let val = this.role.permissions.map(({ id }) => id).join(', ');
             this.role.permissions = val.split(", ");
 
-            this.axios.put('https://api.codedevents.com/admin/roles/' 
+            this.axios.put(BASE_URL+'/api/v1/admin/roles/' 
             + this.role.id, this.role)
             .then((res) => {
                 console.log(res.data.data);
@@ -180,7 +180,7 @@ import { BASE_URL } from '../../../baseconstant';
         },
         deleteRole() {
           console.log(this.role.id)
-            this.axios.delete(BASE_URL+'/api/v1/admin/permissions/' + this.role.id)
+            this.axios.delete(BASE_URL+'/api/v1/admin/roles/' + this.role.id)
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchData();

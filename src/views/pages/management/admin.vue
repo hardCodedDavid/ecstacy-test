@@ -105,8 +105,12 @@ import { BASE_URL } from '../../../baseconstant';
           this.isBusy =  true
           this.axios.get(BASE_URL+'/api/v1/admin/all?per_page=10000')
           .then((res) => {
-              // console.log(res.data.data);
+              console.log(res.data.data);
               // this.totalRows = res.data.data.total
+              res.data.data.data.map((g) => {
+                g.role = g.roles.length > 0 ? g.roles[0].name:''
+              })
+              console.log(res.data.data.data)
               this.adminData = res.data.data.data
               this.fetchRoles();
           })
