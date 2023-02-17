@@ -23,25 +23,25 @@ import { BASE_URL } from "../../../baseconstant"
       },
       data() {
         return {
-          title: "Manage Users",
+          title: "Manage Providers",
           isBusy: false,
           items: [
             {
               text: "App",
             },
             {
-              text: "Users",
+              text: "Providers",
               active: true,
             },
           ],
-          adminData: [],
+          providerData: [],
           totalRows: 1,
           currentPage: 1,
           perPage: 20,
           pageOptions: [10, 20, 30, 50],
           filter: null,
           filterOn: [],
-          sortBy: "age",
+          sortBy: "name",
           sortDesc: false,
           fields: [
             {
@@ -49,30 +49,16 @@ import { BASE_URL } from "../../../baseconstant"
               label: "S/N",
             },
             {
+              key: "logo",
+              label: "Thumbnail",
+            },
+            {
               key: "name",
-              label: "Name",
+              label: "Provider Name",
             },
             {
-              key: "email",
-              label: "Email",
-              sortable: true,
-            },
-            {
-              key: "phone",
-              label: "Phone",
-              sortable: true,
-            },
-            {
-              key: "country",
-              label: "Country",
-            },
-            {
-              key: "wallet_balance",
-              label: "Wallet Balance",
-            },
-            {
-              key: "total_transactions",
-              label: "Total Transactions",
+              key: "products",
+              label: "Services ",
             },
             {
               key: "status",
@@ -101,7 +87,7 @@ import { BASE_URL } from "../../../baseconstant"
          * Total no. of records
          */
         rows() {
-          return this.adminData.length;
+          return this.providerData.length;
         },
       },
       mounted() {
@@ -112,31 +98,29 @@ import { BASE_URL } from "../../../baseconstant"
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/users/all?per_page=10000',{})
+          this.axios.get(BASE_URL+'/api/v1/admin/providers?per_page=10000')
           .then((res) => {
-              console.log(res.data.data);
-              const users = res.data.data
-              const userArr = []
-              users.forEach(user => {
+            //   console.log(res.data.data.data);
+              const data = res.data.data.data
+              const dataArr = []
+            //   console.log(data)
+              data.forEach(user => {
                 let u = {}
-                u.name = user.first_name+' '+user.last_name
                 u.id = user.id
-                u.email = user.email
-                u.phone = user.phone
-                u.country = user.country
-                u.wallet_balance = user.wallet.balance
-                u.total_transactions = user.account_transactions_count
-                // u.status = user.email_verified_at !== null ? 'verified':'unverified'
-                u.status = user.status === 'verified' ? 'verified':user.status === 'unverified' ? 'unverified':'restricted'
+                u.logo = user.logo
+                u.name = user.provider_name
+                u.products = 0
+                u.status = user.status == 'enable' ? 'enabled':'disabled'
                 u.created_at = user.created_at
 
-                userArr.push(u)
+                dataArr.push(u)
               });
-              this.adminData = userArr
+              console.log(dataArr)
+              this.providerData = dataArr
               // this.fetchRoles();
           })
           .catch((err) => {
-              // console.log(err.response);
+            //   console.log(err.response);
               this.$refs.mytoast.Add({
                 msg: err.response.message || err.response.data.message,
                 clickClose: false,
@@ -149,9 +133,9 @@ import { BASE_URL } from "../../../baseconstant"
               this.isBusy =  false
           });
       },
-      deleteUser(id) {
+      deleteProvider(id) {
         this.isBusy =  true
-          this.axios.delete(BASE_URL+'/api/v1/admin/delete-user/'+id,{})
+          this.axios.delete(BASE_URL+'/api/v1/admin/providers/'+id)
           .then((res) => {
             this.$refs.mytoast.Add({
                 msg: res.data.message,
@@ -176,14 +160,14 @@ import { BASE_URL } from "../../../baseconstant"
               this.isBusy =  false
           });
       },
-      approveUser(id) {
+      enableProvider(id) {
         this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/approve')
+        this.axios.put(BASE_URL+'/api/v1/admin/providers/' + id+'/enable')
         .then(() => {
               // console.log(res.data.data);
               this.fetchData();
               this.$refs.mytoast.Add({
-                msg: "User Approved Successfully",
+                msg: "Service enabled Successfully",
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -204,14 +188,14 @@ import { BASE_URL } from "../../../baseconstant"
               this.isBusy =  false
           });
       },
-      restrictUser(id) {
+      disableProvider(id) {
         this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/restrict')
+        this.axios.put(BASE_URL+'/api/v1/admin/providers/' + id+'/disable')
         .then(() => {
               // console.log(res.data.data);
               this.fetchData();
               this.$refs.mytoast.Add({
-                msg: "User Restricted Successfully",
+                msg: "Service disabled Successfully",
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -348,7 +332,7 @@ import { BASE_URL } from "../../../baseconstant"
                 :busy="isBusy"
                 table-class="table table-centered datatable table-card-list"
                 thead-tr-class="bg-transparent"
-                :items="adminData"
+                :items="providerData"
                 :fields="fields"
                 responsive="sm"
                 :per-page="perPage"
@@ -372,15 +356,15 @@ import { BASE_URL } from "../../../baseconstant"
                 <template v-slot:cell(index)="data">
                   {{ data.index + 1 }}
                 </template>
-                <!-- <template v-slot:cell(thumbnail)="data">
+                <template v-slot:cell(thumbnail)="data">
                 <img
-                      v-if="data.item.thumbnail"
-                      :src="data.item.thumbnail"
+                      v-if="data.item.photo"
+                      :src="data.item.photo"
                       alt
                       class="avatar-xs rounded-circle me-2"
                     />
                     <div
-                      v-if="!data.item.thumbnail"
+                      v-if="!data.item.photo"
                       class="avatar-xs d-inline-block me-2"
                     >
                       <div
@@ -389,7 +373,7 @@ import { BASE_URL } from "../../../baseconstant"
                         <i class="mdi mdi-account-circle m-0"></i>
                       </div>
                     </div>
-              </template> -->
+              </template>
     
                 <template v-slot:cell(name)="data">
                   <router-link :to="{ name: 'user-details', params: { id: data.item.id }}" style="color: #761300; max-width: 250px;"  class="d-inline-block text-truncate text-dark">{{data.item.name}}</router-link>
@@ -405,9 +389,8 @@ import { BASE_URL } from "../../../baseconstant"
                   <div
                     class="badge bg-pill font-size-12"
                     :class="{
-                      'bg-soft-success': data.item.status === 'verified',
-                      'bg-soft-danger': data.item.status === 'unverified',
-                      'bg-soft-warning': data.item.status === 'restricted',
+                      'bg-soft-success': data.item.status === 'enabled',
+                      'bg-soft-danger': data.item.status === 'disabled',
                     }"
                   >
                     <span v-if="data.item.status">{{data.item.status}}</span>
@@ -438,14 +421,38 @@ import { BASE_URL } from "../../../baseconstant"
                         href="javascript:void(0);"
                         class="text-info"
                         v-b-tooltip.hover
-                        title="User"
+                        title="Provider"
                       ><router-link 
                         class="text-info"
-                        :to="{ name: 'user-details', params: { id: item.id }}"
+                        :to="{ name: 'provider-details', params: { id: item.id }}"
                         v-b-tooltip.hover
-                        title="User"
+                        title="Provider"
                       ><i class="uil uil-eye font-size-18"></i></router-link>
                         
+                      </a>
+                    </li>
+                    <li v-if="item.status == 'disabled'" class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-primary"
+                        v-b-tooltip.hover
+                        title="Enable"
+                        v-b-modal.modal-edit-admin
+                        @click="enableProvider(item.id)"
+                      >
+                        <i class="uil uil-check-circle font-size-18 text-success"></i>
+                      </a>
+                    </li>
+                    <li v-if="item.status == 'enabled'" class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-primary"
+                        v-b-tooltip.hover
+                        title="Disable"
+                        v-b-modal.modal-edit-admin
+                        @click="disableProvider(item.id)"
+                      >
+                        <i class="uil uil-info-circle font-size-18 text-danger"></i>
                       </a>
                     </li>
                     <li class="list-inline-item">
@@ -455,33 +462,9 @@ import { BASE_URL } from "../../../baseconstant"
                         v-b-tooltip.hover
                         title="Delete"
                         v-b-modal.modal-edit-admin
-                        @click="deleteUser(item.id)"
+                        @click="deleteProvider(item.id)"
                       >
                         <i class="uil uil-trash font-size-18 text-danger"></i>
-                      </a>
-                    </li>
-                    <li v-if="item.status == 'unverified' || item.status == 'restricted' " class="list-inline-item">
-                      <a
-                        href="javascript:void(0);"
-                        class="px-2 text-primary"
-                        v-b-tooltip.hover
-                        title="Approve"
-                        v-b-modal.modal-edit-admin
-                        @click="approveUser(item.id)"
-                      >
-                        <i class="uil uil-check-circle font-size-18 text-success"></i>
-                      </a>
-                    </li>
-                    <li v-if="item.status == 'verified'" class="list-inline-item">
-                      <a
-                        href="javascript:void(0);"
-                        class="px-2 text-primary"
-                        v-b-tooltip.hover
-                        title="Restrict"
-                        v-b-modal.modal-edit-admin
-                        @click="restrictUser(item.id)"
-                      >
-                        <i class="uil uil-info-circle font-size-18 text-danger"></i>
                       </a>
                     </li>
                   </ul>

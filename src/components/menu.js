@@ -189,7 +189,7 @@ export const menuItems = [
         link: "/notification/subscribers",
     },
     {
-        id: 17,
+        id: 18,
         label: "Service Providers",
         icon: "uil-file-alt",
         link: "/provider",
