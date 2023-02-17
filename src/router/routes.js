@@ -315,6 +315,14 @@ export default [
     component: () => import('../views/pages/management/userShow'),
   },
   {
+    path: '/management/provider/:id',
+    name: 'provider-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/providerShow'),
+  },
+  {
     path: '/notification/subscribers',
     name: 'notifiaction',
     meta: {

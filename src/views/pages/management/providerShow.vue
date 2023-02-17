@@ -54,11 +54,15 @@ import { BASE_URL } from "../../../baseconstant"
             },
             {
               key: "name",
-              label: "Provider Name",
+              label: "Product Name",
             },
             {
-              key: "products",
-              label: "Services ",
+              key: "type",
+              label: "Service Type",
+            },
+            {
+              key: "provider_name",
+              label: "Provider Name",
             },
             {
               key: "status",
@@ -71,10 +75,6 @@ import { BASE_URL } from "../../../baseconstant"
             },
             "action",
           ],
-          provider: {
-            id: this.id,
-            provider_name: this.name
-          },
           admin: {
             id: this.id,
             name: this.name,
@@ -98,11 +98,12 @@ import { BASE_URL } from "../../../baseconstant"
         // Set the initial number of items
         this.totalRows = this.items.length;
         this.fetchData();
+        // console.log(this.$route.params.id)
       },
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/providers?per_page=10000')
+          this.axios.get(BASE_URL+'/api/v1/admin/providers/'+this.$route.params.id+'/products?per_page=10000')
           .then((res) => {
             //   console.log(res.data.data.data);
               const data = res.data.data.data
@@ -112,8 +113,9 @@ import { BASE_URL } from "../../../baseconstant"
                 let u = {}
                 u.id = user.id
                 u.thumbnail = user.logo
-                u.name = user.provider_name
-                u.products = user.products.length
+                u.name = user.name
+                u.type = user.type
+                u.provider_name = user.provider.provider_name
                 u.status = user.status == 'enable' ? 'enabled':'disabled'
                 u.created_at = user.created_at
 
@@ -137,39 +139,6 @@ import { BASE_URL } from "../../../baseconstant"
               this.isBusy =  false
           });
       },
-      editProvider() {
-            this.isBusy =  true
-
-            this.axios.post(BASE_URL+'/api/v1/admin/providers/' 
-            + this.provider.id, this.provider)
-            .then(() => {
-                // console.log(res.data.data);
-                this.fetchData();
-
-                this.$refs.mytoast.Add({
-                msg: "Provider Edited Successfully",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
-              })
-            })
-            .catch((err) => {
-                // console.log(err);
-                // console.log(this.role);
-
-                this.$refs.mytoast.Add({
-                msg: err.response.data.details,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-              });
-            })
-            .finally(() => {
-                this.isBusy =  false
-            });
-        },
       deleteProvider(id) {
         this.isBusy =  true
           this.axios.delete(BASE_URL+'/api/v1/admin/providers/'+id)
@@ -197,9 +166,9 @@ import { BASE_URL } from "../../../baseconstant"
               this.isBusy =  false
           });
       },
-      enableProvider(id) {
+      enableService(id) {
         this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/providers/' + id+'/enable')
+        this.axios.put(BASE_URL+'/api/v1/admin/provider-service/' + id+'/enable')
         .then(() => {
               // console.log(res.data.data);
               this.fetchData();
@@ -225,9 +194,9 @@ import { BASE_URL } from "../../../baseconstant"
               this.isBusy =  false
           });
       },
-      disableProvider(id) {
+      disableService(id) {
         this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/providers/' + id+'/disable')
+        this.axios.put(BASE_URL+'/api/v1/admin/provider-service/' + id+'/disable')
         .then(() => {
               // console.log(res.data.data);
               this.fetchData();
@@ -252,10 +221,6 @@ import { BASE_URL } from "../../../baseconstant"
           .finally(() => {
               this.isBusy =  false
           });
-      },
-      getProviderInfo(item) {
-        this.provider.id = item.id
-        this.provider.provider_name = item.name
       },
   
         /**
@@ -310,8 +275,6 @@ import { BASE_URL } from "../../../baseconstant"
           </b-modal>
         <!-- ::END ADD Admin Modal -->
 
-        
-
          <!-- ::START DELETE Admin Modal -->
          <b-modal id="modal-delete-admin" title="Delete Admin" title-class="font-18" hide-footer>
             <p>Are you sure you want to delete "{{admin.name}}" </p>
@@ -331,29 +294,6 @@ import { BASE_URL } from "../../../baseconstant"
             </div>
         </b-modal>
         <!-- ::END DELETE Admin Modal -->
-
-        <!-- ::START EDIT Role Modal -->    
-        <b-modal id="modal-edit-role" title="Edit Role" title-class="font-18" hide-footer>
-          <label for="" class="m-2">Provider Name: </label>
-          <input type="text" v-model="provider.provider_name" id="horizontal-firstname-input" placeholder="Enter provider name..." class="m-2 form-control">
-          
-          
-          <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
-          <div class="modal-footer">
-              <button @click="editProvider(), $bvModal.hide('modal-edit-role')" type="button" class="btn btn-primary">
-                  Save changes
-              </button>
-              <b-button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                  @click="$bvModal.hide('modal-edit-role')"
-                  >
-                  Close
-              </b-button>
-          </div>
-        </b-modal>
-        <!-- ::END EDIT Role Modal -->
         
         <div class="row">
           <div class="col-12">
@@ -482,7 +422,7 @@ import { BASE_URL } from "../../../baseconstant"
                 </template>
                 <template v-slot:cell(action)="{ item }">
                   <ul class="list-inline mb-0">
-                    <li class="list-inline-item">
+                    <!-- <li class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="text-info"
@@ -496,27 +436,15 @@ import { BASE_URL } from "../../../baseconstant"
                       ><i class="uil uil-eye font-size-18"></i></router-link>
                         
                       </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a
-                        href="javascript:void(0);"
-                        class="px-2 text-primary"
-                        v-b-tooltip.hover
-                        title="Edit"
-                        @click="getProviderInfo(item)"
-                        v-b-modal.modal-edit-role
-                      >
-                        <i class="uil uil-pen font-size-18"></i>
-                      </a>
-                    </li>
+                    </li> -->
                     <li v-if="item.status == 'disabled'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
                         v-b-tooltip.hover
-                        title="Enable"
+                        title="Enable service"
                         v-b-modal.modal-edit-admin
-                        @click="enableProvider(item.id)"
+                        @click="enableService(item.id)"
                       >
                         <i class="uil uil-check-circle font-size-18 text-success"></i>
                       </a>
@@ -526,14 +454,14 @@ import { BASE_URL } from "../../../baseconstant"
                         href="javascript:void(0);"
                         class="px-2 text-primary"
                         v-b-tooltip.hover
-                        title="Disable"
+                        title="Disable service"
                         v-b-modal.modal-edit-admin
-                        @click="disableProvider(item.id)"
+                        @click="disableService(item.id)"
                       >
                         <i class="uil uil-info-circle font-size-18 text-danger"></i>
                       </a>
                     </li>
-                    <li class="list-inline-item">
+                    <!-- <li class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
@@ -544,7 +472,7 @@ import { BASE_URL } from "../../../baseconstant"
                       >
                         <i class="uil uil-trash font-size-18 text-danger"></i>
                       </a>
-                    </li>
+                    </li> -->
                   </ul>
                 </template>
               </b-table>
