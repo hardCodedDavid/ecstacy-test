@@ -123,7 +123,7 @@ import { BASE_URL } from '../../../baseconstant';
             // console.log(this.role.permissions)
             console.log(this.role)
             this.axios.post(BASE_URL+'/api/v1/admin/roles', this.role)
-            .then((res) => {
+            .then(() => {
                 // console.log(res.data.data);
                 this.fetchData();
 
