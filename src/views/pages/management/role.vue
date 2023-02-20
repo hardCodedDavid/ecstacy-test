@@ -63,7 +63,7 @@ import { BASE_URL } from '../../../baseconstant';
             "action",
           ],
           role: {
-            id: this.id,
+            // id: this.id,
             name: this.name,
             permissions: this.permissions,
           },
@@ -96,11 +96,18 @@ import { BASE_URL } from '../../../baseconstant';
             this.isBusy =  true
             this.axios.get(BASE_URL+'/api/v1/admin/roles')
             .then((res) => {
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 this.roleData = res.data.data
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err.response.data.message);
+                this.$refs.mytoast.Add({
+                msg: err.response.data.message,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
             })
             .finally(() => {
                 this.isBusy =  false
@@ -129,15 +136,22 @@ import { BASE_URL } from '../../../baseconstant';
               });
             })
             .catch((err) => {
-                console.log(err);
-
+                console.log(err.response);
                 this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+                msg: err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
                 type: "error",
               });
+
+              //   this.$refs.mytoast.Add({
+              //   msg: err.response.data.details,
+              //   clickClose: false,
+              //   timeout: 5000,
+              //   position: "toast-top-right",
+              //   type: "error",
+              // });
             })
             .finally(() => {
                 this.isBusy =  false
