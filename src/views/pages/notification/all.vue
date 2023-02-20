@@ -5,6 +5,7 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
+// import { BASE_URL } from '../../../baseconstant';
     
     /**
      * Orders component
@@ -53,34 +54,35 @@
       methods: {
         submitForm() {
           this.submitted = true;
-          this.axios.post('https://api.codedevents.com/admin/notifications/send', this.notify)
-          .then((res) => {
-                console.log(res.data);
-                this.submitted = false;
-                this.notify = ""
+          console.log(this.notify)
+          // this.axios.post(BASE_URL+'/api/v1/admin/notifications/send', this.notify)
+          // .then((res) => {
+          //       console.log(res.data);
+          //       this.submitted = false;
+          //       this.notify = ""
 
-                this.$refs.mytoast.Add({
-                msg: "Notification Posted Successfully",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
-              });
-            })
-            .catch((err) => {
-                this.submitted = true;
-                console.log(err);
-                this.$refs.mytoast.Add({
-                msg: err.response.data.details,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-              });
-            })
-            .finally(() => {
-                // this.isBusy =  false
-            });
+          //       this.$refs.mytoast.Add({
+          //       msg: "Notification Posted Successfully",
+          //       clickClose: false,
+          //       timeout: 5000,
+          //       position: "toast-top-right",
+          //       type: "success",
+          //     });
+          //   })
+          //   .catch((err) => {
+          //       this.submitted = true;
+          //       console.log(err);
+          //       this.$refs.mytoast.Add({
+          //       msg: err.response.data.details,
+          //       clickClose: false,
+          //       timeout: 5000,
+          //       position: "toast-top-right",
+          //       type: "error",
+          //     });
+          //   })
+          //   .finally(() => {
+          //       this.isBusy =  false
+          //   });
         }
       }
     };

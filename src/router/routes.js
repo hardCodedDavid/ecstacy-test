@@ -259,6 +259,14 @@ export default [
     component: () => import('../views/pages/transaction/withdrawal'),
   },
   {
+    path: '/transaction/wallet-transfers',
+    name: 'transfers',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/transaction/transfer'),
+  },
+  {
     path: '/profile/admin',
     name: 'profile',
     meta: {
