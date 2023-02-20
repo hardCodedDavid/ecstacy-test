@@ -105,7 +105,7 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .get(
-          BASE_URL+'/api/v1/admin/payments?per_page=10000'
+          BASE_URL+'/api/v1/admin/wallet-transfers?per_page=10000'
         )
         .then((res) => {
           const dataResponse = res.data.data
@@ -115,10 +115,11 @@ export default {
             const u = {}
             u.id = record.id
             u.user_id = record.user.id
-            u.sender = record.request_id ? record.request_id:'Not available'
+            // u.sender = record.request_id ? record.request_id:'Not available'
             u.amount = record.amount
             u.type = record.title
-            u.receiver = record.user.email
+            u.sender = record.user.username
+            u.receiver = record.receiver.username
             // u.type = record.transaction_type
             u.status = record.status
             u.created_at = record.updated_at
