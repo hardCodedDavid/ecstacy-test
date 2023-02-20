@@ -210,7 +210,7 @@ import { BASE_URL } from '../../../baseconstant';
         fetchPermission(){
           this.axios.get(BASE_URL+'/api/v1/admin/permissions')
           .then((res) => {
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 this.options = res.data.data;
             })
             .catch((err) => {
