@@ -34,7 +34,7 @@ import { BASE_URL } from "../../../baseconstant"
           totalRows: 1,
           currentPage: 1,
           perPage: 20,
-          pageOptions: [20, 50, 100, 200],
+          pageOptions: [20, 50, 100],
           filter: null,
           filterOn: [],
           sortBy: "age",
@@ -54,7 +54,7 @@ import { BASE_URL } from "../../../baseconstant"
               sortable: true,
             },
             {
-              key: "bank",
+              key: "bank_name",
               label: "Bank Name",
             },
             {
@@ -68,7 +68,7 @@ import { BASE_URL } from "../../../baseconstant"
               sortable: true,
             },
             {
-              key: "user.email",
+              key: "email",
               label: "User Email",
               sortable: true,
             },
@@ -103,10 +103,29 @@ import { BASE_URL } from "../../../baseconstant"
       methods: {
         fetchPayments(){
             this.isBusy = !this.isBusy
-            this.axios.get(BASE_URL+'/api/v1/admin/withdrawals?page=1&per_page=10000')
+            this.axios.get(BASE_URL+'/api/v1/admin/withdrawals?per_page=10000')
             .then((res) => {
-                console.log(res.data.data.data);
-                this.paymentData = res.data.data;
+                // console.log(res.data.data);
+                // console.log(JSON.parse(res.data.data.data[0].meta_data));
+
+                const dataArrr = []
+          res.data.data.data.forEach((record) => {
+            let u = {}
+            u.id = record.id
+            u.user_id = record.user.id
+            u.amount = record.amount
+            u.bank_name = JSON.parse(record.meta_data).bank_name
+            u.email = record.user.email
+            u.account_name = JSON.parse(record.meta_data).account_name
+            u.account_number = JSON.parse(record.meta_data).account_number
+            u.status = record.status
+            u.created_at = record.created_at
+
+            // console.log(u)
+            dataArrr.push(u)
+          })
+          this.paymentData = dataArrr
+          this.totalRows = dataArrr.length
             })
             .catch((err) => {
                 // this.error = true
