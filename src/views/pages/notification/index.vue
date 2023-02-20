@@ -35,30 +35,37 @@ import { BASE_URL } from "../../../baseconstant"
           ],
           channelOption: ['email'],
           recipientOption: ['all'],
-          notify: {
-            channel: this.channel,
-            recipient: this.recipient,
-            subject: this.subject,
-            message: this.message,
-          },
+          channel: '',
+          recipient: '',
+          subject: '',
+          message: '',
+          // notify: {
+          //   channel: this.channel,
+          //   recipient: this.recipient,
+          //   subject: this.subject,
+          //   message: this.message,
+          // },
           submitted: false,
         };
       },
       middleware: "authentication",
       computed: {
       },
-      mounted() {
-        
-      },
       methods: {
         submitForm() {
           this.submitted = true;
-          this.axios.post(BASE_URL+'/api/v1/admin/notifications/send', this.notify)
+          const notify = {
+            channel: this.channel,
+            subject: this.subject,
+            recipient: this.recipient,
+            message: this.message
+          }
+          this.axios.post(BASE_URL+'/api/v1/admin/notifications/send', notify)
           .then((res) => {
                 console.log(res.data);
                 this.submitted = false;
-                this.notify = ""
-
+                // this.notify = ""
+                // console.log(this.notify)
                 this.$refs.mytoast.Add({
                 msg: "Notification Posted Successfully",
                 clickClose: false,
@@ -69,9 +76,9 @@ import { BASE_URL } from "../../../baseconstant"
             })
             .catch((err) => {
                 this.submitted = true;
-                console.log(err);
+                // console.log(err);
                 this.$refs.mytoast.Add({
-                msg: err.response.data.details,
+                msg: err.response.data.message,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -79,6 +86,11 @@ import { BASE_URL } from "../../../baseconstant"
               });
             })
             .finally(() => {
+              this.channel = ''
+              this.subject = ''
+              this.recipient = ''
+              this.message = ''
+                // this.submitted = false;
                 // this.isBusy =  false
             });
         }
@@ -100,11 +112,11 @@ import { BASE_URL } from "../../../baseconstant"
                       <div class="mb-3">
                         <label for="validationCustom01">Channel</label>
                         <multiselect
-                          v-model="notify.channel"
+                          v-model="channel"
                           :options="channelOption"
                           class="m-2"
                           :class="{
-                            'is-invalid': submitted && !notify.channel,
+                            'is-invalid': submitted && !channel,
                           }"
                         >
                         </multiselect>
@@ -114,11 +126,11 @@ import { BASE_URL } from "../../../baseconstant"
                       <div class="mb-3">
                         <label for="validationCustom02">Recipient</label>
                         <multiselect
-                          v-model="notify.recipient"
+                          v-model="recipient"
                           :options="recipientOption"
                           class="m-2"
                           :class="{
-                            'is-invalid': submitted && !notify.recipient,
+                            'is-invalid': submitted && !recipient,
                           }"
                         >
                         </multiselect>
@@ -134,18 +146,18 @@ import { BASE_URL } from "../../../baseconstant"
                           class="form-control m-2"
                           placeholder="Subject..."
                           :class="{
-                            'is-invalid': submitted && !notify.subject,
+                            'is-invalid': submitted && !subject,
                           }"
-                          v-model="notify.subject"
+                          v-model="subject"
                         />
-                        <div
-                          v-if="submitted && $v.notify.subject.$error"
+                        <!-- <div
+                          v-if="submitted && $v.subject.$error"
                           class="invalid-feedback"
                         >
-                          <span v-if="!$v.notify.subject.required"
+                          <span v-if="!$v.subject.required"
                             >This value is required.</span
                           >
-                        </div>
+                        </div> -->
                       </div>
                       <div class="mb-3">
                         <label for="validationCustom04">Message</label>
@@ -155,21 +167,22 @@ import { BASE_URL } from "../../../baseconstant"
                           id="" cols="30" 
                           rows="10"
                           :class="{
-                            'is-invalid': submitted && !notify.message,
+                            'is-invalid': submitted && !message,
                           }"
-                          v-model="notify.message"
+                          v-model="message"
                         ></textarea>
-                        <div
+                        <!-- <div
                           v-if="submitted && $v.form.state.$error"
                           class="invalid-feedback"
                         >
                           <span v-if="!$v.form.state.required"
                             >This value is required.</span
                           >
-                        </div>
+                        </div> -->
                       </div>
                   </div>
-                  <button @click="submitForm()" class="btn btn-primary m-2">Submit form</button>
+                  <button @click="submitForm()" :disabled="submitted" class="btn btn-primary m-2">
+                    Submit form</button>
               </div>
             </div>
             <!-- end card -->

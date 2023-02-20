@@ -282,6 +282,7 @@ import { BASE_URL } from '../../../baseconstant';
               <label for="" class="m-2">Name: </label>
               <input type="text" v-model="role.name" id="horizontal-firstname-input" placeholder="Enter role name..." class="m-2 form-control">
               <label class="m-2">Permission: </label>
+              
               <multiselect
                 class="m-2"
                 v-model="role.permissions"
