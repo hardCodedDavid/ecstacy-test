@@ -105,7 +105,7 @@ import { BASE_URL } from "../../../baseconstant"
             this.isBusy = !this.isBusy
             this.axios.get(BASE_URL+'/api/v1/admin/withdrawals?page=1&per_page=10000')
             .then((res) => {
-                console.log(res.data.data);
+                console.log(res.data.data.data);
                 this.paymentData = res.data.data;
             })
             .catch((err) => {
