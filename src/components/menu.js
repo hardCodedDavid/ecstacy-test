@@ -204,6 +204,12 @@ export const menuItems = [
            icon: 'uil-file-alt',
            link: '/provider',
          },
+         {
+           id: 20,
+           label: 'News & Updates',
+           icon: 'uil-comment-alt-notes',
+           link: '/news-update',
+         },
 
          // {
          //     id: 5,

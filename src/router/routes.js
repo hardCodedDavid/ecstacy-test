@@ -331,6 +331,14 @@ export default [
     component: () => import('../views/pages/management/providerShow'),
   },
   {
+    path: '/news-update/show/:id',
+    name: 'news-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/newsShow'),
+  },
+  {
     path: '/notification/subscribers',
     name: 'notifiaction',
     meta: {
@@ -353,6 +361,22 @@ export default [
       authRequired: true,
     },
     component: () => import('../views/pages/notification/all'),
+  },
+  {
+    path: '/news-update/add',
+    name: 'addnews',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/notification/add-news'),
+  },
+  {
+    path: '/news-update',
+    name: 'newsupdate',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/notification/news-update'),
   },
   {
     path: '/description',
