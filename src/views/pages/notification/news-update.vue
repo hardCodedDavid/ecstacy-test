@@ -1,8 +1,7 @@
 <script>
 // import Multiselect from "vue-multiselect";
 import VueToastr from 'vue-toastr'
-import CKEditor from '@ckeditor/ckeditor5-vue'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
@@ -14,7 +13,7 @@ import { BASE_URL } from '../../../baseconstant'
  */
 export default {
   // Multiselect,
-  components: { Layout, PageHeader, VueToastr, ckeditor: CKEditor.component },
+  components: { Layout, PageHeader, VueToastr },
   page: {
     title: 'News',
     meta: [
@@ -52,7 +51,7 @@ export default {
         image: this.image,
         body: '',
       },
-      editor: ClassicEditor,
+      // editor: ClassicEditor,
       error: {
         title: false,
         category: false,
@@ -265,7 +264,7 @@ export default {
     <PageHeader :title="title" :items="items" />
     <vue-toastr ref="mytoast"></vue-toastr>
     <!-- ::START ADD admin Modal -->
-    <b-modal
+    <!-- <b-modal
       id="modal-add-post"
       title="Add Post"
       title-class="font-18"
@@ -290,32 +289,34 @@ export default {
           </div>
           <div class="col-12">
             <div class="col-md-6">
-                            <b-form-group
-                            label="Image"
-                            label-for="formrow-image"
-                            class="mb-3"
-                            >
-                            <b-form-file
-                                placeholder="Choose an image here..."
-                                @change="onFileChange"
-                                v-model="form.image"
-                                :state="Boolean(form.image)"
-                                v-bind:class="{ 'is-invalid': error.image }"
-                            ></b-form-file>
-                            </b-form-group>
-                            <p class="text-danger" v-if="error.image">the image field is required</p>
-                        </div>
-                        <div class="row">
-                            <div class="col-6" v-if="url">
-                            <div class="card border shadow-none">
-                                <img
-                                class="card-img-top img-fluid"
-                                :src="url"
-                                alt="Card image cap"
-                                />
-                            </div>
-                            </div>
-                        </div>
+              <b-form-group
+                label="Image"
+                label-for="formrow-image"
+                class="mb-3"
+              >
+                <b-form-file
+                  placeholder="Choose an image here..."
+                  @change="onFileChange"
+                  v-model="form.image"
+                  :state="Boolean(form.image)"
+                  v-bind:class="{ 'is-invalid': error.image }"
+                ></b-form-file>
+              </b-form-group>
+              <p class="text-danger" v-if="error.image">
+                the image field is required
+              </p>
+            </div>
+            <div class="row">
+              <div class="col-6" v-if="url">
+                <div class="card border shadow-none">
+                  <img
+                    class="card-img-top img-fluid"
+                    :src="url"
+                    alt="Card image cap"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-12">
             <div class="mt-5 mt-lg-4">
@@ -325,7 +326,6 @@ export default {
                   v-model="form.body"
                   :editor="editor"
                 ></ckeditor>
-                <!-- <b-form-textarea v-bind:class="{ 'is-invalid': error.body }" id="formrow-body" rows="10" v-model="form.body"></b-form-textarea> -->
               </b-form-group>
               <p class="text-danger" v-if="error.body">
                 the body field is required
@@ -339,7 +339,7 @@ export default {
           </div>
         </div>
       </form>
-    </b-modal>
+    </b-modal> -->
     <!-- ::END ADD Admin Modal -->
 
     <!-- ::START DELETE Admin Modal -->
@@ -380,25 +380,15 @@ export default {
           <i class="mdi mdi-plus me-1"></i> Add Post
         </button> -->
 
-
         <router-link
-                :to="{ name: 'addnews' }"
-                style="color: #761300; max-width: 250px;"
-                class="d-inline-block text-truncate"
-                >
-                <button
-          type="button"
-          class="btn btn-primary mb-3 brand-primary"
+          :to="{ name: 'addnews' }"
+          style="color: #761300; max-width: 250px;"
+          class="d-inline-block text-truncate"
         >
-          <i class="mdi mdi-plus me-1"></i> Add Post
-        </button>
-                </router-link
-              >
-
-
-
-
-
+          <button type="button" class="btn btn-primary mb-3 brand-primary">
+            <i class="mdi mdi-plus me-1"></i> New Post
+          </button>
+        </router-link>
 
         <div
           class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline"
