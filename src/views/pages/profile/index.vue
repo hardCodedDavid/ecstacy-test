@@ -4,7 +4,7 @@ import PageHeader from '@/components/page-header'
 // import Switches from "vue-switches";
 import VueToastr from 'vue-toastr'
 import appConfig from '@/app.config'
-import { BASE_URL } from "../../../baseconstant"
+import { BASE_URL } from '../../../baseconstant'
 
 /**
  * Profile component
@@ -40,6 +40,17 @@ export default {
         old_password: '',
         new_password: '',
       },
+      service:{
+        wallet_topup:50.05,
+        airtime_topup:50.05,
+        data_topup:50.05,
+        utility_topup:50.05,
+        tvsubscription_topup:50.05,
+        epin_topup:50.05,
+        wallet_transfer_topup:50.05,
+        withdrawal_topup:50.05,
+        games_charge:50.05,
+      },
       profile_photo: '',
       user: null,
       login2FA: false,
@@ -52,7 +63,7 @@ export default {
   },
   mounted() {
     this.getUser()
-    console.log(this.user)
+    // console.log(this.user)
   },
   methods: {
     resetPassword(e) {
@@ -72,10 +83,7 @@ export default {
         })
       } else {
         this.axios
-          .put(
-            BASE_URL+'/api/v1/admin/password/change',
-            this.password
-          )
+          .put(BASE_URL + '/api/v1/admin/password/change', this.password)
           .then(() => {
             // console.log(res.data.data)
             this.$refs.mytoast.Add({
@@ -102,6 +110,37 @@ export default {
             this.loadings = false
           })
       }
+    },
+    updateServiceCharge(e) {
+      e.preventDefault()
+      this.loadings = true
+        this.axios
+          .put(BASE_URL + '/api/v1/admin/update-service-charges', this.service)
+          .then(() => {
+            this.$refs.mytoast.Add({
+              msg: 'Service Charge Updated Successfully',
+              clickClose: false,
+              timeout: 5000,
+              position: 'toast-top-right',
+              type: 'success',
+            })
+          })
+          .catch((err) => {
+            // this.error = true
+            // console.log(err.response)
+            this.$refs.mytoast.Add({
+              msg: err.response.data.message,
+              clickClose: false,
+              timeout: 5000,
+              position: 'toast-top-right',
+              type: 'error',
+            })
+          })
+          .finally(() => {
+            this.getUser()
+            this.loadings = false
+          })
+      
     },
     check2FA() {
       if (this.user.two_factor_enabled == true) {
@@ -176,7 +215,7 @@ export default {
       e.preventDefault()
       this.isLoading = true
       this.axios
-        .put(BASE_URL+'/api/v1/admin/profile/update', this.admin)
+        .put(BASE_URL + '/api/v1/admin/profile/update', this.admin)
         .then(() => {
           //   console.log(res)
           this.getUser()
@@ -214,7 +253,7 @@ export default {
       formData.append('photo', this.profile_photo)
 
       this.axios
-        .post(BASE_URL+'/api/v1/admin/profile/photo', formData, {
+        .post(BASE_URL + '/api/v1/admin/profile/photo', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -249,10 +288,11 @@ export default {
     getUser() {
       if (this.$cookies.get('token')) {
         this.axios
-          .get(BASE_URL+'/api/v1/admin/profile')
+          .get(BASE_URL + '/api/v1/admin/profile')
           .then((res) => {
-            console.log(res.data.data)
-            this.user = res.data.data
+            // console.log(res.data.data)
+            this.user = res.data.data.user
+            this.service = res.data.data.service_charges
             // this.admin.name = res.data.data.name
             // this.admin.phone = res.data.data.phone
             // this.url = res.data.data.profile_photo
@@ -471,6 +511,152 @@ export default {
                         placeholder="Enter New Password"
                         v-model="password.new_password"
                       />
+                      <button
+                        v-if="!isLoading"
+                        type="submit"
+                        class="btn btn-primary"
+                      >
+                        Submit
+                      </button>
+                      <button v-if="isLoading" class="btn btn-primary">
+                        <b-spinner
+                          small
+                          variant="white"
+                          role="status"
+                          class="me-2"
+                        ></b-spinner>
+                        <span>Loading...</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </b-tab>
+            <b-tab>
+              <template v-slot:title>
+                <i class="uil-cog toggle-right font-size-20"></i>
+                <span class="d-none d-sm-block">Service Settings</span>
+              </template>
+              <div>
+                <div>
+                  <h5 class="mb-3">Service Settings</h5>
+                  <form method="post" @submit="updateServiceCharge">
+                    <div class="card p-3 mb-3">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="wallet"
+                            >Wallet topup charge</label
+                          >
+                          <input
+                            id="wallet"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.wallet_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="airtime"
+                            >Airtime service charge</label
+                          >
+                          <input
+                            id="airtime"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.airtime_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >Data service charge</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.data_topup"
+                          />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="bill"
+                            >Utility Bills charge</label
+                          >
+                          <input
+                            id="bill"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.utility_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="tv"
+                            >Tv subscription service charge</label
+                          >
+                          <input
+                            id="tv"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.tvsubscription_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="epin"
+                            >E-pin service charge</label
+                          >
+                          <input
+                            id="epin"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.epin_topup"
+                          />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="transfer"
+                            >Wallet transfer charge</label
+                          >
+                          <input
+                            id="transfer"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.wallet_transfer_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="wd"
+                            >Withdrawal service charge</label
+                          >
+                          <input
+                            id="wd"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.withdrawal_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="games"
+                            >Game subscription charge</label
+                          >
+                          <input
+                            id="games"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.games_charge"
+                          />
+                        </div>
+                      </div>
+
                       <button
                         v-if="!isLoading"
                         type="submit"

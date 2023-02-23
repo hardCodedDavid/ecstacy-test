@@ -2,13 +2,14 @@
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
 import appConfig from '@/app.config'
-import { BASE_URL } from "../../../baseconstant"
+import { BASE_URL } from '../../../baseconstant'
+    import VueToastr from "vue-toastr";
 
 /**
  * Profile component
  */
 export default {
-  components: { Layout, PageHeader },
+  components: { Layout, PageHeader,VueToastr },
   page: {
     title: 'User Detail',
     meta: [
@@ -31,6 +32,10 @@ export default {
         },
       ],
       user: null,
+      wallet: {
+        email: '',
+        amount: ''
+      },
       wallet_balance: 0,
       total_transactions: 0,
       event: [],
@@ -40,9 +45,100 @@ export default {
       currentPage: 1,
       per_page: 10,
       pageOptions: [10, 20, 30, 50],
+      isBusy: false,
     }
   },
   methods: {
+    fundUserWallet(){
+      this.isBusy =  true
+        this.axios.put(BASE_URL+'/api/v1/admin/fund-wallet',this.wallet)
+        .then(() => {
+              this.fetchData();
+              this.$refs.mytoast.Add({
+                msg: "Wallet topup Successful",
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
+          })
+          .catch((err) => {
+              console.log(err);
+              this.$refs.mytoast.Add({
+                msg: err.response.data.message,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
+          })
+          .finally(() => {
+              this.isBusy =  false
+              this.wallet.amount = ''
+          });
+    },
+    fetchData(){
+if (this.$cookies.get('token')) {
+      this.axios
+        .get(
+          BASE_URL +
+            '/api/v1/admin/view-user/' +
+            this.$route.params.id +
+            '?page=' +
+            this.currentPage +
+            '&per_page=' +
+            this.per_page
+        )
+        .then((res) => {
+          //   console.log('dd')
+          //   console.log(res.data)
+
+          console.log(res.data.data.transactions)
+          // console.log(res.data.data.wdtransactions)
+          this.wallet.email = res.data.data.user.email
+          this.user = res.data.data.user
+          this.transactions = res.data.data.transactions
+          this.wallet_balance = res.data.data.wallet_balance
+          this.total_transactions = res.data.data.total_transactions
+          // this.wdtransactions = res.data.data.wdtransactions
+
+          const wdArr = []
+          res.data.data.wdtransactions.map((item) => {
+            const u = {}
+            u.id = item.id
+            u.title = item.title
+            u.status = item.status
+            u.amount = item.amount
+            u.bank_name = item.bank_name || 'Not available'
+            u.narration = item.narration || 'Not available'
+            u.created_at = item.created_at || 'Not available'
+            u.type = item.transaction_type || 'Not available'
+            u.account_name = item.account_name || 'Not available'
+            u.account_number = item.account_number || 'Not available'
+
+            wdArr.push(u)
+          })
+          this.wdtransactions = wdArr
+        })
+        .catch((err) => {
+          // this.error = true
+          console.log(err.response)
+          this.$refs.mytoast.Add({
+            msg: err.response.message || err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+        })
+        .finally(() => {
+          // this.loading =  false
+        })
+    } else {
+      console.log('dd')
+      localStorage.removeItem('user')
+    }
+    }
     // fetchWallet(){
     //     this.axios.get('https://api.codedevents.com/admin/users/' + this.$route.params.id + '/wallet')
     //     .then((res) => {
@@ -87,67 +183,11 @@ export default {
     // }
   },
   mounted() {
-    // this.fetchWallet();
+    this.fetchData();
     // this.fetchEvent();
     // this.fetchTransaction();
     // console.log(this.$cookies.get('token'))
-    if (this.$cookies.get('token')) {
-      this.axios
-        .get(
-          BASE_URL+'/api/v1/admin/view-user/' +
-            this.$route.params.id +
-            '?page=' +
-            this.currentPage +
-            '&per_page=' +
-            this.per_page
-        )
-        .then((res) => {
-        //   console.log('dd')
-        //   console.log(res.data)
-
-        console.log(res.data.data.wdtransactions)
-          this.user = res.data.data.user
-          this.transactions = res.data.data.transactions
-          this.wallet_balance = res.data.data.wallet_balance
-          this.total_transactions = res.data.data.total_transactions
-          // this.wdtransactions = res.data.data.wdtransactions
-
-          const wdArr = []
-          res.data.data.wdtransactions.map((item) => {
-            const u = {}
-            u.id = item.id
-            u.title = item.title
-            u.status = item.status
-            u.amount = item.amount
-            u.bank_name = item.bank_name || 'Not available'
-            u.narration = item.narration || 'Not available'
-            u.created_at = item.created_at || 'Not available'
-            u.type = item.transaction_type || 'Not available'
-            u.account_name = item.account_name || 'Not available'
-            u.account_number = item.account_number || 'Not available'
-
-            wdArr.push(u)
-          })
-          this.wdtransactions = wdArr
-        })
-        .catch((err) => {
-          // this.error = true
-          console.log(err.response)
-          this.$refs.mytoast.Add({
-            msg: err.response.message || err.response.data.message,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          // this.loading =  false
-        })
-    } else {
-      console.log('dd')
-      localStorage.removeItem('user')
-    }
+    
   },
 }
 </script>
@@ -155,8 +195,9 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
+        <vue-toastr ref="mytoast"></vue-toastr>
 
-    <!-- <div class="row" v-if="!user">
+    <div class="row" v-if="isBusy">
           <div class="col-xl-12">
             <div class="text-center my-3">
               <a href="javascript:void(0);" class="text-primary"
@@ -167,9 +208,54 @@ export default {
               </a>
             </div>
           </div>
-        </div> -->
+        </div>
 
-    <div class="row mb-4" v-if="user">
+    <!-- ::START TOPUP WALLET Modal -->
+    <b-modal
+      id="modal-fund-wallet"
+      title="Fund wallet"
+      title-class="font-18"
+      hide-footer
+    >
+      <label for="" class="m-2">Email Address: </label>
+      <input
+        type="email"
+        id="horizontal-firstname-input"
+        v-model="wallet.email"
+        readonly
+        class="m-2 form-control"
+      />
+      <label for="" class="m-2">Amount: </label>
+      <input
+        type="number"
+        v-model="wallet.amount"
+        id="horizontal-firstname-input"
+        placeholder="Amount to fund..."
+        class="m-2 form-control"
+      />
+
+      <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
+      <div class="modal-footer">
+        <button
+          @click="fundUserWallet(), $bvModal.hide('modal-fund-wallet')"
+          type="button"
+          class="btn btn-primary"
+        >
+          Fund Wallet
+        </button>
+        <b-button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          @click="$bvModal.hide('modal-fund-wallet')"
+        >
+          Close
+        </b-button>
+      </div>
+    </b-modal>
+    <!-- ::END TOPUP WALLET Modal -->
+
+    <div class="row mb-4" v-if="user && !isBusy">
       <div class="col-xl-4">
         <div class="card h-100">
           <div class="card-body">
@@ -270,7 +356,23 @@ export default {
                             <a href="#" class="text-dark">Wallet Balance</a>
                           </td>
                           <td>
-                            <p>{{ wallet_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</p>
+                            <p>
+                              {{
+                                wallet_balance
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              }}
+                            <button
+                              class="px-3 btn btn-primary text-white"
+                              style="margin-left:20px;"
+                              type="button"
+                              v-b-tooltip.hover
+                              title="Edit"
+                              v-b-modal.modal-fund-wallet
+                            >
+                              Topup
+                            </button>
+                            </p>
                           </td>
                         </tr>
                         <tr>
@@ -373,22 +475,34 @@ export default {
                         <tr>
                           <th scope="row">{{ index + 1 }}</th>
                           <td>
-                            <p class="badge bg-pill font-size-12 text-center rounded" :class="{
+                            <p
+                              class="badge bg-pill font-size-12 text-center rounded"
+                              :class="{
                                 'bg-soft-success':
                                   transaction.transaction_type === 'inflow',
                                 'bg-soft-danger':
                                   transaction.transaction_type === 'outflow',
-                              }">{{ transaction.transaction_type }}</p>
-                          </td>
-                          <td>
-                            <p>{{ transaction.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</p>
+                              }"
+                            >
+                              {{ transaction.transaction_type }}
+                            </p>
                           </td>
                           <td>
                             <p>
                               {{
+                                transaction.amount
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              }}
+                            </p>
+                          </td>
+                          <td>
+                            <p>
+                              {{
+                                transaction.user != null ?
                                 transaction.user.first_name +
                                   ' ' +
-                                  transaction.user.last_name
+                                  transaction.user.last_name:'Not available'
                               }}
                             </p>
                           </td>
@@ -397,7 +511,8 @@ export default {
                               class="badge bg-pill font-size-12"
                               :class="{
                                 'bg-soft-success':
-                                  (transaction.status === 'delivered') || (transaction.status === 'success'),
+                                  transaction.status === 'delivered' ||
+                                  transaction.status === 'success',
                                 'bg-soft-danger':
                                   transaction.status === 'failed',
                                 'bg-soft-warning':
@@ -448,26 +563,14 @@ export default {
                       >
                         <tr>
                           <th scope="row">{{ index + 1 }}</th>
-
-            <!-- u.title = item.title
-            u.status = item.status
-            u.amount = item.amount
-            u.bank_name = item.bank_name || 'Not available'
-            u.narration = item.narration || 'Not available'
-            u.created_at = item.created_at || 'Not available'
-            u.type = item.transaction_type || 'Not available'
-            u.account_name = item.account_name || 'Not available'
-            u.account_number = item.account_number || 'Not available' -->
-                          <!-- <td>
-                            <p class="badge bg-pill font-size-12 text-center rounded" :class="{
-                                'bg-soft-success':
-                                  transaction.transaction_type === 'inflow',
-                                'bg-soft-danger':
-                                  transaction.transaction_type === 'outflow',
-                              }">{{ transaction.transaction_type }}</p>
-                          </td> -->
                           <td>
-                            <p>{{ transaction.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</p>
+                            <p>
+                              {{
+                                transaction.amount
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                              }}
+                            </p>
                           </td>
                           <td>
                             <p>
@@ -500,7 +603,8 @@ export default {
                               style="position:relative;top:-6px;"
                               :class="{
                                 'bg-soft-success':
-                                  (transaction.status === 'delivered') || (transaction.status === 'success'),
+                                  transaction.status === 'delivered' ||
+                                  transaction.status === 'success',
                                 'bg-soft-danger':
                                   transaction.status === 'failed',
                                 'bg-soft-warning':
@@ -517,8 +621,8 @@ export default {
                       <tbody v-if="transactions.length == 0">
                         <tr>
                           <td colspan="7" class="text-center pt-3 pb-5">
-                          No transactions has been made
-                        </td>
+                            No transactions has been made
+                          </td>
                         </tr>
                       </tbody>
                     </table>
