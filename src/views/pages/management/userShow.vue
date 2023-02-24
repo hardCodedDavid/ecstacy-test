@@ -51,11 +51,39 @@ export default {
   methods: {
     fundUserWallet(){
       this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/fund-wallet',this.wallet)
+        this.axios.put(BASE_URL+'/api/v1/admin/fund-wallet/credit',this.wallet)
         .then(() => {
               this.fetchData();
               this.$refs.mytoast.Add({
                 msg: "Wallet topup Successful",
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "success",
+              });
+          })
+          .catch((err) => {
+              console.log(err);
+              this.$refs.mytoast.Add({
+                msg: err.response.data.message,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
+          })
+          .finally(() => {
+              this.isBusy =  false
+              this.wallet.amount = ''
+          });
+    },
+    withdrawUserFund(){
+      this.isBusy =  true
+        this.axios.put(BASE_URL+'/api/v1/admin/wallet-action/debit',this.wallet)
+        .then(() => {
+              this.fetchData();
+              this.$refs.mytoast.Add({
+                msg: "Wallet withdrawal Successful",
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -255,6 +283,52 @@ if (this.$cookies.get('token')) {
     </b-modal>
     <!-- ::END TOPUP WALLET Modal -->
 
+
+    <!-- ::START TOPUP WALLET Modal -->
+    <b-modal
+      id="modal-withdraw-wallet"
+      title="Fund wallet"
+      title-class="font-18"
+      hide-footer
+    >
+      <label for="" class="m-2">Email Address: </label>
+      <input
+        type="email"
+        id="horizontal-firstname-input"
+        v-model="wallet.email"
+        readonly
+        class="m-2 form-control"
+      />
+      <label for="" class="m-2">Amount: </label>
+      <input
+        type="number"
+        v-model="wallet.amount"
+        id="horizontal-firstname-input"
+        placeholder="Amount to fund..."
+        class="m-2 form-control"
+      />
+
+      <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
+      <div class="modal-footer">
+        <button
+          @click="withdrawUserFund(), $bvModal.hide('modal-fund-wallet')"
+          type="button"
+          class="btn btn-primary"
+        >
+          Fund Wallet
+        </button>
+        <b-button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          @click="$bvModal.hide('modal-fund-wallet')"
+        >
+          Close
+        </b-button>
+      </div>
+    </b-modal>
+    <!-- ::END TOPUP WALLET Modal -->
+
     <div class="row mb-4" v-if="user && !isBusy">
       <div class="col-xl-4">
         <div class="card h-100">
@@ -371,6 +445,16 @@ if (this.$cookies.get('token')) {
                               v-b-modal.modal-fund-wallet
                             >
                               Topup
+                            </button>
+                            <button
+                              class="px-3 btn btn-primary text-white"
+                              style="margin-left:20px;"
+                              type="button"
+                              v-b-tooltip.hover
+                              title="Edit"
+                              v-b-modal.modal-withdraw-wallet
+                            >
+                              Withdraw
                             </button>
                             </p>
                           </td>
