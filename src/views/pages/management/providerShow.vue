@@ -429,6 +429,7 @@ export default {
       <input
         type="text"
         v-model="product.type"
+        readonly
         id="horizontal-firstname-input"
         placeholder="Enter product type..."
         class="m-2 form-control"
