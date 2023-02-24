@@ -51,7 +51,7 @@ export default {
   methods: {
     fundUserWallet(){
       this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/fund-wallet/credit',this.wallet)
+        this.axios.put(BASE_URL+'/api/v1/admin/wallet-action/credit',this.wallet)
         .then(() => {
               this.fetchData();
               this.$refs.mytoast.Add({
@@ -284,10 +284,10 @@ if (this.$cookies.get('token')) {
     <!-- ::END TOPUP WALLET Modal -->
 
 
-    <!-- ::START TOPUP WALLET Modal -->
+    <!-- ::START withdraw WALLET Modal -->
     <b-modal
       id="modal-withdraw-wallet"
-      title="Fund wallet"
+      title="Withdraw wallet"
       title-class="font-18"
       hide-footer
     >
@@ -311,23 +311,23 @@ if (this.$cookies.get('token')) {
       <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
       <div class="modal-footer">
         <button
-          @click="withdrawUserFund(), $bvModal.hide('modal-fund-wallet')"
+          @click="withdrawUserFund(), $bvModal.hide('modal-withdraw-wallet')"
           type="button"
           class="btn btn-primary"
         >
-          Fund Wallet
+          Withdraw Funds
         </button>
         <b-button
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          @click="$bvModal.hide('modal-fund-wallet')"
+          @click="$bvModal.hide('modal-withdraw-wallet')"
         >
           Close
         </b-button>
       </div>
     </b-modal>
-    <!-- ::END TOPUP WALLET Modal -->
+    <!-- ::END withdraw WALLET Modal -->
 
     <div class="row mb-4" v-if="user && !isBusy">
       <div class="col-xl-4">
