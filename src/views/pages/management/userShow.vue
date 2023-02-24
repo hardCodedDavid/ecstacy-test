@@ -592,7 +592,7 @@ if (this.$cookies.get('token')) {
                           </td>
                           <tb>
                             <span
-                              class="badge bg-pill font-size-12"
+                              class="badge bg-pill font-size-12 mt-3"
                               :class="{
                                 'bg-soft-success':
                                   transaction.status === 'delivered' ||
