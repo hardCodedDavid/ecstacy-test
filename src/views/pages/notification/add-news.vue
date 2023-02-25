@@ -50,13 +50,13 @@ export default {
       url: null,
       form: {
         title: '',
-        category: '',
+        // category: '',
         thumbnail: '',
         content: '',
       },
       error: {
         title: false,
-        category: false,
+        // category: false,
         thumbnail: false,
         content: false,
       },
