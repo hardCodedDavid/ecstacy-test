@@ -50,6 +50,9 @@ export default {
         wallet_transfer_topup:50.05,
         withdrawal_topup:50.05,
         games_charge:50.05,
+        glo_cg_topup:50.05,
+        airtel_cg_topup:50.05,
+        mtn_sme_topup:50.05,
       },
       profile_photo: '',
       user: null,
@@ -653,6 +656,44 @@ export default {
                             class="form-control mb-4"
                             placeholder="Amount"
                             v-model="service.games_charge"
+                          />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="data"
+                            >MTN SME service charge</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.mtn_sme_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >GLO SME/CG service charge</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.glo_cg_topup"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >AIRTEL SME/CG service charge</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.airtel_cg_topup"
                           />
                         </div>
                       </div>

@@ -30,21 +30,21 @@ export default {
   },
   mounted: function () {
 
-    this.axios.get('https://api.codedevents.com/admin/transactions/payments')
-    .then((res) => {
-        this.badgePay = res.data.meta.pending;
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    // this.axios.get('https://api.codedevents.com/admin/transactions/payments')
+    // .then((res) => {
+    //     this.badgePay = res.data.meta.pending;
+    // })
+    // .catch((err) => {
+    //     console.log(err);
+    // });
 
-    this.axios.get('https://api.codedevents.com/admin/transactions/withdrawals')
-    .then((res) => {
-        this.badgeWit = res.data.meta.pending;
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    // this.axios.get('https://api.codedevents.com/admin/transactions/withdrawals')
+    // .then((res) => {
+    //     this.badgeWit = res.data.meta.pending;
+    // })
+    // .catch((err) => {
+    //     console.log(err);
+    // });
     // eslint-disable-next-line no-unused-vars
     var menuRef = new MetisMenu("#side-menu");
     this._activateMenuDropdown();
@@ -261,10 +261,10 @@ export default {
         <!-- Left Menu Start -->
         <ul class="metismenu list-unstyled" id="side-menu">
           <template v-for="item in menuItems">
-            <li class="menu-title" v-if="item.isTitle" :key="item.id">
+            <li class="menu-title" v-if="item.isTitle && item.show" :key="item.id">
               {{ $t(item.label) }}
             </li>
-            <li v-if="!item.isTitle && !item.isLayout" :key="item.id">
+            <li v-if="!item.isTitle && !item.isLayout && item.show" :key="item.id">
               <a
                 v-if="hasItems(item)"
                 href="javascript:void(0);"

@@ -33,7 +33,7 @@ import { BASE_URL } from "../../../baseconstant"
               active: true,
             },
           ],
-          channelOption: ['email'],
+          channelOption: ['email','push-notification'],
           recipientOption: ['all'],
           channel: '',
           recipient: '',

@@ -584,7 +584,7 @@ export default {
                     ><router-link
                       class="text-info"
                       :to="{
-                        name: 'provider-details',
+                        name: item.name === 'mysimhosting.cloud' ?'mysimhosting-details':'provider-details',
                         params: { id: item.id },
                       }"
                       v-b-tooltip.hover

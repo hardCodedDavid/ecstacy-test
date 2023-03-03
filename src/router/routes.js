@@ -1,5 +1,6 @@
 import store from '@/state/store'
 
+// const permissions = JSON.parse(localStorage.getItem('permissions'))
 export default [
   {
     path: '/login',
@@ -329,6 +330,14 @@ export default [
       authRequired: true,
     },
     component: () => import('../views/pages/management/providerShow'),
+  },
+  {
+    path: '/management/provider/:id',
+    name: 'mysimhosting-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/mySimHostingProviderShow'),
   },
   {
     path: '/news-update/show/:id',

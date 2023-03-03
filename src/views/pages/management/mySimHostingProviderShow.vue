@@ -13,7 +13,7 @@ import { BASE_URL } from '../../../baseconstant'
 export default {
   components: { Layout, PageHeader, Multiselect, VueToastr },
   page: {
-    title: 'Admin',
+    title: 'Service',
     meta: [
       {
         name: 'description',
@@ -23,68 +23,82 @@ export default {
   },
   data() {
     return {
-      title: 'Admin',
+      title: 'Manage Services',
       isBusy: false,
       items: [
         {
           text: 'App',
         },
         {
-          text: 'Admin',
+          text: 'Services',
           active: true,
         },
       ],
-      adminData: [],
+      providerData: [],
       totalRows: 1,
       currentPage: 1,
       perPage: 20,
-      pageOptions: [10, 25, 50, 100],
+      pageOptions: [10, 20, 30, 50],
       filter: null,
       filterOn: [],
-      sortBy: 'age',
+      sortBy: 'name',
       sortDesc: false,
+      url: false,
+      profile_photo: '',
+      product: {
+        id: this.id,
+        name: this.plan,
+        amount: this.amount,
+        type: this.type
+      },
       fields: [
         {
           key: 'index',
           label: 'S/N',
         },
+        // {
+        //   key: 'plan_id',
+        //   label: 'Plan ID',
+        // },
         {
           key: 'thumbnail',
-          label: 'Image',
+          label: 'Thumbnail',
         },
         {
-          key: 'name',
+          key: 'network',
+          label: 'Network',
+        },
+        {
+          key: 'plan',
           label: 'Name',
         },
         {
-          key: 'email',
-          label: 'Email',
-          sortable: true,
+          key: 'amount',
+          label: 'Amount',
         },
         {
-          key: 'phone',
-          label: 'Phone',
-          sortable: true,
-        },
-        {
-          key: 'role',
-          label: 'Role',
+          key: 'type',
+          label: 'Plan Type',
         },
         {
           key: 'status',
           label: 'Status',
         },
+        {
+          key: 'created_at',
+          label: 'Date',
+          sortable: true,
+        },
         'action',
       ],
       admin: {
-        // id: this.id,
+        id: this.id,
         name: this.name,
         email: this.email,
         phone: this.phone,
         role: this.role,
       },
-      options: [{ name: 'admin', id: 'id' }],
-      errorMessage: '',
+      options: null,
     }
   },
   middleware: 'authentication',
@@ -93,194 +107,58 @@ export default {
      * Total no. of records
      */
     rows() {
-      return this.adminData.length
+      return this.providerData.length
     },
   },
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length
     this.fetchData()
+    // console.log(this.$route.params.id)
   },
   methods: {
-    fetchData() {
-      this.isBusy = true
-      this.axios
-        .get(BASE_URL + '/api/v1/admin/all?per_page=10000')
-        .then((res) => {
-          console.log(res.data.data)
-          // this.totalRows = res.data.data.total
-          // res.data.data.data.map((g) => {
-          //   g.role = g.roles.length > 0 ? g.roles[0].name : ''
-          // })
-          console.log(res.data.data.data)
-          this.adminData = res.data.data.data
-          this.fetchRoles()
-        })
-        .catch((err) => {
-          console.log(err.response.data.message)
-        })
-        .finally(() => {
-          this.isBusy = false
-        })
+    onFileChange(e) {
+      const file = e.target.files[0]
+      this.url = URL.createObjectURL(file)
+      this.profile_photo = URL.createObjectURL(file)
     },
-    addAdmin() {
-      console.log(this.admin.role)
-      if (this.admin.role) {
-        this.admin.role = this.admin.role.id
-      }
+    getProductInfo(item) {
+      this.product.id = item.id
+      this.product.name = item.network
+      this.product.type = item.type
+      this.product.amount = item.amount
+    },
+    editProduct() {
       this.isBusy = true
-      console.log(this.admin.role)
-      // const error = ''
-      // console.log(this.admin.email)
-      if (!this.admin.email) {
-        this.errorMessage = 'Email is required'
-      } else if (!this.admin.name) {
-        this.errorMessage = 'Name is required'
-      } else if (!this.admin.phone) {
-        this.errorMessage = 'Phone number is required'
-      } else if (!this.admin.role) {
-        this.errorMessage = 'Role is required'
-      }
-      if (this.errorMessage != '') {
-        this.$refs.mytoast.Add({
-          msg: this.errorMessage,
-          clickClose: false,
-          timeout: 5000,
-          position: 'toast-top-right',
-          type: 'success',
-        })
-        this.isBusy = false
-      }
+      // provider: {
+      //   id: this.id,
+      //   provider_name: this.name,
+      // },
+      const formData = new FormData()
+      // Append the method only if you are using a patch route in your server side
+      // Append the file
+    //   formData.append('service_name',this.product.name)
+    //   formData.append('type', this.product.type)
+    if(this.profile_photo != '') {
+      formData.append('photo', this.profile_photo)
+    }
+      formData.append('product_id', this.product.id)
+      formData.append('amount', this.product.amount)
 
-      if (this.isBusy === true) {
-        this.axios
-          .post(BASE_URL + '/api/v1/admin/create', this.admin)
-          .then(() => {
-            // console.log(res.data.data);
-            this.fetchData()
-            this.$refs.mytoast.Add({
-              msg: 'Admin Created Successfully',
-              clickClose: false,
-              timeout: 5000,
-              position: 'toast-top-right',
-              type: 'success',
-            })
-          })
-          .catch((err) => {
-            console.log(err.response)
-            this.$refs.mytoast.Add({
-              msg: err.response.data.message,
-              clickClose: false,
-              timeout: 5000,
-              position: 'toast-top-right',
-              type: 'error',
-            })
-          })
-          .finally(() => {
-            this.fetchData()
-            this.isBusy = false
-          })
-      }
-      this.$bvModal.hide('modal-add-admin')
-    },
-    fetchRoles() {
-      this.isBusy = true
       this.axios
-        .get(BASE_URL + '/api/v1/admin/roles')
-        .then((res) => {
-          // console.log(res.data.data)
-          const rolesArr = []
-          res.data.data.map((d) => {
-            let obj = {}
-            obj.id = d.id
-            obj.name = d.name
-            rolesArr.push(obj)
-          })
-          // console.log(rolesArr)
-          this.options = rolesArr
-          // this.options = res.data.data
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-        .finally(() => {
-          this.isBusy = false
-        })
-    },
-    getAdminInfo(item) {
-      this.admin.id = item.id
-      this.admin.name = item.name
-      this.admin.email = item.email
-      this.admin.phone = item.phone
-      this.admin.role = item.role
-    },
-    deleteAdmin() {
-      this.isBusy = true
-      this.axios
-        .delete(BASE_URL + '/api/v1/admin/' + this.admin.id + '/delete')
-        .then((res) => {
-          console.log(res.data.data)
+        .post(
+          BASE_URL + '/api/v1/admin/providers/' + this.product.id+'/products/update-mysimhosting',
+          formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+        )
+        .then(() => {
           this.fetchData()
+
           this.$refs.mytoast.Add({
-            msg: 'Admin Deleted Successfully',
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'success',
-          })
-        })
-        .catch((err) => {
-          console.log(err)
-          this.$refs.mytoast.Add({
-            msg: err.response.data.message,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          this.isBusy = false
-        })
-    },
-    approveAdmin(id) {
-      this.isBusy = true
-      this.axios
-        .post(BASE_URL + '/api/v1/admin/' + id + '/approve')
-        .then((res) => {
-          console.log(res.data.data)
-          this.fetchData()
-          this.$refs.mytoast.Add({
-            msg: 'Admin Approved Successfully',
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'success',
-          })
-        })
-        .catch((err) => {
-          console.log(err)
-          this.$refs.mytoast.Add({
-            msg: err.response.data.message,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          this.isBusy = false
-        })
-    },
-    restrictAdmin(id) {
-      this.isBusy = true
-      this.axios
-        .put(BASE_URL + '/api/v1/admin/' + id + '/restrict')
-        .then((res) => {
-          console.log(res.data.data)
-          this.fetchData()
-          this.$refs.mytoast.Add({
-            msg: 'Admin Restricted Successfully',
+            msg: 'Product Edited Successfully',
             clickClose: false,
             timeout: 5000,
             position: 'toast-top-right',
@@ -289,8 +167,144 @@ export default {
         })
         .catch((err) => {
           // console.log(err);
+          // console.log(this.role);
+
           this.$refs.mytoast.Add({
             msg: err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+        })
+        .finally(() => {
+          this.isBusy = false
+          this.url = ''
+      this.profile_photo = ''
+        })
+    },
+    fetchData() {
+      this.isBusy = true
+      this.axios
+        .get(
+          BASE_URL +
+            '/api/v1/admin/providers/mysimdatahosting/products?per_page=10000'
+        )
+        .then((res) => {
+          //   console.log(res.data.data.data);
+          const data = res.data.data
+          
+          const dataArr = []
+            console.log(data)
+          data.forEach((user) => {
+            let u = {}
+            u.id = user.id
+            // u.plan_id = user.plan_id
+            u.thumbnail = user.thumbnail
+            u.network = user.network
+            u.plan = user.plan
+            u.amount = user.amount
+            u.type = user.type
+            u.status = user.status == 'enable' ? 'enabled' : 'disabled'
+            u.created_at = user.created_at
+
+            dataArr.push(u)
+          })
+          //   console.log(dataArr)
+          this.providerData = dataArr
+          // this.fetchRoles();
+        })
+        .catch((err) => {
+          //   console.log(err.response);
+          this.$refs.mytoast.Add({
+            msg: err.response.message || err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+        })
+        .finally(() => {
+          this.isBusy = false
+        })
+    },
+    deleteProvider(id) {
+      this.isBusy = true
+      this.axios
+        .delete(BASE_URL + '/api/v1/admin/providers/' + id)
+        .then((res) => {
+          this.$refs.mytoast.Add({
+            msg: res.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'success',
+          })
+          this.fetchData()
+        })
+        .catch((err) => {
+          this.$refs.mytoast.Add({
+            msg: err.response.message || err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+          // console.log(err.response);
+        })
+        .finally(() => {
+          this.isBusy = false
+        })
+    },
+    enableService(id) {
+      this.isBusy = true
+      this.axios
+        .put(BASE_URL + '/api/v1/admin/providers/' + id + '/products/enable-mysimhosting')
+        .then(() => {
+          // console.log(res.data.data);
+          this.fetchData()
+          this.$refs.mytoast.Add({
+            msg: 'Service enabled Successfully',
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'success',
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$refs.mytoast.Add({
+            msg: err.response.data.details,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+        })
+        .finally(() => {
+          this.isBusy = false
+        })
+    },
+    disableService(id) {
+      this.isBusy = true
+      console.log(id)
+      this.axios
+        .put(BASE_URL + '/api/v1/admin/providers/' + id + '/products/disable-mysimhosting')
+        .then(() => {
+          // console.log(res.data.data);
+          this.fetchData()
+          this.$refs.mytoast.Add({
+            msg: 'Service disabled Successfully',
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'success',
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$refs.mytoast.Add({
+            msg: err.response.data.details,
             clickClose: false,
             timeout: 5000,
             position: 'toast-top-right',
@@ -336,7 +350,7 @@ export default {
       />
       <label for="" class="m-2">Email: </label>
       <input
-        type="email"
+        type="text"
         v-model="admin.email"
         id="horizontal-firstname-input"
         placeholder="Enter admin email..."
@@ -361,7 +375,11 @@ export default {
 
       <!-- <textarea v-model="admin.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
       <div class="modal-footer">
-        <button @click="addAdmin()" type="button" class="btn btn-primary">
+        <button
+          @click="addAdmin(), $bvModal.hide('modal-add-admin')"
+          type="button"
+          class="btn btn-primary"
+        >
           Save changes
         </button>
         <b-button
@@ -405,15 +423,77 @@ export default {
     </b-modal>
     <!-- ::END DELETE Admin Modal -->
 
+    <!-- ::START EDIT Role Modal -->
+    <b-modal
+      id="modal-edit-product"
+      title="Edit Service"
+      title-class="font-18"
+      hide-footer
+    >
+      <label for="" class="m-2">Product Name: </label>
+      <input
+        type="text"
+        v-model="product.name"
+        readonly
+        id="horizontal-firstname-input"
+        placeholder="Enter product name..."
+        class="m-2 form-control"
+      />
+
+      <label for="" class="m-2">Product Type: </label>
+      <input
+        type="text"
+        v-model="product.type"
+        readonly
+        id="horizontal-firstname-input"
+        placeholder="Enter product type..."
+        class="m-2 form-control"
+      />
+
+      <label for="" class="m-2">Amount: </label>
+      <input
+        type="text"
+        v-model="product.amount"
+        id="horizontal-firstname-input"
+        placeholder="Enter product amount..."
+        class="m-2 form-control"
+      />
+
+      <img
+        class="avatar-lg rounded-circle img-thumbnail"
+        :src="url"
+        alt="Card image cap"
+      />
+      <b-form-file
+        placeholder="Choose an image here..."
+        @change="onFileChange"
+        v-model="profile_photo"
+        :state="Boolean(profile_photo)"
+      ></b-form-file>
+
+      <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
+      <div class="modal-footer">
+        <button
+          @click="editProduct(), $bvModal.hide('modal-edit-product')"
+          type="button"
+          class="btn btn-primary"
+        >
+          Save changes
+        </button>
+        <b-button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          @click="$bvModal.hide('modal-edit-product')"
+        >
+          Close
+        </b-button>
+      </div>
+    </b-modal>
+    <!-- ::END EDIT Role Modal -->
+
     <div class="row">
       <div class="col-12">
-        <button
-          type="button"
-          class="btn btn-primary mb-3 brand-primary"
-          v-b-modal.modal-add-admin
-        >
-          <i class="mdi mdi-plus me-1"></i> Add New Admin
-        </button>
         <div
           class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline"
         >
@@ -456,7 +536,7 @@ export default {
             :busy="isBusy"
             table-class="table table-centered datatable table-card-list"
             thead-tr-class="bg-transparent"
-            :items="adminData"
+            :items="providerData"
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
@@ -482,13 +562,13 @@ export default {
             </template>
             <template v-slot:cell(thumbnail)="data">
               <img
-                v-if="data.item.photo"
-                :src="data.item.photo"
+                v-if="data.item.thumbnail"
+                :src="data.item.thumbnail"
                 alt
                 class="avatar-xs rounded-circle me-2"
               />
               <div
-                v-if="!data.item.photo"
+                v-if="!data.item.thumbnail"
                 class="avatar-xs d-inline-block me-2"
               >
                 <div
@@ -499,74 +579,118 @@ export default {
               </div>
             </template>
 
-            <template v-slot:cell(title)="data">
+            <template v-slot:cell(name)="data">
               <router-link
-                :to="{ name: 'event-details', params: { id: data.item.id } }"
+                :to="{ name: 'user-details', params: { id: data.item.id } }"
                 style="color: #761300; max-width: 250px;"
-                class="d-inline-block text-truncate"
-                >{{ data.item.title }}</router-link
+                class="d-inline-block text-truncate text-dark"
+                >{{ data.item.name }}</router-link
               >
             </template>
 
-            <!-- <template v-slot:cell(plans)>
-                  <p>Premium Plan</p>
-                </template> -->
+            <template v-slot:cell(created_at)="data">
+              <div>
+                {{ data.item.created_at | formatDate }}
+              </div>
+            </template>
 
             <template v-slot:cell(status)="data">
               <div
                 class="badge bg-pill font-size-12"
                 :class="{
-                  'bg-soft-success': data.item.status === 'active',
-                  'bg-soft-danger': data.item.status === 'restricted',
-                  'bg-soft-warning': data.item.status === 'pending',
+                  'bg-soft-success': data.item.status === 'enabled',
+                  'bg-soft-danger': data.item.status === 'disabled',
                 }"
               >
-                {{ data.item.status }}
+                <span v-if="data.item.status">{{ data.item.status }}</span>
+                <!-- <span v-if="!data.item.status">Unverified</span> -->
               </div>
             </template>
+
+            <!-- <template v-slot:cell(status)="data">
+                  <div
+                    class="badge bg-pill font-size-12"
+                    :class="{
+                      'bg-soft-success': data.item.status == 'approved',
+                      'bg-soft-danger': data.item.status == 'restricted',
+                      'bg-soft-warning': data.item.status == 'pending',
+                    }"
+                  >
+                    <span>{{data.item.status}}</span>
+                  </div>
+                </template> -->
+
             <template v-slot:cell(start_date)="data">
               <p>{{ data.item.start_date | formatDate }}</p>
             </template>
             <template v-slot:cell(action)="{ item }">
-              <ul class="list-inline mb-0" v-if="item.role == 'admin'">
-                <li v-if="item.status == 'restricted'" class="list-inline-item">
+              <ul class="list-inline mb-0">
+                <!-- <li class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="text-info"
+                        v-b-tooltip.hover
+                        title="Provider"
+                      ><router-link 
+                        class="text-info"
+                        :to="{ name: 'provider-details', params: { id: item.id }}"
+                        v-b-tooltip.hover
+                        title="Provider"
+                      ><i class="uil uil-eye font-size-18"></i></router-link>
+                        
+                      </a>
+                    </li> -->
+
+                <li class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-primary"
                     v-b-tooltip.hover
-                    title="Approve"
+                    title="Edit"
+                    @click="getProductInfo(item)"
+                    v-b-modal.modal-edit-product
+                  >
+                    <i class="uil uil-pen font-size-18"></i>
+                  </a>
+                </li>
+                <li v-if="item.status == 'disabled'" class="list-inline-item">
+                  <a
+                    href="javascript:void(0);"
+                    class="px-2 text-primary"
+                    v-b-tooltip.hover
+                    title="Enable service"
                     v-b-modal.modal-edit-admin
-                    @click="approveAdmin(item.id)"
+                    @click="enableService(item.id)"
                   >
                     <i
                       class="uil uil-check-circle font-size-18 text-success"
                     ></i>
                   </a>
                 </li>
-                <li v-if="item.status == 'active'" class="list-inline-item">
+                <li v-if="item.status == 'enabled'" class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-primary"
                     v-b-tooltip.hover
-                    title="Restrict"
+                    title="Disable service"
                     v-b-modal.modal-edit-admin
-                    @click="restrictAdmin(item.id)"
+                    @click="disableService(item.id)"
                   >
                     <i class="uil uil-info-circle font-size-18 text-danger"></i>
                   </a>
                 </li>
-                <li class="list-inline-item">
-                  <a
-                    href="javascript:void(0);"
-                    class="px-2 text-danger"
-                    v-b-tooltip.hover
-                    title="Delete"
-                    v-b-modal.modal-delete-admin
-                    @click="getAdminInfo(item)"
-                  >
-                    <i class="uil uil-trash-alt font-size-18"></i>
-                  </a>
-                </li>
+                <!-- <li class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-primary"
+                        v-b-tooltip.hover
+                        title="Delete"
+                        v-b-modal.modal-edit-admin
+                        @click="deleteProvider(item.id)"
+                      >
+                        <i class="uil uil-trash font-size-18 text-danger"></i>
+                      </a>
+                    </li> -->
               </ul>
             </template>
           </b-table>

@@ -48,8 +48,9 @@ export default {
           //::POST Login Request
           this.axios.post(BASE_URL+'/api/v1/admin/auth/login', this.user)
           .then((res) => {
-            const {token, user} = res.data.data
+            const {token, user, permissions} = res.data.data
             console.log(user)
+            console.log(permissions)
             this.userData = res.data
               // if(res.data.data.admin.two_factor_enabled === true) {
               //   this.twoFA = true
@@ -64,6 +65,7 @@ export default {
                 })
                 //Store token to localStorage
                 localStorage.setItem('user', JSON.stringify(res.data.data));
+                localStorage.setItem('permissions', JSON.stringify(permissions));
                 //Add token to Authorization header
                 this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 this.$cookies.set("token", token, 60 * 60 * 2);
@@ -76,6 +78,7 @@ export default {
           })
           .catch((err) => {
               // this.error = true
+              console.log(err.response)
               this.$refs.mytoast.Add({
                   msg: err.response.data.message,
                   clickClose: false,
