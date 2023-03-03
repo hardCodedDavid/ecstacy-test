@@ -2,13 +2,14 @@
     import Layout from "../../layouts/main";
     import PageHeader from "@/components/page-header";
     import appConfig from "@/app.config";
+import VueToastr from 'vue-toastr'
 import { BASE_URL } from "../../../baseconstant"
     
     /**
      * Orders component
      */
     export default {
-      components: { Layout, PageHeader },
+      components: { Layout, PageHeader, VueToastr },
       page: {
         title: "Withdrawals",
         meta: [
@@ -47,6 +48,11 @@ import { BASE_URL } from "../../../baseconstant"
             {
               key: "index",
               label: "S/N",
+            },
+            {
+              key: "reference_id",
+              label: "Reference",
+              sortable: true,
             },
             {
               key: "amount",
@@ -105,7 +111,7 @@ import { BASE_URL } from "../../../baseconstant"
             this.isBusy = !this.isBusy
             this.axios.get(BASE_URL+'/api/v1/admin/withdrawals?per_page=10000')
             .then((res) => {
-                // console.log(res.data.data);
+                console.log(res.data.data.data);
                 // console.log(JSON.parse(res.data.data.data[0].meta_data));
 
                 const dataArrr = []
@@ -113,12 +119,13 @@ import { BASE_URL } from "../../../baseconstant"
             let u = {}
             u.id = record.id
             u.user_id = record.user.id
+            u.reference_id = record.transaction_id ? record.transaction_id:'Not available'
             u.amount = record.amount
-            u.bank_name = JSON.parse(record.meta_data).bank_name
+            u.bank_name = record.meta_data?JSON.parse(record.meta_data).bank_name:'Not available'
             u.email = record.user.email
-            u.account_name = JSON.parse(record.meta_data).account_name
-            u.account_number = JSON.parse(record.meta_data).account_number
-            u.status = record.status
+            u.account_name = record.meta_data?JSON.parse(record.meta_data).account_name:"Not available"
+            u.account_number = record.meta_data? JSON.parse(record.meta_data).account_number:'Not available'
+            u.status = record.status == 0 ? 'failed':record.status
             u.created_at = record.created_at
 
             // console.log(u)
@@ -137,14 +144,28 @@ import { BASE_URL } from "../../../baseconstant"
         },
         approveWithdrawal(id){
             this.isBusy = !this.isBusy
-            this.axios.post('https://api.codedevents.com/admin/transactions/withdrawals/' + id + '/approve')
+            this.axios.post(BASE_URL+'/api/v1/admin/transactions/resolve/' + id)
             .then((res) => {
                 console.log(res.data.data);
+                this.$refs.mytoast.Add({
+                    msg: 'Transaction approved successfully',
+                    clickClose: false,
+                    timeout: 5000,
+                    position: "toast-top-right",
+                    type: "error",
+                })
                 this.fetchPayments();
             })
             .catch((err) => {
                 // this.error = true
                 console.log(err);
+                this.$refs.mytoast.Add({
+                    msg: err.response.data.message,
+                    clickClose: false,
+                    timeout: 5000,
+                    position: "toast-top-right",
+                    type: "error",
+                })
             })
             .finally(() => {
                 this.isBusy =  false
@@ -152,14 +173,28 @@ import { BASE_URL } from "../../../baseconstant"
         },
         declineWithdrawal(id){
             this.isBusy = !this.isBusy
-            this.axios.post('https://api.codedevents.com/admin/transactions/withdrawals/' + id + '/decline')
+            this.axios.post(BASE_URL+'/api/v1/admin/transactions/decline/' + id)
             .then((res) => {
                 console.log(res.data.data);
+                this.$refs.mytoast.Add({
+                    msg: 'Transaction declined successfully',
+                    clickClose: false,
+                    timeout: 5000,
+                    position: "toast-top-right",
+                    type: "error",
+                })
                 this.fetchPayments();
             })
             .catch((err) => {
                 // this.error = true
-                console.log(err);
+                // console.log(err);
+                this.$refs.mytoast.Add({
+                    msg: err.response.data.message,
+                    clickClose: false,
+                    timeout: 5000,
+                    position: "toast-top-right",
+                    type: "error",
+                })
             })
             .finally(() => {
                 this.isBusy =  false

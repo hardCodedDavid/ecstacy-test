@@ -2,13 +2,14 @@
 import Layout from '../../layouts/main'
 import PageHeader from '@/components/page-header'
 import appConfig from '@/app.config'
+import VueToastr from 'vue-toastr'
 import { BASE_URL } from '../../../baseconstant'
 
 /**
  * Orders component
  */
 export default {
-  components: { Layout, PageHeader },
+  components: { Layout, PageHeader, VueToastr },
   page: {
     title: 'Transfers',
     meta: [
@@ -151,11 +152,25 @@ export default {
         )
         .then((res) => {
           console.log(res.data.data)
+          this.$refs.mytoast.Add({
+                    msg: 'Transaction resolved successfully',
+                    clickClose: false,
+                    timeout: 5000,
+                    position: "toast-top-right",
+                    type: "success",
+                })
           this.fetchPayments()
         })
         .catch((err) => {
           // this.error = true
           console.log(err)
+          this.$refs.mytoast.Add({
+                    msg: err.response.data.message,
+                    clickClose: false,
+                    timeout: 5000,
+                    position: "toast-top-right",
+                    type: "error",
+                })
         })
         .finally(() => {
           this.isBusy = false
