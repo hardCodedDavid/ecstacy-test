@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 
 import VueMeta from 'vue-meta'
 import store from '@/state/store'
-import axios from 'axios'
+// import axios from 'axios'
 
 import routes from './routes'
-import { BASE_URL } from '../baseconstant'
+// import { BASE_URL } from '../baseconstant'
 
 Vue.use(VueRouter)
 Vue.use(VueMeta, {
