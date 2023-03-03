@@ -250,6 +250,13 @@ export const menuItems = [
     icon: 'uil-comment-alt-notes',
     link: '/news-update',
   },
+  {
+    id: 21,
+    label: 'Settings',
+    show: true,
+    icon: 'uil-cog',
+    link: '/profile/admin',
+  },
 
   // {
   //     id: 5,

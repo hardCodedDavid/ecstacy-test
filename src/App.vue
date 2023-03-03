@@ -6,21 +6,44 @@
 
 <script>
 import '@/assets/scss/app.scss'
-  
-import appConfig from "@/app.config";
-import { notificationMethods } from "@/state/helpers";
+
+import appConfig from '@/app.config'
+import { notificationMethods } from '@/state/helpers'
+import { BASE_URL } from './baseconstant'
 
 export default {
-  name: "app",
+  name: 'app',
   page: {
     // All subcomponent titles will be injected into this template.
     titleTemplate(title) {
-      title = typeof title === "function" ? title(this.$store) : title;
-      return title ? `${title} | ${appConfig.title}` : appConfig.title;
+      title = typeof title === 'function' ? title(this.$store) : title
+      return title ? `${title} | ${appConfig.title}` : appConfig.title
     },
   },
   methods: {
     clearNotification: notificationMethods.clear,
+    checkUser: function() {
+      this.axios.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${this.$cookies.get('token')}`
+      if (this.$cookies.get('token')) {
+        this.axios
+          .get(BASE_URL + '/api/v1/admin/profile')
+          .then((res) => {
+            console.log(res)
+            // console.log($cookies.get("token"));
+          })
+          .catch((err) => {
+            // this.error = true
+            console.log(err)
+          })
+          .finally(() => {
+            // this.loading =  false
+          })
+      } else {
+        localStorage.removeItem('user')
+      }
+    },
   },
   watch: {
     /**
@@ -29,42 +52,43 @@ export default {
     // eslint-disable-next-line no-unused-vars
     $route(to, from) {
       // clear alert on location change
-      this.clearNotification();
+      console.log('reach here')
+      this.checkUser()
+      this.clearNotification()
     },
   },
   mounted() {
-    
-    let val = localStorage.getItem('theme');
-    
-    if(val == 'dark'){
-      import('./assets/scss/dark.scss');
+    // console.log('dd')
+    let val = localStorage.getItem('theme')
+
+    if (val == 'dark') {
+      import('./assets/scss/dark.scss')
     } else {
-      import('./assets/scss/app.scss');
+      import('./assets/scss/app.scss')
     }
 
-    this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get("token")}`;
-    if (this.$cookies.get("token")) {
-      this.axios.get('https://api.codedevents.com/admin/auth/user')
-      .then((res) => {
-          console.log(res);
+    this.axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${this.$cookies.get('token')}`
+    if (this.$cookies.get('token')) {
+      this.axios
+        .get(BASE_URL + '/api/v1/admin/profile')
+        .then((res) => {
+          console.log(res)
           // console.log($cookies.get("token"));
-          
-      })
-      .catch((err) => {
+        })
+        .catch((err) => {
           // this.error = true
-          console.log(err);
-      })
-      .finally(() => {
-            // this.loading =  false
-      });
+          console.log(err)
+        })
+        .finally(() => {
+          // this.loading =  false
+        })
     } else {
-        localStorage.removeItem('user');
+      localStorage.removeItem('user')
     }
 
-    
-    
-    
     // document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
-  }
-};
+  },
+}
 </script>

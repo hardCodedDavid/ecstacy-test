@@ -43,14 +43,18 @@ export default {
         },
       ],
       eventData: null,
-      dashboard: null,
+      dashboard: {
+        total_users: 0,
+        recent_users: 0,
+        recent_transactions: 0
+      },
     }
   },
   mounted() {
     this.axios
       .get(BASE_URL+'/api/v1/admin/dashboard')
       .then((res) => {
-        console.log(res.data.data)
+        // console.log(res.data.data)
         this.dashboard = res.data.data
       })
       .catch((err) => {

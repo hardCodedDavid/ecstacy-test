@@ -78,7 +78,7 @@ export default {
         // }
     },
     mounted(){
-        console.log(this.recent_users)
+        // console.log(this.recent_users)
         // this.getDashboardData();
     }
 };

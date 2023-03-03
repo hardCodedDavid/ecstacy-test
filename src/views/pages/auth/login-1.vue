@@ -68,7 +68,8 @@ export default {
                 localStorage.setItem('permissions', JSON.stringify(permissions));
                 //Add token to Authorization header
                 this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                this.$cookies.set("token", token, 60 * 60 * 2);
+                this.$cookies.set("token", token, 60 * 60 * 3);
+                // localStorage.setItem("token", token);
                 
                 //Redirect User when done
                 this.$router.push('/');

@@ -3,8 +3,10 @@ import VueRouter from 'vue-router'
 
 import VueMeta from 'vue-meta'
 import store from '@/state/store'
+import axios from 'axios'
 
 import routes from './routes'
+import { BASE_URL } from '../baseconstant'
 
 Vue.use(VueRouter)
 Vue.use(VueMeta, {
@@ -33,6 +35,28 @@ const router = new VueRouter({
 
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom, next) => {
+    // console.log('I hit')
+    // const myt = localStorage.getItem('token')
+    // axios.defaults.headers.common[
+    //   'Authorization'
+    // ] = `Bearer ${myt}`
+    // if (myt) {
+    //   axios
+    //     .get(BASE_URL + '/api/v1/admin/profile')
+    //     .then((res) => {
+    //       console.log(res)
+    //       // console.log($cookies.get("token"));
+    //     })
+    //     .catch((err) => {
+    //       // this.error = true
+    //       console.log(err)
+    //     })
+    //     .finally(() => {
+    //       // this.loading =  false
+    //     })
+    // } else {
+    //   localStorage.removeItem('user')
+    // }
     if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
         // Check if auth is required on this route
         // (including nested routes).
