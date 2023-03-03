@@ -107,7 +107,7 @@ export default {
       this.axios
         .get(BASE_URL + '/api/v1/admin/all?per_page=10000')
         .then((res) => {
-          console.log(res.data.data)
+          console.log(res.data.data.data)
           // this.totalRows = res.data.data.total
           // res.data.data.data.map((g) => {
           //   g.role = g.roles.length > 0 ? g.roles[0].name : ''
@@ -246,7 +246,7 @@ export default {
     approveAdmin(id) {
       this.isBusy = true
       this.axios
-        .post(BASE_URL + '/api/v1/admin/' + id + '/approve')
+        .put(BASE_URL + '/api/v1/admin/' + id + '/approve')
         .then((res) => {
           console.log(res.data.data)
           this.fetchData()
@@ -528,7 +528,7 @@ export default {
               <p>{{ data.item.start_date | formatDate }}</p>
             </template>
             <template v-slot:cell(action)="{ item }">
-              <ul class="list-inline mb-0" v-if="item.role == 'admin'">
+              <ul class="list-inline mb-0">
                 <li v-if="item.status == 'restricted'" class="list-inline-item">
                   <a
                     href="javascript:void(0);"
