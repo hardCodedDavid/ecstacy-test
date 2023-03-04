@@ -118,9 +118,9 @@ export default {
         )
         .then((res) => {
           const dataResponse = res.data.data
-          // console.log(dataResponse)
+          console.log(dataResponse)
           const dataArrr = []
-          console.log(JSON.parse(dataResponse.data[51].meta_data).provider)
+          // console.log(JSON.parse(dataResponse.data[51].meta_data).provider)
           dataResponse.data.forEach((record) => {
             const u = {}
             // console.log(record)
