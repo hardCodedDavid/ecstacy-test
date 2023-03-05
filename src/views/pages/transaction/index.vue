@@ -132,7 +132,7 @@ export default {
             u.type = record.title
             u.provider = record.meta_data ? JSON.parse(record.meta_data).provider:'Not available'
             // u.type = record.transaction_type
-            u.status = record.status
+            u.status = record.status == 0 ? 'failed':record.status == 'delivered'?'success':record.status
             u.created_at = record.updated_at
 
             dataArrr.push(u)
@@ -370,13 +370,13 @@ export default {
               <div
                 class="badge bg-pill bg-soft-success font-size-12"
                 :class="{
-                  'bg-soft-danger': data.item.status === 'failed',
+                  'bg-soft-danger': ((data.item.status === 'failed') || data.item.status === 'reversed'),
                   'bg-soft-warning': data.item.status === 'pending',
                   'bg-soft-success': data.item.status === 'success',
                 }"
               >
                 <!-- {{ data.item.status == ('failed' || 'pending') ? data.item.status:'success' }} -->
-                {{ data.item.status == 'failed' ? 'declined':data.item.status == 'pending' ? 'pending':'success' }}
+                {{ data.item.status == 'failed' ? 'failed':data.item.status == 'pending' ? 'pending':data.item.status == 'success'?'success':data.item.status }}
               </div>
             </template>
             <template v-slot:cell(created_at)="data">
@@ -386,7 +386,7 @@ export default {
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">
-                <li class="list-inline-item">
+                <li v-if="(item.status != 'success')" class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-success"

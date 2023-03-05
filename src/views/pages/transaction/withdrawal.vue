@@ -369,7 +369,7 @@ import { BASE_URL } from "../../../baseconstant"
                 </template>
                 <template v-slot:cell(action)="{ item }">
                   <ul class="list-inline mb-0">
-                    <li v-if="item.status == 'pending'" class="list-inline-item">
+                    <li v-if="item.status != 'success'" class="list-inline-item">
                       <a
                         href="javascript:void(0);"
                         class="px-2 text-primary"
