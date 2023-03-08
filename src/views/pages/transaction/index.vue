@@ -34,8 +34,8 @@ export default {
       transactionData: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 20,
-      pageOptions: [10, 20, 40, 50],
+      perPage: 200,
+      pageOptions: [200, 400, 60],
       filter: null,
       filterOn: [],
       sortBy: 'age',
@@ -136,6 +136,7 @@ export default {
             u.created_at = record.updated_at
 
             dataArrr.push(u)
+            // dataArrr.unshift(u)
           })
           this.transactionData = dataArrr
           this.totalRows = dataResponse.total
@@ -386,6 +387,16 @@ export default {
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                  <a
+                    :href="'/management/transaction/'+item.id"
+                    class="px-2 text-info"
+                    v-b-tooltip.hover
+                    title="View Transaction"
+                  >
+                    <i class="uil-eye font-size-20"></i>
+                  </a>
+                </li>
                 <li v-if="(item.status != 'success')" class="list-inline-item">
                   <a
                     href="javascript:void(0);"

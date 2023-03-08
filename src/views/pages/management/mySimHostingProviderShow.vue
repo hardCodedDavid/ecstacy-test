@@ -1,5 +1,5 @@
 <script>
-import Multiselect from 'vue-multiselect'
+// import Multiselect from 'vue-multiselect'
 import VueToastr from 'vue-toastr'
 
 import Layout from '../../layouts/main'
@@ -11,7 +11,7 @@ import { BASE_URL } from '../../../baseconstant'
  * Orders component
  */
 export default {
-  components: { Layout, PageHeader, Multiselect, VueToastr },
+  components: { Layout, PageHeader, VueToastr },
   page: {
     title: 'Service',
     meta: [
@@ -37,14 +37,14 @@ export default {
       providerData: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 20,
-      pageOptions: [10, 20, 30, 50],
+      perPage: 40,
+      pageOptions: [40, 100, 200, 400],
       filter: null,
       filterOn: [],
       sortBy: 'name',
       sortDesc: false,
       url: false,
-      profile_photo: '',
+      profile_photo: null,
       product: {
         id: this.id,
         name: this.plan,
@@ -91,13 +91,6 @@ export default {
         },
         'action',
       ],
-      admin: {
-        id: this.id,
-        name: this.name,
-        email: this.email,
-        phone: this.phone,
-        role: this.role,
-      },
       options: null,
     }
   },
@@ -185,6 +178,7 @@ export default {
     },
     fetchData() {
       this.isBusy = true
+      // console.log('check')
       this.axios
         .get(
           BASE_URL +
@@ -332,96 +326,6 @@ export default {
   <Layout>
     <PageHeader :title="title" :items="items" />
     <vue-toastr ref="mytoast"></vue-toastr>
-    <!-- ::START ADD admin Modal -->
-    <b-modal
-      id="modal-add-admin"
-      title="Add Admin"
-      title-class="font-18"
-      hide-footer
-    >
-      <!-- <h5>Edit admin</h5> -->
-      <label for="" class="m-2">Name: </label>
-      <input
-        type="text"
-        v-model="admin.name"
-        id="horizontal-firstname-input"
-        placeholder="Enter admin name..."
-        class="m-2 form-control"
-      />
-      <label for="" class="m-2">Email: </label>
-      <input
-        type="text"
-        v-model="admin.email"
-        id="horizontal-firstname-input"
-        placeholder="Enter admin email..."
-        class="m-2 form-control"
-      />
-      <label for="" class="m-2">Phone: </label>
-      <input
-        type="number"
-        v-model="admin.phone"
-        id="horizontal-firstname-input"
-        placeholder="Enter admin phone..."
-        class="m-2 form-control"
-      />
-      <label for="" class="m-2">Role: </label>
-      <multiselect
-        class="m-2"
-        v-model="admin.role"
-        :options="options"
-        track-by="id"
-        label="name"
-      ></multiselect>
-
-      <!-- <textarea v-model="admin.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
-      <div class="modal-footer">
-        <button
-          @click="addAdmin(), $bvModal.hide('modal-add-admin')"
-          type="button"
-          class="btn btn-primary"
-        >
-          Save changes
-        </button>
-        <b-button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          @click="$bvModal.hide('modal-add-admin')"
-        >
-          Close
-        </b-button>
-      </div>
-    </b-modal>
-    <!-- ::END ADD Admin Modal -->
-
-    <!-- ::START DELETE Admin Modal -->
-    <b-modal
-      id="modal-delete-admin"
-      title="Delete Admin"
-      title-class="font-18"
-      hide-footer
-    >
-      <p>Are you sure you want to delete "{{ admin.name }}"</p>
-
-      <div class="modal-footer">
-        <button
-          @click="deleteAdmin(), $bvModal.hide('modal-delete-admin')"
-          type="button"
-          class="btn btn-primary"
-        >
-          Delete
-        </button>
-        <b-button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          @click="$bvModal.hide('modal-delete-admin')"
-        >
-          Close
-        </b-button>
-      </div>
-    </b-modal>
-    <!-- ::END DELETE Admin Modal -->
 
     <!-- ::START EDIT Role Modal -->
     <b-modal

@@ -316,6 +316,15 @@ export default [
     component: () => import('../views/pages/user/unverified'),
   },
   {
+    path: '/management/provider/mysimhosting-details',
+    name: 'mysimhosting-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () =>
+      import('../views/pages/management/mySimHostingProviderShow'),
+  },
+  {
     path: '/management/user/:id',
     name: 'user-details',
     meta: {
@@ -324,20 +333,20 @@ export default [
     component: () => import('../views/pages/management/userShow'),
   },
   {
+    path: '/management/transaction/:id',
+    name: 'transaction-details',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/transactionShow'),
+  },
+  {
     path: '/management/provider/:id',
     name: 'provider-details',
     meta: {
       authRequired: true,
     },
     component: () => import('../views/pages/management/providerShow'),
-  },
-  {
-    path: '/management/provider/:id',
-    name: 'mysimhosting-details',
-    meta: {
-      authRequired: true,
-    },
-    component: () => import('../views/pages/management/mySimHostingProviderShow'),
   },
   {
     path: '/news-update/show/:id',

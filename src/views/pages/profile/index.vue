@@ -53,6 +53,12 @@ export default {
         glo_cg_topup:50.05,
         airtel_cg_topup:50.05,
         mtn_sme_topup:50.05,
+        cable_tv_discount:0,
+        utility_bills_discount:0,
+        data_discount:0,
+        airtime_discount:0,
+        sme_data_discount:0,
+        education_payment_discount:0
       },
       profile_photo: '',
       user: null,
@@ -694,6 +700,80 @@ export default {
                             class="form-control mb-4"
                             placeholder="Amount"
                             v-model="service.airtel_cg_topup"
+                          />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="data"
+                            >Airtime Discount Price</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.airtime_discount"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >Data Discount Price</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.data_discount"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >SME Data Discount</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.sme_data_discount"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >Cable Tv Discount</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.cable_tv_discount"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >Utility Bills Discount</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.utility_bills_discount"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="data"
+                            >Education Discount</label
+                          >
+                          <input
+                            id="data"
+                            type="number"
+                            class="form-control mb-4"
+                            placeholder="Amount"
+                            v-model="service.education_payment_discount"
                           />
                         </div>
                       </div>

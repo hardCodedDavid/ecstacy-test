@@ -575,7 +575,14 @@ export default {
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">
-                <li class="list-inline-item">
+                <li
+                  class="list-inline-item"
+                  v-if="
+                    item.name === 'mysimhosting.cloud' ||
+                      item.name == 'Mysimhosting' ||
+                      item.name == 'mysimhosting'
+                  "
+                >
                   <a
                     href="javascript:void(0);"
                     class="text-info"
@@ -584,7 +591,24 @@ export default {
                     ><router-link
                       class="text-info"
                       :to="{
-                        name: item.name === 'mysimhosting.cloud' ?'mysimhosting-details':'provider-details',
+                        name: 'mysimhosting-details'
+                      }"
+                      v-b-tooltip.hover
+                      title="Provider"
+                      ><i class="uil uil-eye font-size-18"></i
+                    ></router-link>
+                  </a>
+                </li>
+                <li class="list-inline-item" v-else>
+                  <a
+                    href="javascript:void(0);"
+                    class="text-info"
+                    v-b-tooltip.hover
+                    title="Provider"
+                    ><router-link
+                      class="text-info"
+                      :to="{
+                        name: 'provider-details',
                         params: { id: item.id },
                       }"
                       v-b-tooltip.hover
