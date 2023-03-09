@@ -40,26 +40,26 @@ export default {
         old_password: '',
         new_password: '',
       },
-      service:{
-        wallet_topup:50.05,
-        airtime_topup:50.05,
-        data_topup:50.05,
-        utility_topup:50.05,
-        tvsubscription_topup:50.05,
-        epin_topup:50.05,
-        wallet_transfer_topup:50.05,
-        withdrawal_topup:50.05,
-        games_charge:50.05,
-        glo_cg_topup:50.05,
-        airtel_cg_topup:50.05,
-        mtn_sme_topup:50.05,
-        cable_tv_discount:0,
-        utility_bills_discount:0,
-        data_discount:0,
-        airtime_discount:0,
-        sme_data_discount:0,
-        education_payment_discount:0
-      },
+      // service:{
+      //   wallet_topup:50.05,
+      //   airtime_topup:50.05,
+      //   data_topup:50.05,
+      //   utility_topup:50.05,
+      //   tvsubscription_topup:50.05,
+      //   epin_topup:50.05,
+      //   wallet_transfer_topup:50.05,
+      //   withdrawal_topup:50.05,
+      //   games_charge:50.05,
+      //   glo_cg_topup:50.05,
+      //   airtel_cg_topup:50.05,
+      //   mtn_sme_topup:50.05,
+      //   cable_tv_discount:0,
+      //   utility_bills_discount:0,
+      //   data_discount:0,
+      //   airtime_discount:0,
+      //   sme_data_discount:0,
+      //   education_payment_discount:0
+      // },
       profile_photo: '',
       user: null,
       login2FA: false,
@@ -151,75 +151,75 @@ export default {
           })
       
     },
-    check2FA() {
-      if (this.user.two_factor_enabled == true) {
-        this.enable2FA()
-      } else {
-        this.disable2FA()
-      }
-    },
-    enable2FA() {
-      this.loadings = true
-      this.axios
-        .post('https://api.codedevents.com/admin/auth/2fa/enable')
-        .then((res) => {
-          console.log(res.data.data)
-          this.$refs.mytoast.Add({
-            msg: 'Login 2FA Active',
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'success',
-          })
-        })
-        .catch((err) => {
-          // this.error = true
-          console.log(err)
+    // check2FA() {
+    //   if (this.user.two_factor_enabled == true) {
+    //     this.enable2FA()
+    //   } else {
+    //     this.disable2FA()
+    //   }
+    // },
+    // enable2FA() {
+    //   this.loadings = true
+    //   this.axios
+    //     .post('https://api.codedevents.com/admin/auth/2fa/enable')
+    //     .then((res) => {
+    //       console.log(res.data.data)
+    //       this.$refs.mytoast.Add({
+    //         msg: 'Login 2FA Active',
+    //         clickClose: false,
+    //         timeout: 5000,
+    //         position: 'toast-top-right',
+    //         type: 'success',
+    //       })
+    //     })
+    //     .catch((err) => {
+    //       // this.error = true
+    //       console.log(err)
 
-          this.$refs.mytoast.Add({
-            msg: err.response.data.details,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          this.getUser()
-          this.loadings = false
-        })
-    },
-    disable2FA() {
-      this.loadings = true
-      this.axios
-        .post('https://api.codedevents.com/admin/auth/2fa/disable')
-        .then((res) => {
-          console.log(res.data.data)
-          this.$refs.mytoast.Add({
-            msg: 'Login 2FA Inactive',
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'warning',
-          })
-        })
-        .catch((err) => {
-          // this.error = true
-          console.log(err)
+    //       this.$refs.mytoast.Add({
+    //         msg: err.response.data.details,
+    //         clickClose: false,
+    //         timeout: 5000,
+    //         position: 'toast-top-right',
+    //         type: 'error',
+    //       })
+    //     })
+    //     .finally(() => {
+    //       this.getUser()
+    //       this.loadings = false
+    //     })
+    // },
+    // disable2FA() {
+    //   this.loadings = true
+    //   this.axios
+    //     .post('https://api.codedevents.com/admin/auth/2fa/disable')
+    //     .then((res) => {
+    //       console.log(res.data.data)
+    //       this.$refs.mytoast.Add({
+    //         msg: 'Login 2FA Inactive',
+    //         clickClose: false,
+    //         timeout: 5000,
+    //         position: 'toast-top-right',
+    //         type: 'warning',
+    //       })
+    //     })
+    //     .catch((err) => {
+    //       // this.error = true
+    //       console.log(err)
 
-          this.$refs.mytoast.Add({
-            msg: err.response.data.details,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          this.getUser()
-          this.loadings = false
-        })
-    },
+    //       this.$refs.mytoast.Add({
+    //         msg: err.response.data.details,
+    //         clickClose: false,
+    //         timeout: 5000,
+    //         position: 'toast-top-right',
+    //         type: 'error',
+    //       })
+    //     })
+    //     .finally(() => {
+    //       this.getUser()
+    //       this.loadings = false
+    //     })
+    // },
     updateProfile(e) {
       e.preventDefault()
       this.isLoading = true
@@ -301,7 +301,7 @@ export default {
           .then((res) => {
             // console.log(res.data.data)
             this.user = res.data.data.user
-            this.service = res.data.data.service_charges
+            // this.service = res.data.data.service_charges
             // this.admin.name = res.data.data.name
             // this.admin.phone = res.data.data.phone
             // this.url = res.data.data.profile_photo
@@ -541,7 +541,7 @@ export default {
                 </div>
               </div>
             </b-tab>
-            <b-tab>
+            <!-- <b-tab>
               <template v-slot:title>
                 <i class="uil-cog toggle-right font-size-20"></i>
                 <span class="d-none d-sm-block">Service Settings</span>
@@ -798,7 +798,7 @@ export default {
                   </form>
                 </div>
               </div>
-            </b-tab>
+            </b-tab> -->
           </b-tabs>
           <!-- Nav tabs -->
           <!-- Tab content -->
