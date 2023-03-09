@@ -276,6 +276,14 @@ export default [
     component: () => import('../views/pages/profile/index'),
   },
   {
+    path: '/management/settings',
+    name: 'settings',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/management/settings'),
+  },
+  {
     path: '/management/admin',
     name: 'admin',
     meta: {
