@@ -22,5 +22,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-src/baseconstant.js
-baseconstant.js
+netlify.toml
