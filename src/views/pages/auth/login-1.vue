@@ -25,7 +25,7 @@ export default {
     return {
       title: "Log in",
       user: {
-                email: "softwebdigital@gmail.com", 
+                email: "", 
                 password: "",
             },
       loading: false,
