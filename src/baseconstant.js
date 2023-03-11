@@ -1,5 +1,5 @@
-export const BASE_URL = 'http://127.0.0.1:8000'
-// export const BASE_URL = 'https://api.ecstasynigeria.com'
+// export const BASE_URL = 'http://127.0.0.1:8000'
+export const BASE_URL = 'https://api.ecstasynigeria.com'
 
 // server {
 //         server_name ecstasynigeria.com www.ecstasynigeria.com;
