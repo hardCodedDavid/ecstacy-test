@@ -108,9 +108,9 @@ export default {
                     <table class="table table-borderless table-centered table-nowrap">
                         <tbody>
                             <tr v-for="(item) in recent_users" :key="item.id">
-                                <td style="width: 20px;">
+                                <!-- <td style="width: 20px;">
                                     <img :src="item.photo" class="avatar-xs rounded-circle" alt="..." />
-                                </td>
+                                </td> -->
                                 <td>
                                     <h6 class="font-size-15 mb-1 fw-normal">{{item.first_name+' '+item.last_name}}</h6>
                                     <!-- <p class="text-muted font-size-13 mb-0">

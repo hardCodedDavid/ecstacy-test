@@ -110,7 +110,6 @@ export default {
         )
         .then((res) => {
           const dataResponse = res.data.data
-          // console.log(dataResponse)
           const dataArrr = []
           dataResponse.data.forEach((record) => {
             const u = {}
