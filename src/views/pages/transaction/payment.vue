@@ -130,7 +130,7 @@ export default {
         })
         .catch((err) => {
           // this.error = true
-          console.log(err)
+          // console.log(err)
           // console.log(err.response)
           if(err.response.status == 401) {
             return this.$router.push({path: '/login'})
@@ -148,8 +148,8 @@ export default {
             this.paymentId +
             '/resolve'
         )
-        .then((res) => {
-          console.log(res.data.data)
+        .then(() => {
+          // console.log(res.data.data)
           this.$refs.mytoast.Add({
                     msg: 'Transaction reolsved successfully',
                     clickClose: false,
@@ -161,7 +161,7 @@ export default {
         })
         .catch((err) => {
           // this.error = true
-          console.log(err)
+          // console.log(err)
           this.$refs.mytoast.Add({
                     msg: err.response.data.message,
                     clickClose: false,
