@@ -76,7 +76,7 @@ export default {
         },
         {
           key: 'status',
-          label: 'Payment Status',
+          label: 'Transaction Status',
           sortable: true,
         },
         {
@@ -118,7 +118,7 @@ export default {
         )
         .then((res) => {
           const dataResponse = res.data.data
-          console.log(dataResponse)
+          // console.log(dataResponse)
           const dataArrr = []
           // console.log(JSON.parse(dataResponse.data[51].meta_data).provider)
           dataResponse.data.forEach((record) => {
@@ -135,15 +135,25 @@ export default {
             u.status = record.status == 0 ? 'failed':record.status == 'delivered'?'success':record.status
             u.created_at = record.updated_at
 
+            console.log(u)
             dataArrr.push(u)
             // dataArrr.unshift(u)
           })
+          console.log(dataArrr)
           this.transactionData = dataArrr
           this.totalRows = dataResponse.total
         })
         .catch((err) => {
           // this.error = true
-          // console.log(err.response)
+          console.log(err)
+          this.$refs.mytoast.Add({
+                msg: err.response.data.message,
+                clickClose: false,
+                timeout: 5000,
+                position: "toast-top-right",
+                type: "error",
+              });
+          console.log(err.response.data)
           if (err.response.status == 401) {
             return this.$router.push({ path: '/login' })
           }
@@ -371,12 +381,11 @@ export default {
               <div
                 class="badge bg-pill bg-soft-success font-size-12"
                 :class="{
-                  'bg-soft-danger': ((data.item.status === 'failed') || data.item.status === 'reversed'),
+                  'bg-soft-danger': data.item.status === 'failed' || data.item.status === 'reversed',
                   'bg-soft-warning': data.item.status === 'pending',
                   'bg-soft-success': data.item.status === 'success',
                 }"
               >
-                <!-- {{ data.item.status == ('failed' || 'pending') ? data.item.status:'success' }} -->
                 {{ data.item.status == 'failed' ? 'failed':data.item.status == 'pending' ? 'pending':data.item.status == 'success'?'success':data.item.status }}
               </div>
             </template>

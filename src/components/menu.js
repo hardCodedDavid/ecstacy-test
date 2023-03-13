@@ -14,9 +14,7 @@ function isPermitted(permission) {
     })
     return tempArr.includes(true)
   }
-  // console.log(resp)
   return resp
-  // return true
 }
 
 export const menuItems = [

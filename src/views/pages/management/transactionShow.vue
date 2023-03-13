@@ -21,13 +21,13 @@ export default {
   },
   data() {
     return {
-      title: 'User Details',
+      title: 'Transaction Details',
       items: [
         {
-          text: 'Contacts',
+          text: 'Transaction',
         },
         {
-          text: 'User Details',
+          text: 'Details',
           active: true,
         },
       ],
@@ -49,14 +49,16 @@ export default {
   },
   methods: {
     getNarration(metadata) {
-      if (metadata == null) {
-        return 'Not available'
-      }
       const data = JSON.parse(metadata)
-      if (Object.prototype.hasOwnProperty.call(data, 'remark')) {
-        return data.meta_data.remark
-      } else {
+      // console.log(data)
+      if (data == null) {
         return 'Not available'
+      } else {
+        if (Object.prototype.hasOwnProperty.call(data, 'remark')) {
+          return data.remark
+        } else {
+          return 'Not available'
+        }
       }
     },
     fetchData() {
@@ -66,38 +68,13 @@ export default {
           .then((res) => {
             //   console.log(res.data)
 
-            console.log(res.data)
+            // console.log(res.data.data.transaction)
             this.transaction = res.data.data.transaction
             this.transaction.wallet_balance = res.data.data.wallet_balance
-            // console.log(res.data.data.wdtransactions)
-            // this.wallet.email = res.data.data.user.email
-            // this.user = res.data.data.user
-            // this.transactions = res.data.data.transactions
-            // this.wallet_balance = res.data.data.wallet_balance
-            // this.total_transactions = res.data.data.total_transactions
-            // this.wdtransactions = res.data.data.wdtransactions
-
-            // const wdArr = []
-            // res.data.data.wdtransactions.map((item) => {
-            //   const u = {}
-            //   u.id = item.id
-            //   u.title = item.title
-            //   u.status = item.status
-            //   u.amount = item.amount
-            //   u.bank_name = item.bank_name || 'Not available'
-            //   u.narration = item.narration || 'Not available'
-            //   u.created_at = item.created_at || 'Not available'
-            //   u.type = item.transaction_type || 'Not available'
-            //   u.account_name = item.account_name || 'Not available'
-            //   u.account_number = item.account_number || 'Not available'
-
-            //   wdArr.push(u)
-            // })
-            // this.wdtransactions = wdArr
           })
           .catch((err) => {
             // this.error = true
-            console.log(err.response)
+            console.log(err.response.data)
             this.$refs.mytoast.Add({
               msg: err.response.message || err.response.data.message,
               clickClose: false,
@@ -110,7 +87,6 @@ export default {
             // this.loading =  false
           })
       } else {
-        // console.log('dd')
         localStorage.removeItem('user')
       }
     },
@@ -157,7 +133,7 @@ export default {
                         <a href="#" class="text-dark">Title</a>
                       </td>
                       <td>
-                        <p>{{ transaction.title || 'Not available' }}</p>
+                        <p>{{ transaction.title }}</p>
                       </td>
                     </tr>
                     <tr>
@@ -189,7 +165,13 @@ export default {
                         <a href="#" class="text-dark">Wallet balance</a>
                       </td>
                       <td>
-                        <p>{{ parseFloat(transaction.wallet_balance).toLocaleString() }}</p>
+                        <p>
+                          {{
+                            parseFloat(
+                              transaction.wallet_balance
+                            ).toLocaleString()
+                          }}
+                        </p>
                       </td>
                     </tr>
                     <tr>
@@ -200,11 +182,17 @@ export default {
                         <div
                           class="badge bg-pill bg-soft-success font-size-12"
                           :class="{
-                            'bg-soft-danger': transaction.transaction_type === 'outflow',
-                            'bg-soft-success': transaction.transaction_type === 'inflow'
+                            'bg-soft-danger':
+                              transaction.transaction_type === 'outflow',
+                            'bg-soft-success':
+                              transaction.transaction_type === 'inflow',
                           }"
                         >
-                          {{ transaction.transaction_type == 'outflow' ? 'Debit':'Credit' }}
+                          {{
+                            transaction.transaction_type == 'outflow'
+                              ? 'Debit'
+                              : 'Credit'
+                          }}
                         </div>
                       </td>
                     </tr>
@@ -221,7 +209,11 @@ export default {
                         <a href="#" class="text-dark">Remark</a>
                       </td>
                       <td>
-                        <p>{{ getNarration(transaction.meta_data) }}</p>
+                        <p>
+                          {{
+                            getNarration(transaction.meta_data)
+                          }}
+                        </p>
                       </td>
                     </tr>
                     <tr>
@@ -245,7 +237,9 @@ export default {
                         <a href="#" class="text-dark">Reference</a>
                       </td>
                       <td>
-                        <p>{{ transaction.transaction_id || 'Not available' }}</p>
+                        <p>
+                          {{ transaction.transaction_id || 'Not available' }}
+                        </p>
                       </td>
                     </tr>
                     <tr>

@@ -52,7 +52,7 @@ export default {
     // eslint-disable-next-line no-unused-vars
     $route(to, from) {
       // clear alert on location change
-      console.log('reach here')
+      // console.log('reach here')
       this.checkUser()
       this.clearNotification()
     },
@@ -79,7 +79,7 @@ export default {
         })
         .catch((err) => {
           // this.error = true
-          console.log(err)
+          console.log(err.response.data)
         })
         .finally(() => {
           // this.loading =  false
