@@ -183,7 +183,7 @@ export default {
           //   console.log(res.data.data.data);
           const data = res.data.data.data
           const dataArr = []
-            console.log(data)
+            // console.log(data)
           data.forEach((user) => {
             let u = {}
             u.id = user.id
