@@ -163,7 +163,7 @@ if (this.$cookies.get('token')) {
           // this.loading =  false
         })
     } else {
-      console.log('dd')
+      // console.log('dd')
       localStorage.removeItem('user')
     }
     }

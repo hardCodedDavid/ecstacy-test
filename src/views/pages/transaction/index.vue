@@ -127,7 +127,7 @@ export default {
             u.id = record.id
             u.reference_id = record.request_id || 'Not available'
             u.user_id = record.user_id
-            u.user_name = record.user.first_name+' '+record.user.last_name
+            u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
             u.amount = record.amount
             u.type = record.title
             u.provider = record.meta_data ? JSON.parse(record.meta_data).provider:'Not available'
@@ -135,7 +135,7 @@ export default {
             u.status = record.status == 0 ? 'failed':record.status == 'delivered'?'success':record.status
             u.created_at = record.updated_at
 
-            console.log(u)
+            // console.log(u)
             dataArrr.push(u)
             // dataArrr.unshift(u)
           })
