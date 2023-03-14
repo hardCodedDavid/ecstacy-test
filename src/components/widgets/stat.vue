@@ -13,6 +13,9 @@ export default {
         },
         total_topup_amount: {
             default: 0
+        },
+        wds: {
+            default: 0
         }
     },
     components: {
@@ -227,46 +230,7 @@ export default {
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="float-end mt-2">
-                    <apexchart class="apex-charts" type="radialBar" dir="ltr" width="45" height="45" :options="orderRadial" :series="orderseries"></apexchart>
-                </div>
-                <div>
-                    <h4 class="mb-1 mt-1">
-                        ₦
-                        <span data-plugin="counterup">
-                            <countTo :startVal="10" :endVal="dashboard.total_active_subscriptions_amount" :duration="2000"></countTo>
-                        </span>
-                    </h4>
-                    <p class="text-muted mb-0">Total Withdrawals</p>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- end col-->
-
-    <!-- <div class="col-md-6 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="float-end mt-2">
-                    <apexchart class="apex-charts" dir="ltr" width="70" height="40" :options="growthChartOptions" :series="series"></apexchart>
-                </div>
-                <div>
-                    <h4 class="mb-1 mt-1">
-                        ₦
-                        <span data-plugin="counterup">
-                            <countTo :startVal="10" :endVal="dashboard.total_pending_withdrawals" :duration="2000"></countTo>
-                        </span>
-                    </h4>
-                    <p class="text-muted mb-0">Pending Withdrawals</p>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- end col-->
-
 
     <div class="col-md-6 col-xl-3">
         <div class="card">
@@ -281,6 +245,25 @@ export default {
                         </span>
                     </h4>
                     <p class="text-muted mb-0">Total Transactions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="float-end mt-2">
+                    <apexchart class="apex-charts" type="radialBar" dir="ltr" width="45" height="45" :options="orderRadial" :series="orderseries"></apexchart>
+                </div>
+                <div>
+                    <h4 class="mb-1 mt-1">
+                        ₦
+                        <span data-plugin="counterup">
+                            <countTo :startVal="10" :endVal="wds || 0" :duration="2000"></countTo>
+                        </span>
+                    </h4>
+                    <p class="text-muted mb-0">Total Withdrawals</p>
                 </div>
             </div>
         </div>

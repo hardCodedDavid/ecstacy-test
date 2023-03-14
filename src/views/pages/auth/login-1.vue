@@ -1,8 +1,8 @@
 <script>
-import appConfig from "@/app.config";
-import VueToastr from "vue-toastr";
+import appConfig from '@/app.config'
+import VueToastr from 'vue-toastr'
 
-import { BASE_URL } from "../../../baseconstant"
+import { BASE_URL } from '../../../baseconstant'
 
 /**
  * Login-1 component
@@ -10,148 +10,160 @@ import { BASE_URL } from "../../../baseconstant"
 export default {
   components: { VueToastr },
   page: {
-    title: "Login",
+    title: 'Login',
     meta: [
       {
-        name: "description",
+        name: 'description',
         content: appConfig.description,
       },
     ],
   },
   mounted() {
-    document.body.classList.add("authentication-bg");
+    document.body.classList.add('authentication-bg')
   },
   data() {
     return {
-      title: "Log in",
+      title: 'Log in',
       user: {
-                email: "", 
-                password: "",
-            },
+        email: '',
+        password: '',
+      },
       loading: false,
       error: false,
       errorMsg: null,
       token: this.token,
       userData: this.userData,
-    };
+    }
   },
   methods: {
-      loginUser(e) {
-          e.preventDefault();
-          this.loading = true
-          this.error = false
+    loginUser(e) {
+      e.preventDefault()
+      this.loading = true
+      this.error = false
 
-          // if (this.user.email == "") {
-          //   this.error = true
-          //   this.errorMsg = 'Email field'
-          // }
-          //::POST Login Request
-          this.axios.post(BASE_URL+'/api/v1/admin/auth/login', this.user)
-          .then((res) => {
-            const {token, user, permissions} = res.data.data
-            console.log(user)
-            console.log(permissions)
-            this.userData = res.data
-              // if(res.data.data.admin.two_factor_enabled === true) {
-              //   this.twoFA = true
-              //   this.send2FA();
-              // } else {
-                this.$refs.mytoast.Add({
-                    msg: "Login Successful",
-                    clickClose: false,
-                    timeout: 5000,
-                    position: "toast-top-right",
-                    type: "success",
-                })
-                //Store token to localStorage
-                localStorage.setItem('user', JSON.stringify(res.data.data));
-                localStorage.setItem('permissions', JSON.stringify(permissions));
-                //Add token to Authorization header
-                this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                this.$cookies.set("token", token, 60 * 60 * 3);
-                // localStorage.setItem("token", token);
-                
-                //Redirect User when done
-                this.$router.push('/');
-              
-              
-              // console.log(res);
-          })
-          .catch((err) => {
-              // this.error = true
-              console.log(err.response)
-              this.$refs.mytoast.Add({
-                  msg: err.response.data.message,
-                  clickClose: false,
-                  timeout: 5000,
-                  position: "toast-top-right",
-                  type: "error",
-              });
-              // this.errorMsg = "Invalid Credential"
-              // console.log(err);
-          })
-          .finally(() => {
-                this.loading =  false
-          });
-          
-      },
-      verify2FA(e) {
-        e.preventDefault();
-        this.loading =  true
-        this.axios.post('https://api.codedevents.com/admin/auth/2fa/verify?email=' + this.user.email + '&token=' + this.token)
+      // if (this.user.email == "") {
+      //   this.error = true
+      //   this.errorMsg = 'Email field'
+      // }
+      //::POST Login Request
+      this.axios
+        .post(BASE_URL + '/api/v1/admin/auth/login', this.user)
         .then((res) => {
+          const { token, user, permissions } = res.data.data
+          console.log(user)
+          // console.log(permissions)
+          this.userData = res.data
+          // if(res.data.data.admin.two_factor_enabled === true) {
+          //   this.twoFA = true
+          //   this.send2FA();
+          // } else {
+          this.$refs.mytoast.Add({
+            msg: 'Login Successful',
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'success',
+          })
+          //Store token to localStorage
+          localStorage.setItem('user', JSON.stringify(res.data.data))
+          localStorage.setItem('permissions', JSON.stringify(permissions))
+          //Add token to Authorization header
+          this.axios.defaults.headers.common[
+            'Authorization'
+          ] = `Bearer ${token}`
+          this.$cookies.set('token', token, 60 * 60 * 3)
+          // localStorage.setItem("token", token);
 
-            //Store token to localStorage
-              localStorage.setItem('user', JSON.stringify(this.userData));
-            //Add token to Authorization header
-              this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.userData.data.token}`;
-              this.$cookies.set("token", this.userData.data.token, 60 * 60 * 2);
-              
-            //Redirect User when done
-              this.$router.push('/');
-              console.log(res);
+          //Redirect User when done
+          this.$router.push('/')
+
+          // console.log(res);
+        })
+        .catch((err) => {
+          // this.error = true
+          console.log(err.response)
+          this.$refs.mytoast.Add({
+            msg: err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+          // this.errorMsg = "Invalid Credential"
+          // console.log(err);
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    verify2FA(e) {
+      e.preventDefault()
+      this.loading = true
+      this.axios
+        .post(
+          'https://api.codedevents.com/admin/auth/2fa/verify?email=' +
+            this.user.email +
+            '&token=' +
+            this.token
+        )
+        .then((res) => {
+          //Store token to localStorage
+          localStorage.setItem('user', JSON.stringify(this.userData))
+          //Add token to Authorization header
+          this.axios.defaults.headers.common[
+            'Authorization'
+          ] = `Bearer ${this.userData.data.token}`
+          this.$cookies.set('token', this.userData.data.token, 60 * 60 * 2)
+
+          //Redirect User when done
+          this.$router.push('/')
+          console.log(res)
         })
         .catch((err) => {
           this.$refs.mytoast.Add({
-              msg: err.response.data.error,
-              clickClose: false,
-              timeout: 5000,
-              position: "toast-top-right",
-              type: "error",
-          });
+            msg: err.response.data.error,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
           // this.errorMsg = "Invalid Credential"
-          console.log(err);
+          console.log(err)
         })
         .finally(() => {
-            this.loading =  false
-        });
-      },
-      send2FA() {
-        this.axios.post('https://api.codedevents.com/admin/auth/2fa/send?email=' + this.user.email)
-          .then((res) => {
-            this.$refs.mytoast.Add({
-                msg: "Verification code sent to email",
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
-            })
+          this.loading = false
+        })
+    },
+    send2FA() {
+      this.axios
+        .post(
+          'https://api.codedevents.com/admin/auth/2fa/send?email=' +
+            this.user.email
+        )
+        .then((res) => {
+          this.$refs.mytoast.Add({
+            msg: 'Verification code sent to email',
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'success',
+          })
 
-            console.log(res);
+          console.log(res)
+        })
+        .catch((err) => {
+          this.$refs.mytoast.Add({
+            msg: err.response.data.error,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
           })
-          .catch((err) => {
-            this.$refs.mytoast.Add({
-                msg: err.response.data.error,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-            });
-            console.log(err);
-          })
-      }
-  }
-};
+          console.log(err)
+        })
+    },
+  },
+}
 </script>
 
 <template>
@@ -202,8 +214,8 @@ export default {
                 <div class="p-2 mt-4">
                   <form method="post" @submit="loginUser">
                     <div class="mb-3">
-                        <label for="username">Email</label>
-                      
+                      <label for="username">Email</label>
+
                       <input
                         type="email"
                         class="form-control"
@@ -223,7 +235,9 @@ export default {
                         v-if="error"
                         required
                       />
-                      <span class="text-danger" v-if="error">{{errorMsg}}</span>
+                      <span class="text-danger" v-if="error">{{
+                        errorMsg
+                      }}</span>
                     </div>
 
                     <div class="mb-3">
@@ -264,8 +278,15 @@ export default {
                     </div>
 
                     <div v-if="loading" class="mt-3 text-end">
-                      <div class="brand-primary btn btn-primary w-sm waves-effect waves-light">
-                        <b-spinner small variant="white" role="status" class="me-2"></b-spinner>
+                      <div
+                        class="brand-primary btn btn-primary w-sm waves-effect waves-light"
+                      >
+                        <b-spinner
+                          small
+                          variant="white"
+                          role="status"
+                          class="me-2"
+                        ></b-spinner>
                         <span>Loading...</span>
                       </div>
                     </div>
@@ -318,13 +339,19 @@ export default {
             <div class="mt-5 text-center">
               <p>
                 <!-- © {{ new Date().getFullYear() }} © All rights reserved Ecstasy -->
-                <span>© All rights reserved Ecstasy</span> 
-                <br>
-                <span>Produced by <a href="https://softwebdigital.com/" target="_blank" class="text-primary font-bold">Soft-Web Digital</a></span>
+                <span>© All rights reserved Ecstasy</span>
+                <br />
+                <span
+                  >Produced by
+                  <a
+                    href="https://softwebdigital.com/"
+                    target="_blank"
+                    class="text-primary font-bold"
+                    >Soft-Web Digital</a
+                  ></span
+                >
               </p>
             </div>
-
-            
           </div>
         </div>
         <!-- end row -->

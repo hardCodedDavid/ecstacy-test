@@ -46,7 +46,8 @@ export default {
       dashboard: {
         total_users: 0,
         recent_users: 0,
-        recent_transactions: 0
+        recent_transactions: 0,
+        total_wd: 0
       },
     }
   },
@@ -54,7 +55,7 @@ export default {
     this.axios
       .get(BASE_URL+'/api/v1/admin/dashboard')
       .then((res) => {
-        // console.log(res.data.data)
+        console.log(res.data.data)
         this.dashboard = res.data.data
       })
       .catch((err) => {
@@ -71,7 +72,7 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-    <Stat :total_users="dashboard.total_users" :total_transactions="dashboard.total_transactions" :total_topup_amount="dashboard.total_topup_amount" />
+    <Stat :total_users="dashboard.total_users" :wds="dashboard.total_wd" :total_transactions="dashboard.total_transactions" :total_topup_amount="dashboard.total_topup_amount" />
     <div class="row" v-if="!dashboard">
       <div class="col-xl-12">
         <div class="text-center my-3">
