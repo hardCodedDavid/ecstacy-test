@@ -250,6 +250,39 @@ export default {
           this.isBusy = false
         })
     },
+    toggleServiceStatus(item){
+      // console.log(id)
+      // console.log(this.service_enabled)
+      this.isBusy = true
+      const status = item.status == 'enabled' ? 'disable-mysimhosting':'enable-mysimhosting'
+      const showStatus = item.status == 'enabled' ? 'disabled':'enabled'
+      this.axios
+        .put(BASE_URL + '/api/v1/admin/providers/' + item.id + '/products/'+status)
+        .then(() => {
+          // console.log(res.data.data);
+          this.fetchData()
+          this.$refs.mytoast.Add({
+            msg: 'Service '+showStatus+' Successfully',
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'success',
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$refs.mytoast.Add({
+            msg: err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+        })
+        .finally(() => {
+          this.isBusy = false
+        })
+    },
     enableService(id) {
       this.isBusy = true
       this.axios
@@ -557,7 +590,10 @@ export default {
                     <i class="uil uil-pen font-size-18"></i>
                   </a>
                 </li>
-                <li v-if="item.status == 'disabled'" class="list-inline-item">
+                <li class="list-inline-item">
+                 <toggle-button @change="toggleServiceStatus(item)" :sync="true" :value="item.status=='disabled'?false:true" :labels="{checked: 'On', unchecked: 'Off'}"/>
+                </li>
+                <!-- <li v-if="item.status == 'disabled'" class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-primary"
@@ -570,8 +606,8 @@ export default {
                       class="uil uil-check-circle font-size-18 text-success"
                     ></i>
                   </a>
-                </li>
-                <li v-if="item.status == 'enabled'" class="list-inline-item">
+                </li> -->
+                <!-- <li v-if="item.status == 'enabled'" class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-primary"
@@ -582,7 +618,7 @@ export default {
                   >
                     <i class="uil uil-info-circle font-size-18 text-danger"></i>
                   </a>
-                </li>
+                </li> -->
                 <!-- <li class="list-inline-item">
                       <a
                         href="javascript:void(0);"
