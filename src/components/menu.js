@@ -3,7 +3,7 @@ function isPermitted(permission) {
   const permissions = JSON.parse(localStorage.getItem('permissions'))
   const {user} = JSON.parse(localStorage.getItem('user'))
   console.log(user)
-  if (user.email == 'sixpathdev@gmail.com' || user.email == 'admin@ecstasynigeria.com') {
+  if (user.email == 'softwebdigital@gmail.com' || user.email == 'admin@ecstasynigeria.com') {
     return true
   }
   if (typeof permission === 'string') {
