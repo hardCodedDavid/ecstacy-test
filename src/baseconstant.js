@@ -1,6 +1,19 @@
-export const BASE_URL = 'http://127.0.0.1:8000'
-// export const BASE_URL = 'https://api.ecstasynigeria.com'
+// export const BASE_URL = 'http://127.0.0.1:8000'
+export const BASE_URL = 'https://api.ecstasynigeria.com'
 
+// server {
+//         server_name ecstasynigeria.com www.ecstasynigeria.com;
+//         listen 80;
+ 
+//         error_page 404 /index.html;
+//         location ~ ^/(api|images)/ {
+//          proxy_pass http://localhost:3000;
+//          proxy_http_version 1.1;
+//         }
+//         location / {
+//          alias /home/frontend-app/dist/; 
+//         }
+// }
 
 
 // server {
