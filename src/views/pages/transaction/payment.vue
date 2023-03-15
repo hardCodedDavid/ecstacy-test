@@ -102,6 +102,17 @@ export default {
     this.fetchPayments()
   },
   methods: {
+    getUser(record){
+      if(record.user != null) {
+        // const user = record.user.first_name+' '+record.user.last_name
+        return record.user
+      } else if(record.user == null && record.receiver != null) {
+        // const receiver = record.receiver.first_name+' '+record.receiver.last_name
+        return record.receiver
+      } else {
+        return 'Not available'
+      }
+    },
     fetchPayments() {
       this.isBusy = !this.isBusy
       this.axios
@@ -110,15 +121,16 @@ export default {
         )
         .then((res) => {
           const dataResponse = res.data.data
+          console.log(dataResponse)
           const dataArrr = []
           dataResponse.data.forEach((record) => {
             const u = {}
             u.id = record.id
-            u.user_id = record.user.id
+            u.user_id = record.user != null ? record.user.id:record.receiver.id
             u.reference = record.request_id ? record.request_id:'Not available'
             u.amount = record.amount
             u.type = record.title
-            u.email = record.user.email
+            u.email = this.getUser(record).email
             // u.type = record.transaction_type
             u.status = record.status
             u.created_at = record.updated_at
@@ -130,8 +142,7 @@ export default {
         })
         .catch((err) => {
           // this.error = true
-          // console.log(err)
-          // console.log(err.response)
+          console.log(err.response)
           if(err.response.status == 401) {
             return this.$router.push({path: '/login'})
           }

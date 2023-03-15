@@ -49,6 +49,18 @@ export default {
     }
   },
   methods: {
+    getUser(record){
+      // console.log(record)
+      if(record.user != null) {
+        // const user = record.user.first_name+' '+record.user.last_name
+        return record.user
+      } else if(record.user == null && record.receiver != null) {
+        // const receiver = record.receiver.first_name+' '+record.receiver.last_name
+        return record.receiver
+      } else {
+        return 'Not available'
+      }
+    },
     fundUserWallet(){
       this.isBusy =  true
         this.axios.put(BASE_URL+'/api/v1/admin/wallet-action/credit',this.wallet)
@@ -118,18 +130,16 @@ if (this.$cookies.get('token')) {
             this.per_page
         )
         .then((res) => {
-          //   console.log('dd')
-          //   console.log(res.data)
-
-          console.log(res.data.data.transactions)
-          // console.log(res.data.data.wdtransactions)
+          // console.log(res.data.data)
           this.wallet.email = res.data.data.user.email
           this.user = res.data.data.user
           this.transactions = res.data.data.transactions
           this.wallet_balance = res.data.data.wallet_balance
           this.total_transactions = res.data.data.total_transactions
-          // this.wdtransactions = res.data.data.wdtransactions
+          this.wdtransactions = res.data.data.wdtransactions
 
+
+          // console.log(res.data.data.wdtransactions);
           const wdArr = []
           res.data.data.wdtransactions.map((item) => {
             const u = {}
@@ -137,20 +147,21 @@ if (this.$cookies.get('token')) {
             u.title = item.title
             u.status = item.status
             u.amount = item.amount
-            u.bank_name = item.bank_name || 'Not available'
+            u.bank_name = JSON.parse(item.meta_data).bank_name || 'Not available'
             u.narration = item.narration || 'Not available'
             u.created_at = item.created_at || 'Not available'
             u.type = item.transaction_type || 'Not available'
-            u.account_name = item.account_name || 'Not available'
-            u.account_number = item.account_number || 'Not available'
+            u.account_name = JSON.parse(item.meta_data).account_name || 'Not available'
+            u.account_number = JSON.parse(item.meta_data).account_number || 'Not available'
 
             wdArr.push(u)
           })
+          // console.log(wdArr)
           this.wdtransactions = wdArr
         })
         .catch((err) => {
           // this.error = true
-          console.log(err.response)
+          // console.log(err.response)
           this.$refs.mytoast.Add({
             msg: err.response.message || err.response.data.message,
             clickClose: false,
@@ -304,7 +315,7 @@ if (this.$cookies.get('token')) {
         type="number"
         v-model="wallet.amount"
         id="horizontal-firstname-input"
-        placeholder="Amount to fund..."
+        placeholder="Amount to withdraw..."
         class="m-2 form-control"
       />
 
@@ -430,7 +441,7 @@ if (this.$cookies.get('token')) {
                             <a href="#" class="text-dark">Wallet Balance</a>
                           </td>
                           <td>
-                            <p>
+                            <p>₦
                               {{
                                 wallet_balance
                                   .toString()
@@ -583,10 +594,9 @@ if (this.$cookies.get('token')) {
                           <td>
                             <p>
                               {{
-                                transaction.user != null ?
-                                transaction.user.first_name +
+                                getUser(transaction).first_name +
                                   ' ' +
-                                  transaction.user.last_name:'Not available'
+                                  getUser(transaction).last_name
                               }}
                             </p>
                           </td>

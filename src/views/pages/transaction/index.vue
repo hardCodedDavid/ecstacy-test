@@ -109,6 +109,17 @@ export default {
     this.fetchTransactions()
   },
   methods: {
+    getUser(record){
+      if(record.user != null) {
+        const user = record.user.first_name+' '+record.user.last_name
+        return user
+      } else if(record.user == null && record.receiver != null) {
+        const receiver = record.receiver.first_name+' '+record.receiver.last_name
+        return receiver
+      } else {
+        return 'Not available'
+      }
+    },
     fetchTransactions() {
       this.isBusy = !this.isBusy
       this.axios
@@ -127,10 +138,12 @@ export default {
             u.id = record.id
             u.reference_id = record.request_id || 'Not available'
             u.user_id = record.user_id
-            u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
+            // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
+            u.user_name = this.getUser(record)
             u.amount = record.amount
             u.type = record.title
             u.provider = record.meta_data ? JSON.parse(record.meta_data).provider:'Not available'
+            u.byadmin = record.meta_data && JSON.parse(record.meta_data).funded_by_admin ? JSON.parse(record.meta_data).funded_by_admin:false
             // u.type = record.transaction_type
             u.status = record.status == 0 ? 'failed':record.status == 'delivered'?'success':record.status
             u.created_at = record.updated_at

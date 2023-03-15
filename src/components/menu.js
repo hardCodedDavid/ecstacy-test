@@ -2,7 +2,7 @@ function isPermitted(permission) {
   // console.log(permission)
   const permissions = JSON.parse(localStorage.getItem('permissions'))
   const {user} = JSON.parse(localStorage.getItem('user'))
-  console.log(user)
+  // console.log(user)
   if (user.email == 'softwebdigital@gmail.com' || user.email == 'admin@ecstasynigeria.com') {
     return true
   }

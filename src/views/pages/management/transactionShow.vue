@@ -11,7 +11,7 @@ import VueToastr from 'vue-toastr'
 export default {
   components: { Layout, PageHeader, VueToastr },
   page: {
-    title: 'User Detail',
+    title: 'Transaction Details',
     meta: [
       {
         name: 'description',
@@ -61,6 +61,17 @@ export default {
         }
       }
     },
+    getUser(record){
+      if(record.user != null) {
+        // const user = record.user.first_name+' '+record.user.last_name
+        return record.user
+      } else if(record.user == null && record.receiver != null) {
+        // const receiver = record.receiver.first_name+' '+record.receiver.last_name
+        return record.receiver
+      } else {
+        return 'Not available'
+      }
+    },
     fetchData() {
       if (this.$cookies.get('token')) {
         this.axios
@@ -68,7 +79,7 @@ export default {
           .then((res) => {
             //   console.log(res.data)
 
-            // console.log(res.data.data.transaction)
+            console.log(res.data.data.transaction)
             this.transaction = res.data.data.transaction
             this.transaction.wallet_balance = res.data.data.wallet_balance
           })
@@ -148,7 +159,7 @@ export default {
                           }"
                           style="max-width: 200px;"
                           class="d-inline-block text-truncate text-info"
-                          >{{ transaction.user.username }}</router-link
+                          >{{ getUser(transaction).username }}</router-link
                         >
                       </td>
                     </tr>
@@ -228,7 +239,7 @@ export default {
                           }"
                           style="max-width: 200px;"
                           class="d-inline-block text-truncate text-info"
-                          >{{ transaction.user.email }}</router-link
+                          >{{ getUser(transaction).email }}</router-link
                         >
                       </td>
                     </tr>

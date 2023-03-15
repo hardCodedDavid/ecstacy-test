@@ -116,11 +116,14 @@ export default {
             const u = {}
             u.id = record.id
             u.user_id = record.user.id
+            u.receiver_id = record.receiver.id
             // u.sender = record.request_id ? record.request_id:'Not available'
+            u.sender = record.user != null ? record.user.first_name+' '+record.user.last_name :'Not available'
             u.amount = record.amount
             u.type = record.title
-            u.sender = record.user.username
-            u.receiver = record.receiver.username
+            // u.sender = record.user.username
+            u.receiver = record.receiver != null ? record.receiver.first_name+' '+record.receiver.last_name :'Not available'
+            // u.receiver = record.receiver.username
             // u.type = record.transaction_type
             u.status = record.status
             u.created_at = record.updated_at
@@ -132,7 +135,7 @@ export default {
         })
         .catch((err) => {
           // this.error = true
-          console.log(err)
+          // console.log(err)
           // console.log(err.response)
           if(err.response.status == 401) {
             return this.$router.push({path: '/login'})
@@ -332,7 +335,7 @@ export default {
               }}</a>
             </template>
 
-            <template v-slot:cell(email)="data">
+            <template v-slot:cell(sender)="data">
               <router-link
                 :to="{
                   name: 'user-details',
@@ -340,10 +343,22 @@ export default {
                 }"
                 style="max-width: 200px;"
                 class="d-inline-block text-truncate text-info"
-                >{{ data.item.email }}</router-link
+                >{{ data.item.sender }}</router-link
               >
-              <!-- <a href="#" class="text-body">{{ data.item.email }}</a> -->
             </template>
+
+            <template v-slot:cell(receiver)="data">
+              <router-link
+                :to="{
+                  name: 'user-details',
+                  params: { id: data.item.receiver_id },
+                }"
+                style="max-width: 200px;"
+                class="d-inline-block text-truncate text-info"
+                >{{ data.item.receiver }}</router-link
+              >
+            </template>
+
             <template v-slot:cell(status)="data">
               <div
                 class="badge bg-pill bg-soft-success font-size-12"

@@ -118,17 +118,16 @@ import { BASE_URL } from "../../../baseconstant"
           res.data.data.data.forEach((record) => {
             let u = {}
             u.id = record.id
-            u.user_id = record.user.id
+            u.user_id = record.user != null ? record.user.id:record.receiver.id
             u.reference_id = record.transaction_id ? record.transaction_id:'Not available'
             u.amount = record.amount
-            u.bank_name = record.meta_data?JSON.parse(record.meta_data).bank_name:'Not available'
-            u.email = record.user.email
-            u.account_name = record.meta_data?JSON.parse(record.meta_data).account_name:"Not available"
-            u.account_number = record.meta_data? JSON.parse(record.meta_data).account_number:'Not available'
+            u.bank_name = JSON.parse(record.meta_data).bank_name||'Not available'
+            u.email = record.user != null ? record.user.email:record.receiver.email
+            u.account_name = JSON.parse(record.meta_data).account_name||"Not available"
+            u.account_number = JSON.parse(record.meta_data).account_number||'Not available'
             u.status = record.status == 0 ? 'failed':record.status
             u.created_at = record.created_at
 
-            // console.log(u)
             dataArrr.push(u)
           })
           this.paymentData = dataArrr
@@ -346,6 +345,18 @@ import { BASE_URL } from "../../../baseconstant"
                     >{{ data.item.id }}</a
                   >
                 </template>
+
+                <template v-slot:cell(email)="data">
+              <router-link
+                :to="{
+                  name: 'user-details',
+                  params: { id: data.item.user_id },
+                }"
+                style="max-width: 200px;"
+                class="d-inline-block text-truncate text-info"
+                >{{ data.item.email }}</router-link
+              >
+            </template>
     
                 <template v-slot:cell(name)="data">
                   <a href="#" class="text-body">{{ data.item.name }}</a>
