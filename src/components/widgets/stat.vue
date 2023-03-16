@@ -221,11 +221,12 @@ export default {
                 <div>
                     <h4 class="mb-1 mt-1">
                         ₦
-                        <span data-plugin="counterup">
+                        <span data-plugin="counterup" style="font-size:18px;">
                             <countTo :startVal="10" :endVal="total_topup_amount" :duration="2000"></countTo>
                         </span>
                     </h4>
-                    <p class="text-muted mb-0">Total Wallet Topup</p>
+                    <!-- <p class="text-muted mb-0">Total Wallet Topup</p> -->
+                    <p class="text-muted mb-0">Wallet Balance</p>
                 </div>
             </div>
         </div>
