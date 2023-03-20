@@ -155,7 +155,7 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .put(
-          BASE_URL+'/api/v1/admin/transactions/payments/' +
+          BASE_URL+'/api/v1/admin/payments/' +
             this.paymentId +
             '/resolve'
         )
