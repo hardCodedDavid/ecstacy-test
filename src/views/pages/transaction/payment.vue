@@ -162,7 +162,7 @@ export default {
         .then(() => {
           // console.log(res.data.data)
           this.$refs.mytoast.Add({
-                    msg: 'Transaction reolsved successfully',
+                    msg: 'Transaction resolved successfully',
                     clickClose: false,
                     timeout: 5000,
                     position: "toast-top-right",
