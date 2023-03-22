@@ -77,8 +77,9 @@ export default {
         this.axios
           .put(BASE_URL + '/api/v1/admin/update-service-charges', this.service)
           .then(() => {
+            this.getUser()
             this.$refs.mytoast.Add({
-              msg: 'Service Charge Updated Successfully',
+              msg: 'Service charges updated successfully',
               clickClose: false,
               timeout: 5000,
               position: 'toast-top-right',
@@ -98,7 +99,6 @@ export default {
           })
           .finally(() => {
             this.loadings = false
-            this.getUser()
           })
       
     },
@@ -306,7 +306,7 @@ export default {
                       <div class="row">
                         <div class="col-md-4">
                           <label for="data"
-                            >Airtime Discount Price</label
+                            >Airtime Discount(%)</label
                           >
                           <input
                             id="data"
@@ -318,7 +318,7 @@ export default {
                         </div>
                         <div class="col-md-4">
                           <label for="data"
-                            >Data Discount Price</label
+                            >Data Discount(%)</label
                           >
                           <input
                             id="data"
@@ -330,7 +330,7 @@ export default {
                         </div>
                         <div class="col-md-4">
                           <label for="data"
-                            >SME Data Discount</label
+                            >SME Data Discount(%)</label
                           >
                           <input
                             id="data"
@@ -342,7 +342,7 @@ export default {
                         </div>
                         <div class="col-md-4">
                           <label for="data"
-                            >Cable Tv Discount</label
+                            >Cable Tv Discount(%)</label
                           >
                           <input
                             id="data"
@@ -354,7 +354,7 @@ export default {
                         </div>
                         <div class="col-md-4">
                           <label for="data"
-                            >Utility Bills Discount</label
+                            >Utility Bills Discount(%)</label
                           >
                           <input
                             id="data"
@@ -366,7 +366,7 @@ export default {
                         </div>
                         <div class="col-md-4">
                           <label for="data"
-                            >Education Discount</label
+                            >Education Discount(%)</label
                           >
                           <input
                             id="data"

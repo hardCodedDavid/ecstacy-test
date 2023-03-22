@@ -144,14 +144,14 @@ import { BASE_URL } from "../../../baseconstant"
         approveWithdrawal(id){
             this.isBusy = !this.isBusy
             this.axios.post(BASE_URL+'/api/v1/admin/transactions/resolve/' + id)
-            .then((res) => {
-                console.log(res.data.data);
+            .then(() => {
+                // console.log(res.data.data);
                 this.$refs.mytoast.Add({
                     msg: 'Transaction approved successfully',
                     clickClose: false,
                     timeout: 5000,
                     position: "toast-top-right",
-                    type: "error",
+                    type: "success",
                 })
                 this.fetchPayments();
             })
@@ -180,7 +180,7 @@ import { BASE_URL } from "../../../baseconstant"
                     clickClose: false,
                     timeout: 5000,
                     position: "toast-top-right",
-                    type: "error",
+                    type: "success",
                 })
                 this.fetchPayments();
             })
