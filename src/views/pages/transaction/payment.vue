@@ -1,9 +1,9 @@
 <script>
-import Layout from '../../layouts/main'
-import PageHeader from '@/components/page-header'
-import VueToastr from 'vue-toastr'
-import appConfig from '@/app.config'
-import { BASE_URL } from '../../../baseconstant'
+import Layout from "../../layouts/main";
+import PageHeader from "@/components/page-header";
+import VueToastr from "vue-toastr";
+import appConfig from "@/app.config";
+import { BASE_URL } from "../../../baseconstant";
 
 /**
  * Orders component
@@ -11,23 +11,23 @@ import { BASE_URL } from '../../../baseconstant'
 export default {
   components: { Layout, PageHeader, VueToastr },
   page: {
-    title: 'Payments',
+    title: "Payments",
     meta: [
       {
-        name: 'description',
+        name: "description",
         content: appConfig.description,
       },
     ],
   },
   data() {
     return {
-      title: 'Payments',
+      title: "Payments",
       items: [
         {
-          text: 'Transactions',
+          text: "Transactions",
         },
         {
-          text: 'Payments',
+          text: "Payments",
           active: true,
         },
       ],
@@ -38,7 +38,7 @@ export default {
       pageOptions: [200, 400, 60],
       filter: null,
       filterOn: [],
-      sortBy: 'age',
+      sortBy: "age",
       sortDesc: false,
       isBusy: false,
       paymentInfo: null,
@@ -46,46 +46,46 @@ export default {
       paymentRef: null,
       fields: [
         {
-          key: 'index',
-          label: 'S/N',
+          key: "index",
+          label: "S/N",
         },
         {
-          key: 'reference',
-          label: 'Reference ID',
+          key: "reference",
+          label: "Reference ID",
           sortable: true,
         },
         {
-          key: 'email',
-          label: 'Email',
+          key: "email",
+          label: "Email",
         },
         {
-          key: 'amount',
-          label: 'Amount',
+          key: "amount",
+          label: "Amount",
           sortable: true,
         },
         {
-          key: 'type',
-          label: 'Payment Type',
+          key: "type",
+          label: "Payment Type",
           sortable: true,
         },
         {
-          key: 'status',
-          label: 'Payment Status',
+          key: "status",
+          label: "Payment Status",
           sortable: true,
         },
         {
-          key: 'created_at',
-          label: 'Date',
+          key: "created_at",
+          label: "Date",
           sortable: true,
         },
         "action",
       ],
-    }
+    };
   },
-  middleware: 'authentication',
+  middleware: "authentication",
   watch: {
     currentPage: function() {
-      this.fetchPayments()
+      this.fetchPayments();
     },
   },
   computed: {
@@ -93,120 +93,117 @@ export default {
      * Total no. of records
      */
     rows() {
-      return this.totalRows
+      return this.totalRows;
     },
   },
-  mounted() {
+  async mounted() {
     // Set the initial number of items
     // this.totalRows = this.items.length
-    this.fetchPayments()
+    await this.fetchPayments();
   },
   methods: {
-    getUser(record){
-      if(record.user != null) {
+    getUser(record) {
+      if (record.user != null) {
         // const user = record.user.first_name+' '+record.user.last_name
-        return record.user
-      } else if(record.user == null && record.receiver != null) {
+        return record.user;
+      } else if (record.user == null && record.receiver != null) {
         // const receiver = record.receiver.first_name+' '+record.receiver.last_name
-        return record.receiver
+        return record.receiver;
       } else {
-        return 'Not available'
+        return "Not available";
       }
     },
     fetchPayments() {
-      this.isBusy = !this.isBusy
+      this.isBusy = !this.isBusy;
       this.axios
-        .get(
-          BASE_URL+'/api/v1/admin/payments?per_page=10000'
-        )
+        .get(BASE_URL + "/api/v1/admin/payments?per_page=10000")
         .then((res) => {
-          const dataResponse = res.data.data
-          console.log(dataResponse)
-          const dataArrr = []
-          dataResponse.data.forEach((record) => {
-            const u = {}
-            u.id = record.id
-            u.user_id = record.user != null ? record.user.id:record.receiver.id
-            u.reference = record.request_id ? record.request_id:'Not available'
-            u.amount = record.amount
-            u.type = record.title
-            u.email = this.getUser(record).email
+          const dataResponse = res.data.data;
+          console.log('payment', dataResponse);
+          const dataArrr = [];
+          dataResponse?.data?.forEach((record) => {
+            const u = {};
+            u.id = record.id;
+            u.user_id =
+              record.user != null ? record.user?.id : record.receiver?.id;
+            u.reference = record.request_id
+              ? record.request_id
+              : "Not available";
+            u.amount = record.amount;
+            u.type = record.title;
+            u.email = this.getUser(record)?.email;
             // u.type = record.transaction_type
-            u.status = record.status
-            u.created_at = record.updated_at
+            u.status = record.status;
+            u.created_at = record.updated_at;
 
-            dataArrr.push(u)
-          })
-          this.paymentData = dataArrr
-          this.totalRows = dataResponse.total
+            dataArrr.push(u);
+          });
+          this.paymentData = dataArrr;
+          this.totalRows = dataResponse.total;
         })
         .catch((err) => {
           // this.error = true
-          console.log(err.response)
-          if(err.response.status == 401) {
-            return this.$router.push({path: '/login'})
+          console.log(err);
+          if (err.response?.status == 401) {
+            return this.$router.push({ path: "/login" });
           }
         })
         .finally(() => {
-          this.isBusy = false
-        })
+          this.isBusy = false;
+        });
     },
     resolvePayment() {
-      this.isBusy = !this.isBusy
+      this.isBusy = !this.isBusy;
       this.axios
-        .put(
-          BASE_URL+'/api/v1/admin/payments/' +
-            this.paymentId +
-            '/resolve'
-        )
+        .put(BASE_URL + "/api/v1/admin/payments/" + this.paymentId + "/resolve")
         .then(() => {
           // console.log(res.data.data)
           this.$refs.mytoast.Add({
-                    msg: 'Transaction resolved successfully',
-                    clickClose: false,
-                    timeout: 5000,
-                    position: "toast-top-right",
-                    type: "success",
-                })
-          this.fetchPayments()
+            msg: "Transaction resolved successfully",
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "success",
+          });
+          this.fetchPayments();
         })
         .catch((err) => {
           // this.error = true
           // console.log(err)
-          
+
           this.$refs.mytoast.Add({
-                    msg: err.response.data.message,
-                    clickClose: false,
-                    timeout: 5000,
-                    position: "toast-top-right",
-                    type: "error",
-                })
+            msg: err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "error",
+          });
         })
         .finally(() => {
-          this.isBusy = false
-        })
+          this.isBusy = false;
+        });
     },
     getPaymentInfo(item) {
-      this.paymentInfo = item
-      this.paymentId = item.id
-      this.paymentRef = item.reference
+      this.paymentInfo = item;
+      this.paymentId = item.id;
+      this.paymentRef = item.reference;
     },
     /**
      * Search the table data with search input
      */
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     },
   },
-}
+};
 </script>
 
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-        <vue-toastr ref="mytoast"></vue-toastr>
+    <vue-toastr ref="mytoast"></vue-toastr>
     <!-- ::START POST Resolve Payment Modal -->
 
     <b-modal
@@ -364,7 +361,13 @@ export default {
                 }"
               >
                 <!-- {{ data.item.status }} -->
-                {{ data.item.status == 'failed' ? 'declined':data.item.status == 'pending' ? 'pending':'success' }}
+                {{
+                  data.item.status == "failed"
+                    ? "declined"
+                    : data.item.status == "pending"
+                    ? "pending"
+                    : "success"
+                }}
               </div>
             </template>
             <template v-slot:cell(created_at)="data">
@@ -374,7 +377,10 @@ export default {
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">
-                <li v-if="(item.status == 'pending') || (item.status == 'failed')" class="list-inline-item">
+                <li
+                  v-if="item.status == 'pending' || item.status == 'failed'"
+                  class="list-inline-item"
+                >
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-success"

@@ -115,14 +115,14 @@ export default {
           dataResponse.data.forEach((record) => {
             const u = {}
             u.id = record.id
-            u.user_id = record.user.id
-            u.receiver_id = record.receiver.id
+            u.user_id = record.user?.id
+            u.receiver_id = record.receiver?.id
             // u.sender = record.request_id ? record.request_id:'Not available'
-            u.sender = record.user != null ? record.user.first_name+' '+record.user.last_name :'Not available'
+            u.sender = record.user != null ? record.user?.first_name+' '+record.user?.last_name :'Not available'
             u.amount = record.amount
             u.type = record.title
             // u.sender = record.user.username
-            u.receiver = record.receiver != null ? record.receiver.first_name+' '+record.receiver.last_name :'Not available'
+            u.receiver = record.receiver != null ? record.receiver?.first_name+' '+record.receiver?.last_name :'Not available'
             // u.receiver = record.receiver.username
             // u.type = record.transaction_type
             u.status = record.status

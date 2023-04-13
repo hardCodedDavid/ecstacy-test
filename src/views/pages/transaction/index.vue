@@ -1,9 +1,9 @@
 <script>
-import Layout from '../../layouts/main'
-import PageHeader from '@/components/page-header'
-import appConfig from '@/app.config'
-    // import VueToastr from "vue-toastr";
-import { BASE_URL } from '../../../baseconstant'
+import Layout from "../../layouts/main";
+import PageHeader from "@/components/page-header";
+import appConfig from "@/app.config";
+// import VueToastr from "vue-toastr";
+import { BASE_URL } from "../../../baseconstant";
 
 /**
  * Orders component
@@ -11,23 +11,23 @@ import { BASE_URL } from '../../../baseconstant'
 export default {
   components: { Layout, PageHeader },
   page: {
-    title: 'Transaction',
+    title: "Transaction",
     meta: [
       {
-        name: 'description',
+        name: "description",
         content: appConfig.description,
       },
     ],
   },
   data() {
     return {
-      title: 'Transaction',
+      title: "Transaction",
       items: [
         {
-          text: 'App',
+          text: "App",
         },
         {
-          text: 'Transaction',
+          text: "Transaction",
           active: true,
         },
       ],
@@ -38,7 +38,7 @@ export default {
       pageOptions: [200, 400, 60],
       filter: null,
       filterOn: [],
-      sortBy: 'age',
+      sortBy: "age",
       sortDesc: false,
       isBusy: false,
       paymentInfo: null,
@@ -46,49 +46,49 @@ export default {
       paymentRef: null,
       fields: [
         {
-          key: 'index',
-          label: 'S/N',
+          key: "index",
+          label: "S/N",
         },
         {
-          key: 'reference_id',
-          label: 'Reference ID',
+          key: "reference_id",
+          label: "Reference ID",
           sortable: true,
         },
         {
-          key: 'user_name',
-          label: 'Name',
+          key: "user_name",
+          label: "Name",
           sortable: true,
         },
         {
-          key: 'amount',
-          label: 'Amount',
+          key: "amount",
+          label: "Amount",
           sortable: true,
         },
         {
-          key: 'type',
-          label: 'Service Type',
+          key: "type",
+          label: "Service Type",
           sortable: true,
         },
         {
-          key: 'provider',
-          label: 'Service Provider',
+          key: "provider",
+          label: "Service Provider",
           sortable: true,
         },
         {
-          key: 'status',
-          label: 'Transaction Status',
+          key: "status",
+          label: "Transaction Status",
           sortable: true,
         },
         {
-          key: 'created_at',
-          label: 'Date',
+          key: "created_at",
+          label: "Date",
           sortable: true,
         },
         "action",
       ],
-    }
+    };
   },
-  middleware: 'authentication',
+  middleware: "authentication",
   // watch: {
   //   currentPage: function() {
   //     this.fetchTransactions()
@@ -100,138 +100,143 @@ export default {
      */
     rows() {
       // return this.totalRows
-      return this.transactionData.length
+      return this.transactionData.length;
     },
   },
   mounted() {
     // Set the initial number of items
-    this.totalRows = this.items.length
-    this.fetchTransactions()
+    this.totalRows = this.items.length;
+    this.fetchTransactions();
   },
   methods: {
-    getUser(record){
-      if(record.user != null) {
-        const user = record.user.first_name+' '+record.user.last_name
-        return user
-      } else if(record.user == null && record.receiver != null) {
-        const receiver = record.receiver.first_name+' '+record.receiver.last_name
-        return receiver
+    getUser(record) {
+      if (record.user != null) {
+        const user = record.user.first_name + " " + record.user.last_name;
+        return user;
+      } else if (record.user == null && record.receiver != null) {
+        const receiver =
+          record.receiver.first_name + " " + record.receiver.last_name;
+        return receiver;
       } else {
-        return 'Not available'
+        return "Not available";
       }
     },
     fetchTransactions() {
-      this.isBusy = !this.isBusy
+      this.isBusy = !this.isBusy;
       this.axios
-        .get(
-          BASE_URL +
-            '/api/v1/admin/transactions?per_page=10000'
-        )
+        .get(BASE_URL + "/api/v1/admin/transactions?per_page=10000")
         .then((res) => {
-          const dataResponse = res.data.data
+          const dataResponse = res.data.data;
           // console.log(dataResponse)
-          const dataArrr = []
+          const dataArrr = [];
           // console.log(JSON.parse(dataResponse.data[51].meta_data).provider)
           dataResponse.data.forEach((record) => {
-            const u = {}
+            const u = {};
             // console.log(record)
-            u.id = record.id
-            u.reference_id = record.request_id || 'Not available'
-            u.user_id = record.user_id
+            u.id = record.id;
+            u.reference_id = record.request_id || "Not available";
+            u.user_id = record.user_id;
             // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
-            u.user_name = this.getUser(record)
-            u.amount = record.amount
-            u.type = record.title
-            u.provider = record.meta_data ? JSON.parse(record.meta_data).provider:'Not available'
-            u.byadmin = record.meta_data && JSON.parse(record.meta_data).funded_by_admin ? JSON.parse(record.meta_data).funded_by_admin:false
+            u.user_name = this.getUser(record);
+            u.amount = record.amount;
+            u.type = record.title;
+            u.provider = record.meta_data
+              ? JSON.parse(record.meta_data)?.bank_name
+              : "Not available";
+            u.byadmin =
+              record.meta_data && JSON.parse(record.meta_data).funded_by_admin
+                ? JSON.parse(record.meta_data).funded_by_admin
+                : false;
             // u.type = record.transaction_type
-            u.status = record.status == 0 ? 'failed':record.status == 'delivered'?'success':record.status
-            u.created_at = record.updated_at
+            u.status =
+              record.status == 0
+                ? "failed"
+                : record.status == "delivered"
+                ? "success"
+                : record.status;
+            u.created_at = record.updated_at;
 
             // console.log(u)
-            dataArrr.push(u)
+            dataArrr.push(u);
             // dataArrr.unshift(u)
-          })
-          console.log(dataArrr)
-          this.transactionData = dataArrr
-          this.totalRows = dataResponse.total
+          });
+          console.log(dataArrr);
+          this.transactionData = dataArrr;
+          this.totalRows = dataResponse.total;
         })
         .catch((err) => {
           // this.error = true
-          console.log(err)
+          console.log(err);
           this.$refs.mytoast.Add({
-                msg: err.response.data.message,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-              });
-          console.log(err.response.data)
+            msg: err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "error",
+          });
+          console.log(err.response.data);
           if (err.response.status == 401) {
-            return this.$router.push({ path: '/login' })
+            return this.$router.push({ path: "/login" });
           }
         })
         .finally(() => {
-          this.isBusy = false
-        })
+          this.isBusy = false;
+        });
     },
     getPaymentInfo(item) {
-      this.paymentInfo = item
-      this.paymentId = item.id
-      this.paymentRef = item.reference_id
+      this.paymentInfo = item;
+      this.paymentId = item.id;
+      this.paymentRef = item.reference_id;
     },
     resolvePayment() {
-      this.isBusy =  true
+      this.isBusy = true;
       this.axios
-        .put(
-          BASE_URL +
-            '/api/v1/admin/transactions/resolve/'+this.paymentRef
-        )
+        .put(BASE_URL + "/api/v1/admin/transactions/resolve/" + this.paymentRef)
         .then((res) => {
-              console.log(res.data.data);
-          this.fetchTransactions()
+          console.log(res.data.data);
+          this.fetchTransactions();
           this.$refs.mytoast.Add({
-                msg: 'Transaction resolved successfully',
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "success",
-              });
+            msg: "Transaction resolved successfully",
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "success",
+          });
         })
         .catch((err) => {
           // this.error = true
           // console.log(err.response)
           this.$refs.mytoast.Add({
-                msg: err.response.data.message,
-                clickClose: false,
-                timeout: 5000,
-                position: "toast-top-right",
-                type: "error",
-              });
+            msg: err.response.data.message,
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "error",
+          });
           if (err.response.status == 401) {
-            return this.$router.push({ path: '/login' })
+            return this.$router.push({ path: "/login" });
           }
         })
         .finally(() => {
-          this.isBusy = false
-        })
+          this.isBusy = false;
+        });
     },
     /**
      * Search the table data with search input
      */
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     },
   },
-}
+};
 </script>
 
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-        <vue-toastr ref="mytoast"></vue-toastr>
+    <vue-toastr ref="mytoast"></vue-toastr>
     <!-- ::START POST Resolve Payment Modal -->
 
     <b-modal
@@ -394,12 +399,22 @@ export default {
               <div
                 class="badge bg-pill bg-soft-success font-size-12"
                 :class="{
-                  'bg-soft-danger': data.item.status === 'failed' || data.item.status === 'reversed',
+                  'bg-soft-danger':
+                    data.item.status === 'failed' ||
+                    data.item.status === 'reversed',
                   'bg-soft-warning': data.item.status === 'pending',
                   'bg-soft-success': data.item.status === 'success',
                 }"
               >
-                {{ data.item.status == 'failed' ? 'failed':data.item.status == 'pending' ? 'pending':data.item.status == 'success'?'success':data.item.status }}
+                {{
+                  data.item.status == "failed"
+                    ? "failed"
+                    : data.item.status == "pending"
+                    ? "pending"
+                    : data.item.status == "success"
+                    ? "success"
+                    : data.item.status
+                }}
               </div>
             </template>
             <template v-slot:cell(created_at)="data">
@@ -411,7 +426,7 @@ export default {
               <ul class="list-inline mb-0">
                 <li class="list-inline-item">
                   <a
-                    :href="'/management/transaction/'+item.id"
+                    :href="'/management/transaction/' + item.id"
                     class="px-2 text-info"
                     v-b-tooltip.hover
                     title="View Transaction"
@@ -419,7 +434,7 @@ export default {
                     <i class="uil-eye font-size-20"></i>
                   </a>
                 </li>
-                <li v-if="(item.status != 'success')" class="list-inline-item">
+                <li v-if="item.status != 'success'" class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-success"
