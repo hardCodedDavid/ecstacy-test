@@ -55,7 +55,7 @@
         submitForm() {
           this.submitted = true;
           console.log(this.notify)
-          // this.axios.post(BASE_URL+'/api/v1/admin/notifications/send', this.notify)
+          // this.axios.post(BASE_URL+'/admin/notifications/send', this.notify)
           // .then((res) => {
           //       console.log(res.data);
           //       this.submitted = false;

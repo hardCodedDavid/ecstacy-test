@@ -140,7 +140,7 @@ export default {
 
       this.axios
         .post(
-          BASE_URL + '/api/v1/admin/providers/' + this.product.id+'/products/update-mysimhosting',
+          BASE_URL + '/admin/providers/' + this.product.id+'/products/update-mysimhosting',
           formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -182,7 +182,7 @@ export default {
       this.axios
         .get(
           BASE_URL +
-            '/api/v1/admin/providers/mysimdatahosting/products?per_page=10000'
+            '/admin/providers/mysimdatahosting/products?per_page=10000'
         )
         .then((res) => {
           //   console.log(res.data.data.data);
@@ -225,7 +225,7 @@ export default {
     deleteProvider(id) {
       this.isBusy = true
       this.axios
-        .delete(BASE_URL + '/api/v1/admin/providers/' + id)
+        .delete(BASE_URL + '/admin/providers/' + id)
         .then((res) => {
           this.$refs.mytoast.Add({
             msg: res.data.message,
@@ -257,7 +257,7 @@ export default {
       const status = item.status == 'enabled' ? 'disable-mysimhosting':'enable-mysimhosting'
       const showStatus = item.status == 'enabled' ? 'disabled':'enabled'
       this.axios
-        .put(BASE_URL + '/api/v1/admin/providers/' + item.id + '/products/'+status)
+        .put(BASE_URL + '/admin/providers/' + item.id + '/products/'+status)
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -286,7 +286,7 @@ export default {
     enableService(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/providers/' + id + '/products/enable-mysimhosting')
+        .put(BASE_URL + '/admin/providers/' + id + '/products/enable-mysimhosting')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -316,7 +316,7 @@ export default {
       this.isBusy = true
       console.log(id)
       this.axios
-        .put(BASE_URL + '/api/v1/admin/providers/' + id + '/products/disable-mysimhosting')
+        .put(BASE_URL + '/admin/providers/' + id + '/products/disable-mysimhosting')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()

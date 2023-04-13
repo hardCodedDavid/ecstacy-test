@@ -92,7 +92,7 @@ export default {
         })
       } else {
         this.axios
-          .put(BASE_URL + '/api/v1/admin/password/change', this.password)
+          .put(BASE_URL + '/admin/password/change', this.password)
           .then(() => {
             // console.log(res.data.data)
             this.$refs.mytoast.Add({
@@ -124,7 +124,7 @@ export default {
       e.preventDefault()
       this.loadings = true
         this.axios
-          .put(BASE_URL + '/api/v1/admin/update-service-charges', this.service)
+          .put(BASE_URL + '/admin/update-service-charges', this.service)
           .then(() => {
             this.$refs.mytoast.Add({
               msg: 'Service Charge Updated Successfully',
@@ -224,7 +224,7 @@ export default {
       e.preventDefault()
       this.isLoading = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/profile/update', this.admin)
+        .put(BASE_URL + '/admin/profile/update', this.admin)
         .then(() => {
           //   console.log(res)
           this.getUser()
@@ -262,7 +262,7 @@ export default {
       formData.append('photo', this.profile_photo)
 
       this.axios
-        .post(BASE_URL + '/api/v1/admin/profile/photo', formData, {
+        .post(BASE_URL + '/admin/profile/photo', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -297,7 +297,7 @@ export default {
     getUser() {
       if (this.$cookies.get('token')) {
         this.axios
-          .get(BASE_URL + '/api/v1/admin/profile')
+          .get(BASE_URL + '/admin/profile')
           .then((res) => {
             // console.log(res.data.data)
             this.user = res.data.data.user

@@ -133,7 +133,7 @@ export default {
 
       this.axios
         .post(
-          BASE_URL + '/api/v1/admin/provider-service/' + this.product.id,
+          BASE_URL + '/admin/provider-service/' + this.product.id,
           formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -175,7 +175,7 @@ export default {
       this.axios
         .get(
           BASE_URL +
-            '/api/v1/admin/providers/' +
+            '/admin/providers/' +
             this.$route.params.id +
             '/products?per_page=10000'
         )
@@ -217,7 +217,7 @@ export default {
     deleteProvider(id) {
       this.isBusy = true
       this.axios
-        .delete(BASE_URL + '/api/v1/admin/providers/' + id)
+        .delete(BASE_URL + '/admin/providers/' + id)
         .then((res) => {
           this.$refs.mytoast.Add({
             msg: res.data.message,
@@ -248,7 +248,7 @@ export default {
       this.isBusy = true
       const status = item.status == 'enabled' ? 'disable':'enable'
       this.axios
-        .put(BASE_URL + '/api/v1/admin/provider-service/' + item.id +'/'+status)
+        .put(BASE_URL + '/admin/provider-service/' + item.id +'/'+status)
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -277,7 +277,7 @@ export default {
     enableService(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/provider-service/' + id + '/enable')
+        .put(BASE_URL + '/admin/provider-service/' + id + '/enable')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -306,7 +306,7 @@ export default {
     disableService(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/provider-service/' + id + '/disable')
+        .put(BASE_URL + '/admin/provider-service/' + id + '/disable')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()

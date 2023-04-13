@@ -60,7 +60,7 @@ import { BASE_URL } from "../../../baseconstant"
             recipient: this.recipient,
             message: this.message
           }
-          this.axios.post(BASE_URL+'/api/v1/admin/notifications/send', notify)
+          this.axios.post(BASE_URL+'/admin/notifications/send', notify)
           .then((res) => {
                 console.log(res.data);
                 this.submitted = false;

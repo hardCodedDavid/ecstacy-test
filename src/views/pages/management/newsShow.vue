@@ -44,7 +44,7 @@ export default {
   },
   methods: {
         fetchData(){
-            this.axios.get(BASE_URL+'/api/v1/admin/news-updates/'+ this.$route.params.id)
+            this.axios.get(BASE_URL+'/admin/news-updates/'+ this.$route.params.id)
             .then((res) => {
                 console.log(res.data.data);
                 this.blogData = res.data.data;

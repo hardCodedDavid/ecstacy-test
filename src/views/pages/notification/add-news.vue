@@ -88,7 +88,7 @@ export default {
       } else {
         console.log(this.form)
         this.axios
-          .post(BASE_URL + '/api/v1/admin/news-update', this.form, {
+          .post(BASE_URL + '/admin/news-update', this.form, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },

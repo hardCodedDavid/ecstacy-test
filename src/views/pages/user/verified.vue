@@ -113,7 +113,7 @@ import { BASE_URL } from "../../../baseconstant"
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/users/verified?per_page=10000',{})
+          this.axios.get(BASE_URL+'/admin/users/verified?per_page=10000',{})
           .then((res) => {
               // console.log(res.data);
               const users = res.data.data
@@ -145,7 +145,7 @@ import { BASE_URL } from "../../../baseconstant"
       },
       deleteUser(id) {
         this.isBusy =  true
-          this.axios.delete(BASE_URL+'/api/v1/admin/delete-user/'+id,{})
+          this.axios.delete(BASE_URL+'/admin/delete-user/'+id,{})
           .then((res) => {
             this.$refs.mytoast.Add({
                 msg: res.data.message,

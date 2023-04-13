@@ -124,7 +124,7 @@ export default {
     fetchTransactions() {
       this.isBusy = !this.isBusy;
       this.axios
-        .get(BASE_URL + "/api/v1/admin/transactions?per_page=10000")
+        .get(BASE_URL + "/admin/transactions?per_page=10000")
         .then((res) => {
           const dataResponse = res.data.data;
           // console.log(dataResponse)
@@ -191,7 +191,7 @@ export default {
     resolvePayment() {
       this.isBusy = true;
       this.axios
-        .put(BASE_URL + "/api/v1/admin/transactions/resolve/" + this.paymentRef)
+        .put(BASE_URL + "/admin/transactions/resolve/" + this.paymentRef)
         .then((res) => {
           console.log(res.data.data);
           this.fetchTransactions();

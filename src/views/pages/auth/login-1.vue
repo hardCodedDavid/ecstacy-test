@@ -47,7 +47,7 @@ export default {
       // }
       //::POST Login Request
       this.axios
-        .post(BASE_URL + '/api/v1/admin/auth/login', this.user)
+        .post(BASE_URL + '/admin/auth/login', this.user)
         .then((res) => {
           const { token, user, permissions } = res.data.data
           console.log(user)

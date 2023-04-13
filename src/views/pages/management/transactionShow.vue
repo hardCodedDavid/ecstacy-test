@@ -75,7 +75,7 @@ export default {
     fetchData() {
       if (this.$cookies.get('token')) {
         this.axios
-          .get(BASE_URL + '/api/v1/admin/transactions/' + this.$route.params.id)
+          .get(BASE_URL + '/admin/transactions/' + this.$route.params.id)
           .then((res) => {
             //   console.log(res.data)
 

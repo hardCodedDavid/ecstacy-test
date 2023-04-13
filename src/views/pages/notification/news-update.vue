@@ -108,7 +108,7 @@ export default {
     fetchData() {
       this.isBusy = true
       this.axios
-        .get(BASE_URL + '/api/v1/admin/news-updates?per_page=10000')
+        .get(BASE_URL + '/admin/news-updates?per_page=10000')
         .then((res) => {
           console.log(res.data.data.data)
           this.totalRows = res.data.data.total
@@ -126,7 +126,7 @@ export default {
       //   this.isBusy =  true
       //   console.log(this.admin)
       //   // return
-      //   this.axios.post(BASE_URL+'/api/v1/admin/create', this.admin)
+      //   this.axios.post(BASE_URL+'/admin/create', this.admin)
       //   .then(() => {
       //         // console.log(res.data.data);
       //         this.fetchData();
@@ -162,7 +162,7 @@ export default {
       this.isBusy = true
       console.log(this.post.id)
       this.axios
-        .delete(BASE_URL + '/api/v1/admin/news-updates/' + this.post.id)
+        .delete(BASE_URL + '/admin/news-updates/' + this.post.id)
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -191,7 +191,7 @@ export default {
     publishPost(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/news-updates/' + id + '/approve')
+        .put(BASE_URL + '/admin/news-updates/' + id + '/approve')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -220,7 +220,7 @@ export default {
     unPublishPost(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/news-updates/' + id + '/unpublish')
+        .put(BASE_URL + '/admin/news-updates/' + id + '/unpublish')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()

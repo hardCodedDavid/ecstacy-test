@@ -94,7 +94,7 @@ import { BASE_URL } from '../../../baseconstant';
         },
         fetchData() {
             this.isBusy =  true
-            this.axios.get(BASE_URL+'/api/v1/admin/roles')
+            this.axios.get(BASE_URL+'/admin/roles')
             .then((res) => {
                 // console.log(res.data.data);
                 this.roleData = res.data.data
@@ -122,7 +122,7 @@ import { BASE_URL } from '../../../baseconstant';
 
             // console.log(this.role.permissions)
             console.log(this.role)
-            this.axios.post(BASE_URL+'/api/v1/admin/roles', this.role)
+            this.axios.post(BASE_URL+'/admin/roles', this.role)
             .then(() => {
                 // console.log(res.data.data);
                 this.fetchData();
@@ -154,7 +154,7 @@ import { BASE_URL } from '../../../baseconstant';
             let val = this.role.permissions.map(({ id }) => id).join(', ');
             this.role.permissions = val.split(", ");
 
-            this.axios.put(BASE_URL+'/api/v1/admin/roles/' 
+            this.axios.put(BASE_URL+'/admin/roles/' 
             + this.role.id, this.role)
             .then((res) => {
                 console.log(res.data.data);
@@ -186,7 +186,7 @@ import { BASE_URL } from '../../../baseconstant';
         },
         deleteRole() {
           console.log(this.role.id)
-            this.axios.delete(BASE_URL+'/api/v1/admin/roles/' + this.role.id)
+            this.axios.delete(BASE_URL+'/admin/roles/' + this.role.id)
             .then((res) => {
                 console.log(res.data.data);
                 this.fetchData();
@@ -214,7 +214,7 @@ import { BASE_URL } from '../../../baseconstant';
             });
         },
         fetchPermission(){
-          this.axios.get(BASE_URL+'/api/v1/admin/permissions')
+          this.axios.get(BASE_URL+'/admin/permissions')
           .then((res) => {
                 // console.log(res.data.data);
                 this.options = res.data.data;

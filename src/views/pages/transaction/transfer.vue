@@ -106,7 +106,7 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .get(
-          BASE_URL+'/api/v1/admin/wallet-transfers?per_page=10000'
+          BASE_URL+'/admin/wallet-transfers?per_page=10000'
         )
         .then((res) => {
           const dataResponse = res.data.data
@@ -149,7 +149,7 @@ export default {
       this.isBusy = !this.isBusy
       this.axios
         .put(
-          BASE_URL+'/api/v1/admin/transactions/payments/' +
+          BASE_URL+'/admin/transactions/payments/' +
             this.paymentId +
             '/resolve'
         )

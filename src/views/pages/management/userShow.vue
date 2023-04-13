@@ -63,7 +63,7 @@ export default {
     },
     fundUserWallet(){
       this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/wallet-action/credit',this.wallet)
+        this.axios.put(BASE_URL+'/admin/wallet-action/credit',this.wallet)
         .then(() => {
               this.fetchData();
               this.$refs.mytoast.Add({
@@ -91,7 +91,7 @@ export default {
     },
     withdrawUserFund(){
       this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/wallet-action/debit',this.wallet)
+        this.axios.put(BASE_URL+'/admin/wallet-action/debit',this.wallet)
         .then(() => {
               this.fetchData();
               this.$refs.mytoast.Add({
@@ -122,7 +122,7 @@ if (this.$cookies.get('token')) {
       this.axios
         .get(
           BASE_URL +
-            '/api/v1/admin/view-user/' +
+            '/admin/view-user/' +
             this.$route.params.id +
             '?page=' +
             this.currentPage +

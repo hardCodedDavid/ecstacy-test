@@ -116,7 +116,7 @@ export default {
     fetchPayments() {
       this.isBusy = !this.isBusy;
       this.axios
-        .get(BASE_URL + "/api/v1/admin/payments?per_page=10000")
+        .get(BASE_URL + "/admin/payments?per_page=10000")
         .then((res) => {
           const dataResponse = res.data.data;
           console.log('payment', dataResponse);
@@ -155,7 +155,7 @@ export default {
     resolvePayment() {
       this.isBusy = !this.isBusy;
       this.axios
-        .put(BASE_URL + "/api/v1/admin/payments/" + this.paymentId + "/resolve")
+        .put(BASE_URL + "/admin/payments/" + this.paymentId + "/resolve")
         .then(() => {
           // console.log(res.data.data)
           this.$refs.mytoast.Add({

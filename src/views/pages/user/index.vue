@@ -112,7 +112,7 @@ import { BASE_URL } from "../../../baseconstant"
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/api/v1/admin/users/all?per_page=10000',{})
+          this.axios.get(BASE_URL+'/admin/users/all?per_page=10000',{})
           .then((res) => {
               console.log(res.data.data);
               const users = res.data.data
@@ -151,7 +151,7 @@ import { BASE_URL } from "../../../baseconstant"
       },
       deleteUser(id) {
         this.isBusy =  true
-          this.axios.delete(BASE_URL+'/api/v1/admin/delete-user/'+id,{})
+          this.axios.delete(BASE_URL+'/admin/delete-user/'+id,{})
           .then((res) => {
             this.$refs.mytoast.Add({
                 msg: res.data.message,
@@ -178,7 +178,7 @@ import { BASE_URL } from "../../../baseconstant"
       },
       approveUser(id) {
         this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/approve')
+        this.axios.put(BASE_URL+'/admin/user-action/' + id+'/approve')
         .then(() => {
               // console.log(res.data.data);
               this.fetchData();
@@ -206,7 +206,7 @@ import { BASE_URL } from "../../../baseconstant"
       },
       restrictUser(id) {
         this.isBusy =  true
-        this.axios.put(BASE_URL+'/api/v1/admin/user-action/' + id+'/restrict')
+        this.axios.put(BASE_URL+'/admin/user-action/' + id+'/restrict')
         .then(() => {
               // console.log(res.data.data);
               this.fetchData();

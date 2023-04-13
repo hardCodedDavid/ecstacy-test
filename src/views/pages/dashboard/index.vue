@@ -53,7 +53,7 @@ export default {
   },
   mounted() {
     this.axios
-      .get(BASE_URL+'/api/v1/admin/dashboard')
+      .get(BASE_URL+'/admin/dashboard')
       .then((res) => {
         console.log(res.data.data)
         this.dashboard = res.data.data
@@ -72,7 +72,7 @@ export default {
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-    <Stat :total_users="dashboard.total_users" :wds="dashboard.total_wd" :total_transactions="dashboard.total_transactions" :total_topup_amount="dashboard.total_topup_amount" />
+    <Stat :total_users="dashboard.total_users" :wds="dashboard.total_withdrawals" :total_transactions="dashboard.total_transactions" :total_topup_amount="dashboard.total_topup_amount" />
     <div class="row" v-if="!dashboard">
       <div class="col-xl-12">
         <div class="text-center my-3">

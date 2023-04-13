@@ -28,7 +28,7 @@ export default {
       ] = `Bearer ${this.$cookies.get('token')}`
       if (this.$cookies.get('token')) {
         this.axios
-          .get(BASE_URL + '/api/v1/admin/profile')
+          .get(BASE_URL + '/admin/profile')
           .then((res) => {
             console.log(res)
             // console.log($cookies.get("token"));
@@ -72,7 +72,7 @@ export default {
     ] = `Bearer ${this.$cookies.get('token')}`
     if (this.$cookies.get('token')) {
       this.axios
-        .get(BASE_URL + '/api/v1/admin/profile')
+        .get(BASE_URL + '/admin/profile')
         .then((res) => {
           console.log(res)
           // console.log($cookies.get("token"));

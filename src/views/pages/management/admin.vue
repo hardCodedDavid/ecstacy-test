@@ -105,7 +105,7 @@ export default {
     fetchData() {
       this.isBusy = true
       this.axios
-        .get(BASE_URL + '/api/v1/admin/all?per_page=10000')
+        .get(BASE_URL + '/admin/all?per_page=10000')
         .then((res) => {
           console.log(res.data.data.data)
           // this.totalRows = res.data.data.total
@@ -154,7 +154,7 @@ export default {
 
       if (this.isBusy === true) {
         this.axios
-          .post(BASE_URL + '/api/v1/admin/create', this.admin)
+          .post(BASE_URL + '/admin/create', this.admin)
           .then(() => {
             // console.log(res.data.data);
             this.fetchData()
@@ -186,7 +186,7 @@ export default {
     fetchRoles() {
       this.isBusy = true
       this.axios
-        .get(BASE_URL + '/api/v1/admin/roles')
+        .get(BASE_URL + '/admin/roles')
         .then((res) => {
           // console.log(res.data.data)
           const rolesArr = []
@@ -217,7 +217,7 @@ export default {
     deleteAdmin() {
       this.isBusy = true
       this.axios
-        .delete(BASE_URL + '/api/v1/admin/' + this.admin.id + '/delete')
+        .delete(BASE_URL + '/admin/' + this.admin.id + '/delete')
         .then((res) => {
           console.log(res.data.data)
           this.fetchData()
@@ -246,7 +246,7 @@ export default {
     approveAdmin(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/' + id + '/approve')
+        .put(BASE_URL + '/admin/' + id + '/approve')
         .then((res) => {
           console.log(res.data.data)
           this.fetchData()
@@ -275,7 +275,7 @@ export default {
     restrictAdmin(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/api/v1/admin/' + id + '/restrict')
+        .put(BASE_URL + '/admin/' + id + '/restrict')
         .then((res) => {
           console.log(res.data.data)
           this.fetchData()

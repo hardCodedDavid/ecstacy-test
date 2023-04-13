@@ -42,7 +42,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
     // ] = `Bearer ${myt}`
     // if (myt) {
     //   axios
-    //     .get(BASE_URL + '/api/v1/admin/profile')
+    //     .get(BASE_URL + '/admin/profile')
     //     .then((res) => {
     //       console.log(res)
     //       // console.log($cookies.get("token"));

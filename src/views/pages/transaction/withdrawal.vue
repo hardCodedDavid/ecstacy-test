@@ -110,7 +110,7 @@ export default {
     fetchPayments() {
       this.isBusy = !this.isBusy;
       this.axios
-        .get(BASE_URL + "/api/v1/admin/withdrawals?per_page=10000")
+        .get(BASE_URL + "/admin/withdrawals?per_page=10000")
         .then((res) => {
           console.log(res.data.data.data);
           // console.log(JSON.parse(res.data.data.data[0].meta_data));
@@ -152,7 +152,7 @@ export default {
     approveWithdrawal(id) {
       this.isBusy = !this.isBusy;
       this.axios
-        .post(BASE_URL + "/api/v1/admin/transactions/resolve/" + id)
+        .post(BASE_URL + "/admin/transactions/resolve/" + id)
         .then(() => {
           // console.log(res.data.data);
           this.$refs.mytoast.Add({
@@ -182,7 +182,7 @@ export default {
     declineWithdrawal(id) {
       this.isBusy = !this.isBusy;
       this.axios
-        .post(BASE_URL + "/api/v1/admin/transactions/decline/" + id)
+        .post(BASE_URL + "/admin/transactions/decline/" + id)
         .then((res) => {
           console.log(res.data.data);
           this.$refs.mytoast.Add({
