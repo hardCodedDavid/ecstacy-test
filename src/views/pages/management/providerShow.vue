@@ -180,8 +180,7 @@ export default {
             '/products?per_page=10000'
         )
         .then((res) => {
-          //   console.log(res.data.data.data);
-          const data = res.data.data.data
+          const data = res.data?.data || [];
           const dataArr = []
             // console.log(data)
           data.forEach((user) => {
@@ -190,20 +189,20 @@ export default {
             u.thumbnail = user.logo
             u.name = user.name
             u.type = user.type
-            u.provider_name = user.provider.provider_name
-            u.status = user.status == 'enable' ? 'enabled' : 'disabled'
+            u.provider_name = user.provider?.provider_name || 'Not available'
+            u.status = user.status == 'enabled' ? 'enabled' : 'disabled'
             u.created_at = user.created_at
 
             dataArr.push(u)
           })
-          //   console.log(dataArr)
+          console.log(dataArr);
           this.providerData = dataArr
           // this.fetchRoles();
         })
         .catch((err) => {
-          //   console.log(err.response);
+          console.log(err);
           this.$refs.mytoast.Add({
-            msg: err.response.message || err.response.data.message,
+            msg: err.response?.message || err.response?.data?.message,
             clickClose: false,
             timeout: 5000,
             position: 'toast-top-right',

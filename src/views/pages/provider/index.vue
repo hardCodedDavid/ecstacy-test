@@ -114,16 +114,16 @@ export default {
         .get(BASE_URL + '/admin/providers?per_page=10000')
         .then((res) => {
           //   console.log(res.data.data.data);
-          const data = res.data.data.data
+          const data = res.data?.data
           const dataArr = []
           //   console.log(data)
           data.forEach((user) => {
             let u = {}
             u.id = user.id
             u.thumbnail = user.logo
-            u.name = user.provider_name
+            u.name = user.name
             u.products = user.products.length
-            u.status = user.status == 'enable' ? 'enabled' : 'disabled'
+            u.status = user.status == 'enabled' ? 'enabled' : 'disabled'
             u.created_at = user.created_at
 
             dataArr.push(u)
