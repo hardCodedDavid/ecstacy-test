@@ -124,8 +124,8 @@ import { BASE_URL } from "../../../baseconstant"
                 u.email = user.email
                 u.phone = user.phone
                 u.country = user.country
-                u.wallet_balance = user.wallet.balance
-                u.total_transactions = user.account_transactions_count
+                u.wallet_balance = user.wallet_balance
+                u.total_transactions = user.total_transactions
                 // u.status = user.email_verified_at !== null ? 'verified':'unverified'
                 u.status = user.status === 'verified' ? 'verified':user.status === 'unverified' ? 'unverified':'restricted'
                 u.created_at = user.created_at
@@ -136,7 +136,7 @@ import { BASE_URL } from "../../../baseconstant"
               // this.fetchRoles();
           })
           .catch((err) => {
-              console.log(err.response);
+              console.log(err);
           })
           .finally(() => {
               this.isBusy =  false

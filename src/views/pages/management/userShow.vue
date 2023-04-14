@@ -130,13 +130,13 @@ if (this.$cookies.get('token')) {
             this.per_page
         )
         .then((res) => {
-          // console.log(res.data.data)
-          this.wallet.email = res.data.data.user.email
-          this.user = res.data.data.user
-          this.transactions = res.data.data.transactions
-          this.wallet_balance = res.data.data.wallet_balance
-          this.total_transactions = res.data.data.total_transactions
-          this.wdtransactions = res.data.data.wdtransactions
+          console.log(res.data.data)
+          this.wallet.email = res.data?.data?.email
+          this.user = res.data?.data
+          this.transactions = res.data?.data?.transactions
+          this.wallet_balance = res.data?.data?.wallet_balance
+          this.total_transactions = res.data?.data?.total_transactions
+          this.wdtransactions = res.data?.data?.wdtransactions
 
 
           // console.log(res.data.data.wdtransactions);
@@ -147,12 +147,12 @@ if (this.$cookies.get('token')) {
             u.title = item.title
             u.status = item.status
             u.amount = item.amount
-            u.bank_name = JSON.parse(item.meta_data).bank_name || 'Not available'
+            u.bank_name = JSON.parse(item.meta_data)?.bank_name || 'Not available'
             u.narration = item.narration || 'Not available'
             u.created_at = item.created_at || 'Not available'
             u.type = item.transaction_type || 'Not available'
-            u.account_name = JSON.parse(item.meta_data).account_name || 'Not available'
-            u.account_number = JSON.parse(item.meta_data).account_number || 'Not available'
+            u.account_name = JSON.parse(item.meta_data)?.account_name || 'Not available'
+            u.account_number = JSON.parse(item.meta_data)?.account_number || 'Not available'
 
             wdArr.push(u)
           })
@@ -161,9 +161,9 @@ if (this.$cookies.get('token')) {
         })
         .catch((err) => {
           // this.error = true
-          // console.log(err.response)
+          console.log(err)
           this.$refs.mytoast.Add({
-            msg: err.response.message || err.response.data.message,
+            msg: err.response?.message || err.response?.data?.message,
             clickClose: false,
             timeout: 5000,
             position: 'toast-top-right',

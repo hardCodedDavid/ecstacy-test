@@ -113,9 +113,9 @@
           this.isBusy =  true
           this.axios.get('https://api.codedevents.com/admin/users?page=1&per_page=10000')
           .then((res) => {
-              console.log(res.data.data);
               this.adminData = res.data.data
               this.fetchRoles();
+              console.log(this.adminData)
           })
           .catch((err) => {
               console.log(err);

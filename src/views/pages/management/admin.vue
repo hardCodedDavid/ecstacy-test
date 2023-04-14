@@ -93,7 +93,7 @@ export default {
      * Total no. of records
      */
     rows() {
-      return this.adminData.length
+      return this.adminData?.length
     },
   },
   mounted() {
@@ -107,17 +107,17 @@ export default {
       this.axios
         .get(BASE_URL + '/admin/all?per_page=10000')
         .then((res) => {
-          console.log(res.data.data.data)
+          console.log(res.data?.data)
           // this.totalRows = res.data.data.total
           // res.data.data.data.map((g) => {
           //   g.role = g.roles.length > 0 ? g.roles[0].name : ''
           // })
-          console.log(res.data.data.data)
-          this.adminData = res.data.data.data
+          console.log(res.data?.data)
+          this.adminData = res.data?.data
           this.fetchRoles()
         })
         .catch((err) => {
-          console.log(err.response.data.message)
+          console.log(err)
         })
         .finally(() => {
           this.isBusy = false
