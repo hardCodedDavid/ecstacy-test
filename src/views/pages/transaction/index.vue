@@ -126,23 +126,21 @@ export default {
       this.axios
         .get(BASE_URL + "/admin/transactions?per_page=10000")
         .then((res) => {
-          const dataResponse = res.data.data;
+          const dataResponse = res.data?.data || [];
           // console.log(dataResponse)
           const dataArrr = [];
           // console.log(JSON.parse(dataResponse.data[51].meta_data).provider)
-          dataResponse.data.forEach((record) => {
+          dataResponse.forEach((record) => {
             const u = {};
             // console.log(record)
             u.id = record.id;
-            u.reference_id = record.request_id || "Not available";
+            u.reference_id = `${record.reference.slice(0, 15)}...` || "Not available";
             u.user_id = record.user_id;
             // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
             u.user_name = this.getUser(record);
             u.amount = record.amount;
             u.type = record.title;
-            u.provider = record.meta_data
-              ? JSON.parse(record.meta_data)?.bank_name
-              : "Not available";
+            u.provider = record.meta?.payment_type || 'Not available';
             u.byadmin =
               record.meta_data && JSON.parse(record.meta_data).funded_by_admin
                 ? JSON.parse(record.meta_data).funded_by_admin
@@ -154,13 +152,12 @@ export default {
                 : record.status == "delivered"
                 ? "success"
                 : record.status;
-            u.created_at = record.updated_at;
+            u.created_at = record.created_at;
 
             // console.log(u)
             dataArrr.push(u);
             // dataArrr.unshift(u)
           });
-          console.log(dataArrr);
           this.transactionData = dataArrr;
           this.totalRows = dataResponse.total;
         })

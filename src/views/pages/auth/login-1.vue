@@ -49,7 +49,7 @@ export default {
       this.axios
         .post(BASE_URL + '/admin/auth/login', this.user)
         .then((res) => {
-          const { token, user, permissions } = res.data.data
+          const { token, user } = res.data.data
           console.log(user)
           // console.log(permissions)
           this.userData = res.data
@@ -66,7 +66,7 @@ export default {
           })
           //Store token to localStorage
           localStorage.setItem('user', JSON.stringify(res.data.data))
-          localStorage.setItem('permissions', JSON.stringify(permissions))
+          localStorage.setItem('permissions', JSON.stringify(user.role?.permissions))
           //Add token to Authorization header
           this.axios.defaults.headers.common[
             'Authorization'

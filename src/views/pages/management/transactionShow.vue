@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     getNarration(metadata) {
-      const data = JSON.parse(metadata)
+      const data = metadata
       // console.log(data)
       if (data == null) {
         return 'Not available'
@@ -78,14 +78,12 @@ export default {
           .get(BASE_URL + '/admin/transactions/' + this.$route.params.id)
           .then((res) => {
             //   console.log(res.data)
-
-            console.log(res.data.data.transaction)
-            this.transaction = res.data.data.transaction
-            this.transaction.wallet_balance = res.data.data.wallet_balance
+            this.transaction = res.data?.data
+            this.transaction.wallet_balance = res.data.data.balance_after
           })
           .catch((err) => {
             // this.error = true
-            console.log(err.response.data)
+            console.log(err)
             this.$refs.mytoast.Add({
               msg: err.response.message || err.response.data.message,
               clickClose: false,
@@ -194,13 +192,13 @@ export default {
                           class="badge bg-pill bg-soft-success font-size-12"
                           :class="{
                             'bg-soft-danger':
-                              transaction.transaction_type === 'outflow',
+                              transaction.type === 'outflow',
                             'bg-soft-success':
-                              transaction.transaction_type === 'inflow',
+                              transaction.type === 'inflow',
                           }"
                         >
                           {{
-                            transaction.transaction_type == 'outflow'
+                            transaction.type == 'outflow'
                               ? 'Debit'
                               : 'Credit'
                           }}
@@ -222,7 +220,7 @@ export default {
                       <td>
                         <p>
                           {{
-                            getNarration(transaction.meta_data)
+                            getNarration(transaction.meta)
                           }}
                         </p>
                       </td>
@@ -249,7 +247,7 @@ export default {
                       </td>
                       <td>
                         <p>
-                          {{ transaction.transaction_id || 'Not available' }}
+                          {{ transaction.reference || 'Not available' }}
                         </p>
                       </td>
                     </tr>
@@ -277,7 +275,7 @@ export default {
                         <a href="#" class="text-dark">Transaction Date/Time</a>
                       </td>
                       <td>
-                        <p>{{ transaction.updated_at | formatDate }}</p>
+                        <p>{{ transaction.created_at | formatDate }}</p>
                       </td>
                     </tr>
                     <!-- <tr>

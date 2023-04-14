@@ -109,10 +109,10 @@ export default {
           BASE_URL+'/admin/wallet-transfers?per_page=10000'
         )
         .then((res) => {
-          const dataResponse = res.data.data
+          const dataResponse = res.data?.data || [];
           // console.log(dataResponse)
           const dataArrr = []
-          dataResponse.data.forEach((record) => {
+          dataResponse.forEach((record) => {
             const u = {}
             u.id = record.id
             u.user_id = record.user?.id

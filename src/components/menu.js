@@ -7,15 +7,15 @@ function isPermitted(permission) {
     return true
   }
   if (typeof permission === 'string') {
-    var resp = permissions.includes(permission)
+    var resp = permissions.find((per) => {
+      return per.name === permission ? true : false
+    })
   } else if (typeof permission === 'object') {
     let tempArr = []
     permission.forEach((el) => {
-      if (permission.includes(el)) {
-        tempArr.push(true)
-      } else {
-        tempArr.push(false)
-      }
+      permissions.find((per) => {
+        return per.name === el ? tempArr.push(true) : tempArr.push(false)
+      })
     })
     return tempArr.includes(true)
   }

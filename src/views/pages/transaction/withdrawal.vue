@@ -116,7 +116,7 @@ export default {
           // console.log(JSON.parse(res.data.data.data[0].meta_data));
 
           const dataArrr = [];
-          res.data.data.data.forEach((record) => {
+          res.data?.data?.forEach((record) => {
             let u = {};
             u.id = record.id;
             u.user_id =

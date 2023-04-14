@@ -118,10 +118,10 @@ export default {
       this.axios
         .get(BASE_URL + "/admin/payments?per_page=10000")
         .then((res) => {
-          const dataResponse = res.data.data;
+          const dataResponse = res.data?.data;
           console.log('payment', dataResponse);
           const dataArrr = [];
-          dataResponse?.data?.forEach((record) => {
+          dataResponse?.forEach((record) => {
             const u = {};
             u.id = record.id;
             u.user_id =
@@ -134,7 +134,7 @@ export default {
             u.email = this.getUser(record)?.email;
             // u.type = record.transaction_type
             u.status = record.status;
-            u.created_at = record.updated_at;
+            u.created_at = record.created_at;
 
             dataArrr.push(u);
           });
