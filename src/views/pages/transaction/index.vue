@@ -135,7 +135,7 @@ export default {
             // console.log(record)
             u.id = record.id;
             u.reference_id = `${record.reference.slice(0, 15)}...` || "Not available";
-            u.user_id = record.user_id;
+            u.user_id = record.user?.id;
             // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
             u.user_name = this.getUser(record);
             u.amount = record.amount;

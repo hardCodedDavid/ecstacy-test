@@ -112,7 +112,7 @@ export default {
       this.axios
         .get(BASE_URL + "/admin/withdrawals?per_page=10000")
         .then((res) => {
-          console.log(res.data.data.data);
+          console.log(res.data.data);
           // console.log(JSON.parse(res.data.data.data[0].meta_data));
 
           const dataArrr = [];
@@ -121,18 +121,18 @@ export default {
             u.id = record.id;
             u.user_id =
               record.user != null ? record.user?.id : record.receiver?.id;
-            u.reference_id = record.transaction_id
-              ? record.transaction_id
+            u.reference_id = record.reference
+              ? `${record.reference.slice(0, 15)}...`
               : "Not available";
             u.amount = record.amount;
             u.bank_name =
-              JSON.parse(record.meta_data)?.bank_name || "Not available";
+              record.meta?.bank_name || "Not available";
             u.email =
               record.user != null ? record.user?.email : record.receiver?.email;
             u.account_name =
-              JSON.parse(record.meta_data)?.account_name || "Not available";
+              record.meta?.account_name || "Not available";
             u.account_number =
-              JSON.parse(record.meta_data)?.account_number || "Not available";
+              record.meta?.account_number || "Not available";
             u.status = record.status == 0 ? "failed" : record.status;
             u.created_at = record.created_at;
 
