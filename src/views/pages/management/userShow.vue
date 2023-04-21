@@ -487,14 +487,14 @@ export default {
                           </td>
                           <td>
                             <span
-                              v-if="user.email_verified_at"
+                              v-if="user.email_verified"
                               class="badge bg-soft-success font-size-12"
-                              >Active</span
+                              >Verified</span
                             >
                             <span
-                              v-if="!user.email_verified_at"
+                              v-if="!user.email_verified"
                               class="badge bg-soft-danger font-size-12"
-                              >Inactive</span
+                              >Unverified</span
                             >
                           </td>
                         </tr>
@@ -504,12 +504,12 @@ export default {
                           </td>
                           <td>
                             <span
-                              v-if="user.twoFa"
+                              v-if="user.two_factor_enabled"
                               class="badge bg-soft-success font-size-12"
                               >Active</span
                             >
                             <span
-                              v-if="!user.twoFa"
+                              v-if="!user.two_factor_enabled"
                               class="badge bg-soft-danger font-size-12"
                               >Inactive</span
                             >

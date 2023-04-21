@@ -431,7 +431,7 @@ import { BASE_URL } from "../../../baseconstant"
                   <p>{{data.item.start_date | formatDate}}</p>
                 </template>
                 <template v-slot:cell(action)="{ item }">
-                  <ul class="list-inline mb-0">
+                  <ul class="list-inline no-wrap mb-0">
                     <li class="list-inline-item">
                       <a
                         href="javascript:void(0);"
