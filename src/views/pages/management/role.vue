@@ -100,9 +100,9 @@ import { BASE_URL } from '../../../baseconstant';
                 this.roleData = res.data.data
             })
             .catch((err) => {
-                // console.log(err.response.data.message);
+                // console.log(err.response?.data?.error);
                 this.$refs.mytoast.Add({
-                msg: err.response.data.message,
+                msg: err.response?.data?.error,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -138,7 +138,7 @@ import { BASE_URL } from '../../../baseconstant';
             .catch((err) => {
                 // console.log(err.response);
                 this.$refs.mytoast.Add({
-                msg: err.response.data.message,
+                msg: err.response?.data?.error,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",
@@ -223,7 +223,7 @@ import { BASE_URL } from '../../../baseconstant';
                 // this.error = true
                 // console.log(err);
                 this.$refs.mytoast.Add({
-                msg: err.response.data.message,
+                msg: err.response?.data?.error,
                 clickClose: false,
                 timeout: 5000,
                 position: "toast-top-right",

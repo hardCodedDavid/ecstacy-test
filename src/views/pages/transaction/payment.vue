@@ -172,7 +172,7 @@ export default {
           // console.log(err)
 
           this.$refs.mytoast.Add({
-            msg: err.response.data.message,
+            msg: err.response?.data?.error,
             clickClose: false,
             timeout: 5000,
             position: "toast-top-right",
