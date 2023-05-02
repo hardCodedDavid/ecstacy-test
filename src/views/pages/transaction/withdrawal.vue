@@ -122,7 +122,7 @@ export default {
             u.user_id =
               record.user != null ? record.user?.id : record.receiver?.id;
             u.reference_id = record.reference
-              ? `${record.reference.slice(0, 15)}...`
+              ? `${record.reference}`
               : "Not available";
             u.amount = record.amount;
             u.bank_name =
@@ -152,7 +152,7 @@ export default {
     approveWithdrawal(id) {
       this.isBusy = !this.isBusy;
       this.axios
-        .post(BASE_URL + "/admin/transactions/resolve/" + id)
+        .post(BASE_URL + "/admin/withdrawals/approve/" + id)
         .then(() => {
           // console.log(res.data.data);
           this.$refs.mytoast.Add({
@@ -182,7 +182,7 @@ export default {
     declineWithdrawal(id) {
       this.isBusy = !this.isBusy;
       this.axios
-        .post(BASE_URL + "/admin/transactions/decline/" + id)
+        .post(BASE_URL + "/admin/withdrawals/decline/" + id)
         .then((res) => {
           console.log(res.data.data);
           this.$refs.mytoast.Add({
@@ -364,6 +364,12 @@ export default {
                 data.item.id
               }}</a>
             </template>
+            
+            <template v-slot:cell(reference_id)="data">
+              <a href="javascript: void(0);" class="text-dark fw-bold">{{
+                data.item.reference_id.slice(0, 15)
+              }}...</a>
+            </template>
 
             <template v-slot:cell(email)="data">
               <router-link
@@ -406,7 +412,7 @@ export default {
                     v-b-tooltip.hover
                     title="Approve"
                     v-b-modal.modal-edit-admin
-                    @click="approveWithdrawal(item.id)"
+                    @click="approveWithdrawal(item.reference_id)"
                   >
                     <i
                       class="uil uil-check-circle font-size-18 text-success"
@@ -420,7 +426,7 @@ export default {
                     v-b-tooltip.hover
                     title="Restrict"
                     v-b-modal.modal-edit-admin
-                    @click="declineWithdrawal(item.id)"
+                    @click="declineWithdrawal(item.reference_id)"
                   >
                     <i class="uil uil-info-circle font-size-18 text-danger"></i>
                   </a>

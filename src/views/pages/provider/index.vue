@@ -564,6 +564,14 @@ export default {
 
             <template v-slot:cell(name)="data">
               <router-link
+                v-if="data.item.name === 'mysimhosting'"
+                :to="{ name: 'mysimhosting-details' }"
+                style="color: #761300; max-width: 250px;"
+                class="d-inline-block text-truncate text-dark"
+                >{{ data.item.name }}</router-link
+              >
+              <router-link
+                v-else
                 :to="{ name: 'user-details', params: { id: data.item.id } }"
                 style="color: #761300; max-width: 250px;"
                 class="d-inline-block text-truncate text-dark"
@@ -611,7 +619,7 @@ export default {
                 <li
                   class="list-inline-item"
                   v-if="
-                    item.name === 'mysimhosting.cloud' ||
+                    item.name === 'mysimhosting' ||
                       item.name == 'Mysimhosting' ||
                       item.name == 'mysimhosting'
                   "

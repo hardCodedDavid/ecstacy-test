@@ -133,14 +133,14 @@ export default {
     //   formData.append('service_name',this.product.name)
     //   formData.append('type', this.product.type)
     if(this.profile_photo != '') {
-      formData.append('photo', this.profile_photo)
+      formData.append('logo', this.profile_photo)
     }
-      formData.append('product_id', this.product.id)
+      // formData.append('product_id', this.product.id)
       formData.append('amount', this.product.amount)
 
       this.axios
         .post(
-          BASE_URL + '/admin/providers/' + this.product.id+'/products/update-mysimhosting',
+          BASE_URL + '/admin/provider/' + this.product.id+'/products/update',
           formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -182,7 +182,7 @@ export default {
       this.axios
         .get(
           BASE_URL +
-            '/admin/providers/mysimdatahosting/products?per_page=10000'
+            '/admin/provider/mysimhosting/products?per_page=10000'
         )
         .then((res) => {
           //   console.log(res.data.data.data);
