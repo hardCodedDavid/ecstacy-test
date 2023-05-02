@@ -96,7 +96,7 @@ export default {
      * Total no. of records
      */
     rows() {
-      return this.adminData.length
+      return this.adminData?.length
     },
   },
   mounted() {
@@ -110,9 +110,8 @@ export default {
       this.axios
         .get(BASE_URL + '/admin/news-updates?per_page=10000')
         .then((res) => {
-          console.log(res.data.data.data)
           this.totalRows = res.data.data.total
-          this.adminData = res.data.data.data
+          this.adminData = res.data?.data
         })
         .catch((err) => {
           console.log(err)
@@ -485,13 +484,14 @@ export default {
             </template>
 
             <template v-slot:cell(content)="data">
-              <div style="word-wrap: break-word;width:450px;">
+              <div style="color: #761300; max-width: 250px;">
                 {{ data.item.content.substring(0, 90) }}...
               </div>
             </template>
 
             <template v-slot:cell(status)="data">
               <div
+                style="color: #761300; max-width: 250px;"
                 class="badge bg-pill font-size-12"
                 :class="{
                   'bg-soft-success': data.item.status === 'published',
