@@ -199,7 +199,7 @@ export default {
             u.plan = user.plan
             u.amount = user.amount
             u.type = user.type
-            u.status = user.status == 'enable' ? 'enabled' : 'disabled'
+            u.status = user.status == 'enabled' ? 'enabled' : 'disabled'
             u.created_at = user.created_at
 
             dataArr.push(u)
@@ -254,10 +254,10 @@ export default {
       // console.log(id)
       // console.log(this.service_enabled)
       this.isBusy = true
-      const status = item.status == 'enabled' ? 'disable-mysimhosting':'enable-mysimhosting'
+      const status = item.status == 'enabled' ? 'disable':'enable'
       const showStatus = item.status == 'enabled' ? 'disabled':'enabled'
       this.axios
-        .put(BASE_URL + '/admin/providers/' + item.id + '/products/'+status)
+        .put(BASE_URL + '/admin/provider/' + item.id + '/products/'+status)
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -286,7 +286,7 @@ export default {
     enableService(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/admin/providers/' + id + '/products/enable-mysimhosting')
+        .put(BASE_URL + '/admin/provider/' + id + '/products/enable')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
