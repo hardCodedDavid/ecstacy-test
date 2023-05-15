@@ -111,11 +111,11 @@ export default {
   methods: {
     getUser(record) {
       if (record.user != null) {
-        const user = record.user.first_name + " " + record.user.last_name;
+        const user = record.user.email
         return user;
       } else if (record.user == null && record.receiver != null) {
         const receiver =
-          record.receiver.first_name + " " + record.receiver.last_name;
+          record.receiver.email;
         return receiver;
       } else {
         return "Not available";
