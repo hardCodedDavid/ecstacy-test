@@ -112,7 +112,7 @@ import { BASE_URL } from "../../../baseconstant"
       methods: {
         fetchData() {
           this.isBusy =  true
-          this.axios.get(BASE_URL+'/admin/users/all?per_page=10000',{})
+          this.axios.get(BASE_URL+'/admin/users/all?per_page=2000',{})
           .then((res) => {
               const users = res.data?.data
               const userArr = []
