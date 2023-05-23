@@ -1,9 +1,10 @@
 <script>
-import Layout from '../../layouts/main'
-import PageHeader from '@/components/page-header'
-import appConfig from '@/app.config'
-import VueToastr from 'vue-toastr'
-import { BASE_URL } from '../../../baseconstant'
+import { mapGetters, mapMutations } from "vuex";
+import Layout from "../../layouts/main";
+import PageHeader from "@/components/page-header";
+import appConfig from "@/app.config";
+import VueToastr from "vue-toastr";
+import { BASE_URL } from "../../../baseconstant";
 
 /**
  * Orders component
@@ -11,34 +12,35 @@ import { BASE_URL } from '../../../baseconstant'
 export default {
   components: { Layout, PageHeader, VueToastr },
   page: {
-    title: 'Transfers',
+    title: "Transfers",
     meta: [
       {
-        name: 'description',
+        name: "description",
         content: appConfig.description,
       },
     ],
   },
   data() {
     return {
-      title: 'Transfers',
+      title: "Transfers",
       items: [
         {
-          text: 'Transactions',
+          text: "Transactions",
         },
         {
-          text: 'Transfers',
+          text: "Transfers",
           active: true,
         },
       ],
       paymentData: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 200,
-      pageOptions: [200, 400, 60],
+      requestCurrentPage: 1,
+      perPage: 20,
+      pageOptions: [20, 40, 50],
       filter: null,
       filterOn: [],
-      sortBy: 'age',
+      sortBy: "age",
       sortDesc: false,
       isBusy: false,
       paymentInfo: null,
@@ -46,160 +48,181 @@ export default {
       paymentRef: null,
       fields: [
         {
-          key: 'index',
-          label: 'S/N',
+          key: "index",
+          label: "S/N",
         },
         {
-          key: 'sender',
-          label: 'Sender',
+          key: "sender",
+          label: "Sender",
           sortable: true,
         },
         {
-          key: 'receiver',
-          label: 'Receiver',
+          key: "receiver",
+          label: "Receiver",
         },
         {
-          key: 'amount',
-          label: 'Amount',
+          key: "amount",
+          label: "Amount",
           sortable: true,
         },
         {
-          key: 'type',
-          label: 'Payment Type',
+          key: "type",
+          label: "Payment Type",
           sortable: true,
         },
         {
-          key: 'status',
-          label: 'Payment Status',
+          key: "status",
+          label: "Payment Status",
           sortable: true,
         },
         {
-          key: 'created_at',
-          label: 'Date',
+          key: "created_at",
+          label: "Date",
           sortable: true,
         },
         "action",
       ],
-    }
+    };
   },
-  middleware: 'authentication',
+  middleware: "authentication",
   watch: {
     currentPage: function() {
-      this.fetchPayments()
+      this.fetchPayments();
     },
   },
   computed: {
+    ...mapGetters({
+      transfers: "transfers/getTransfers",
+    }),
     /**
      * Total no. of records
      */
     rows() {
-      return this.totalRows
+      return this.transfers.length;
     },
   },
   mounted() {
     // Set the initial number of items
     // this.totalRows = this.items.length
-    this.fetchPayments()
+    this.fetchPayments();
   },
   methods: {
-    fetchPayments() {
-      this.isBusy = !this.isBusy
-      this.axios
-        .get(
-          BASE_URL+'/admin/wallet-transfers?per_page=10000'
-        )
-        .then((res) => {
-          const dataResponse = res.data?.data || [];
-          // console.log(dataResponse)
-          const dataArrr = []
-          dataResponse.forEach((record) => {
-            const u = {}
-            u.id = record.id
-            u.user_id = record.user?.id
-            u.receiver_id = record.receiver?.id
-            // u.sender = record.request_id ? record.request_id:'Not available'
-            u.sender = record.user != null ? record.user?.first_name+' '+record.user?.last_name :'Not available'
-            u.amount = record.amount
-            u.type = record.title
-            // u.sender = record.user.username
-            u.receiver = record.receiver != null ? record.receiver?.first_name+' '+record.receiver?.last_name :'Not available'
-            // u.receiver = record.receiver.username
-            // u.type = record.transaction_type
-            u.status = record.status
-            u.created_at = record.updated_at
+    ...mapMutations({
+      populateTransfer: "transfers/SET_TRANSFERS",
+    }),
+    gotoNext() {
+      this.requestCurrentPage++;
+      this.fetchPayments(this.requestCurrentPage);
+    },
+    fetchPayments(page = 1) {
+      if (this.transfers.length / 50 < page) {
+        if (page === 1) {
+          this.isBusy = !this.isBusy;
+        }
+        this.axios
+          .get(BASE_URL + `/admin/wallet-transfers?page=${ page }&per_page=50`)
+          .then((res) => {
+            const dataResponse = res.data?.data || [];
+            // console.log(dataResponse)
+            const dataArrr = [];
+            dataResponse.forEach((record) => {
+              const u = {};
+              u.id = record.id;
+              u.user_id = record.user?.id;
+              u.receiver_id = record.receiver?.id;
+              // u.sender = record.request_id ? record.request_id:'Not available'
+              u.sender =
+                record.user != null
+                  ? record.user?.first_name + " " + record.user?.last_name
+                  : "Not available";
+              u.amount = record.amount;
+              u.type = record.title;
+              // u.sender = record.user.username
+              u.receiver =
+                record.receiver != null
+                  ? record.receiver?.first_name +
+                    " " +
+                    record.receiver?.last_name
+                  : "Not available";
+              // u.receiver = record.receiver.username
+              // u.type = record.transaction_type
+              u.status = record.status;
+              u.created_at = record.updated_at;
 
-            dataArrr.push(u)
+              dataArrr.push(u);
+            });
+            this.populateTransfer(dataArrr);
+            this.totalRows = this.transfers.length;
           })
-          this.paymentData = dataArrr
-          this.totalRows = dataResponse.total
-        })
-        .catch((err) => {
-          // this.error = true
-          // console.log(err)
-          // console.log(err.response)
-          if(err.response.status == 401) {
-            return this.$router.push({path: '/login'})
-          }
-        })
-        .finally(() => {
-          this.isBusy = false
-        })
+          .catch((err) => {
+            // this.error = true
+            // console.log(err)
+            // console.log(err.response)
+            if (err.response.status == 401) {
+              return this.$router.push({ path: "/login" });
+            }
+          })
+          .finally(() => {
+            this.isBusy = false;
+          });
+      }
     },
     resolvePayment() {
-      this.isBusy = !this.isBusy
+      this.isBusy = !this.isBusy;
       this.axios
         .put(
-          BASE_URL+'/admin/transactions/payments/' +
+          BASE_URL +
+            "/admin/transactions/payments/" +
             this.paymentId +
-            '/resolve'
+            "/resolve"
         )
         .then((res) => {
-          console.log(res.data.data)
+          console.log(res.data.data);
           this.$refs.mytoast.Add({
-                    msg: 'Transaction resolved successfully',
-                    clickClose: false,
-                    timeout: 5000,
-                    position: "toast-top-right",
-                    type: "success",
-                })
-          this.fetchPayments()
+            msg: "Transaction resolved successfully",
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "success",
+          });
+          this.fetchPayments();
         })
         .catch((err) => {
           // this.error = true
-          console.log(err)
+          console.log(err);
           this.$refs.mytoast.Add({
-                    msg: err.response?.data?.error,
-                    clickClose: false,
-                    timeout: 5000,
-                    position: "toast-top-right",
-                    type: "error",
-                })
+            msg: err.response?.data?.error,
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "error",
+          });
         })
         .finally(() => {
-          this.isBusy = false
-        })
+          this.isBusy = false;
+        });
     },
     getPaymentInfo(item) {
-      this.paymentInfo = item
-      this.paymentId = item.id
-      this.paymentRef = item.reference
+      this.paymentInfo = item;
+      this.paymentId = item.id;
+      this.paymentRef = item.reference;
     },
     /**
      * Search the table data with search input
      */
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     },
   },
-}
+};
 </script>
 
 <template>
   <Layout>
     <PageHeader :title="title" :items="items" />
-        <vue-toastr ref="mytoast"></vue-toastr>
+    <vue-toastr ref="mytoast"></vue-toastr>
     <!-- ::START POST Resolve Payment Modal -->
 
     <b-modal
@@ -292,7 +315,7 @@ export default {
             :busy="isBusy"
             table-class="table table-centered datatable table-card-list"
             thead-tr-class="bg-transparent"
-            :items="paymentData"
+            :items="transfers"
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
@@ -369,7 +392,13 @@ export default {
                 }"
               >
                 <!-- {{ data.item.status }} -->
-                {{ data.item.status == 'failed' ? 'declined':data.item.status == 'pending' ? 'pending':'success' }}
+                {{
+                  data.item.status == "failed"
+                    ? "declined"
+                    : data.item.status == "pending"
+                    ? "pending"
+                    : "success"
+                }}
               </div>
             </template>
             <template v-slot:cell(created_at)="data">
@@ -379,7 +408,10 @@ export default {
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">
-                <li v-if="(item.status == 'pending') || (item.status == 'failed')" class="list-inline-item">
+                <li
+                  v-if="item.status == 'pending' || item.status == 'failed'"
+                  class="list-inline-item"
+                >
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-success"
@@ -405,6 +437,9 @@ export default {
                   v-model="currentPage"
                   :total-rows="rows"
                   :per-page="perPage"
+                  @change="gotoNext()"
+                  first-number
+                  last-number
                 ></b-pagination>
               </ul>
             </div>
