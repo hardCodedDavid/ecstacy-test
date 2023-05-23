@@ -1,4 +1,5 @@
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import VueToastr from "vue-toastr";
@@ -34,8 +35,9 @@ export default {
       paymentData: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 200,
-      pageOptions: [200, 400, 60],
+      requestCurrentPage: 1,
+      perPage: 20,
+      pageOptions: [20, 40, 50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -89,11 +91,14 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      payments: "payments/getPayments",
+    }),
     /**
      * Total no. of records
      */
     rows() {
-      return this.totalRows;
+      return this.payments.length;
     },
   },
   async mounted() {
@@ -102,6 +107,9 @@ export default {
     await this.fetchPayments();
   },
   methods: {
+    ...mapMutations({
+      populatePayments: "payments/SET_PAYMENTS",
+    }),
     getUser(record) {
       if (record.user != null) {
         // const user = record.user.first_name+' '+record.user.last_name
@@ -113,44 +121,51 @@ export default {
         return "Not available";
       }
     },
-    fetchPayments() {
-      this.isBusy = !this.isBusy;
-      this.axios
-        .get(BASE_URL + "/admin/payments?per_page=10000")
-        .then((res) => {
-          const dataResponse = res.data?.data;
-          console.log('payment', dataResponse);
-          const dataArrr = [];
-          dataResponse?.forEach((record) => {
-            const u = {};
-            u.id = record.id;
-            u.user_id =
-              record.user != null ? record.user?.id : record.receiver?.id;
-            u.reference = record.request_id
-              ? record.request_id
-              : "Not available";
-            u.amount = record.amount;
-            u.type = record.title;
-            u.email = this.getUser(record)?.email;
-            // u.type = record.transaction_type
-            u.status = record.status;
-            u.created_at = record.created_at;
+    gotoNext() {
+      this.requestCurrentPage++;
+      this.fetchPayments(this.requestCurrentPage);
+    },
+    fetchPayments(page = 1) {
+      if (this.payments.length / 50 < page) {
+        if (page === 1) {
+          this.isBusy = !this.isBusy;
+        }
+        this.axios
+          .get(BASE_URL + `/admin/payments?page${ page }&per_page=50`)
+          .then((res) => {
+            const dataResponse = res.data?.data;
+            const dataArrr = [];
+            dataResponse?.forEach((record) => {
+              const u = {};
+              u.id = record.id;
+              u.user_id =
+                record.user != null ? record.user?.id : record.receiver?.id;
+              u.reference = record.request_id
+                ? record.request_id
+                : "Not available";
+              u.amount = record.amount;
+              u.type = record.title;
+              u.email = this.getUser(record)?.email;
+              // u.type = record.transaction_type
+              u.status = record.status;
+              u.created_at = record.created_at;
 
-            dataArrr.push(u);
+              dataArrr.push(u);
+            });
+            this.populatePayments(dataArrr);
+            this.totalRows = this.payments.length;
+          })
+          .catch((err) => {
+            // this.error = true
+            console.log(err);
+            if (err.response?.status == 401) {
+              return this.$router.push({ path: "/login" });
+            }
+          })
+          .finally(() => {
+            this.isBusy = false;
           });
-          this.paymentData = dataArrr;
-          this.totalRows = dataResponse.total;
-        })
-        .catch((err) => {
-          // this.error = true
-          console.log(err);
-          if (err.response?.status == 401) {
-            return this.$router.push({ path: "/login" });
-          }
-        })
-        .finally(() => {
-          this.isBusy = false;
-        });
+        }
     },
     resolvePayment() {
       this.isBusy = !this.isBusy;
@@ -296,7 +311,7 @@ export default {
             :busy="isBusy"
             table-class="table table-centered datatable table-card-list"
             thead-tr-class="bg-transparent"
-            :items="paymentData"
+            :items="payments"
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
@@ -406,6 +421,9 @@ export default {
                   v-model="currentPage"
                   :total-rows="rows"
                   :per-page="perPage"
+                  @change="gotoNext()"
+                  first-number
+                  last-number
                 ></b-pagination>
               </ul>
             </div>

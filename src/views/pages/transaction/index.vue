@@ -1,4 +1,5 @@
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import appConfig from "@/app.config";
@@ -34,8 +35,9 @@ export default {
       transactionData: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 200,
-      pageOptions: [200, 400, 60],
+      requestCurrentPage: 1,
+      perPage: 20,
+      pageOptions: [20, 40, 50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -95,12 +97,15 @@ export default {
   //   },
   // },
   computed: {
+    ...mapGetters({
+      transactions: "transaction/getTransactions",
+    }),
     /**
      * Total no. of records
      */
     rows() {
       // return this.totalRows
-      return this.transactionData.length;
+      return this.transactions.length;
     },
   },
   mounted() {
@@ -109,76 +114,84 @@ export default {
     this.fetchTransactions();
   },
   methods: {
+    ...mapMutations({
+      populateTransaction: "transaction/SET_TRANSACTIONS",
+    }),
     getUser(record) {
       if (record.user != null) {
-        const user = record.user.email
+        const user = record.user.email;
         return user;
       } else if (record.user == null && record.receiver != null) {
-        const receiver =
-          record.receiver.email;
+        const receiver = record.receiver.email;
         return receiver;
       } else {
         return "Not available";
       }
     },
-    fetchTransactions() {
-      this.isBusy = !this.isBusy;
-      this.axios
-        .get(BASE_URL + "/admin/transactions?per_page=10000")
-        .then((res) => {
-          const dataResponse = res.data?.data || [];
-          // console.log(dataResponse)
-          const dataArrr = [];
-          // console.log(JSON.parse(dataResponse.data[51].meta_data).provider)
-          dataResponse.forEach((record) => {
-            const u = {};
-            // console.log(record)
-            u.id = record.id;
-            u.reference_id = `${record.reference.slice(0, 15)}...` || "Not available";
-            u.user_id = record.user?.id;
-            // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
-            u.user_name = this.getUser(record);
-            u.amount = record.amount;
-            u.type = record.title;
-            u.provider = record.meta?.payment_type || 'Not available';
-            u.byadmin =
-              record.meta_data && JSON.parse(record.meta_data).funded_by_admin
-                ? JSON.parse(record.meta_data).funded_by_admin
-                : false;
-            // u.type = record.transaction_type
-            u.status =
-              record.status == 0
-                ? "failed"
-                : record.status == "delivered"
-                ? "success"
-                : record.status;
-            u.created_at = record.created_at;
+    gotoNext() {
+      this.requestCurrentPage++;
+      this.fetchTransactions(this.requestCurrentPage);
+    },
+    fetchTransactions(page = 1) {
+      if (this.transactions.length / 50 < page) {
+        if (page === 1) {
+          this.isBusy = !this.isBusy;
+        }
+        this.axios
+          .get(BASE_URL + `/admin/transactions?page=${page}&per_page=50`)
+          .then((res) => {
+            const dataResponse = res.data?.data || [];
+            const dataArrr = [];
+            dataResponse.forEach((record) => {
+              const u = {};
+              u.id = record.id;
+              u.reference_id =
+                `${record.reference.slice(0, 15)}...` || "Not available";
+              u.user_id = record.user?.id;
+              // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
+              u.user_name = this.getUser(record);
+              u.amount = record.amount;
+              u.type = record.title;
+              u.provider = record.meta?.payment_type || "Not available";
+              u.byadmin =
+                record.meta_data && JSON.parse(record.meta_data).funded_by_admin
+                  ? JSON.parse(record.meta_data).funded_by_admin
+                  : false;
+              // u.type = record.transaction_type
+              u.status =
+                record.status == 0
+                  ? "failed"
+                  : record.status == "delivered"
+                  ? "success"
+                  : record.status;
+              u.created_at = record.created_at;
 
-            // console.log(u)
-            dataArrr.push(u);
-            // dataArrr.unshift(u)
+              // console.log(u)
+              dataArrr.push(u);
+              // dataArrr.unshift(u)
+            });
+            this.populateTransaction(dataArrr);
+            this.totalRows = this.transactions.length;
+          })
+          .catch((err) => {
+            // this.error = true
+            console.log(err);
+            this.$refs.mytoast.Add({
+              msg: err.response?.data?.error,
+              clickClose: false,
+              timeout: 5000,
+              position: "toast-top-right",
+              type: "error",
+            });
+            console.log(err.response.data);
+            if (err.response.status == 401) {
+              return this.$router.push({ path: "/login" });
+            }
+          })
+          .finally(() => {
+            this.isBusy = false;
           });
-          this.transactionData = dataArrr;
-          this.totalRows = dataResponse.total;
-        })
-        .catch((err) => {
-          // this.error = true
-          console.log(err);
-          this.$refs.mytoast.Add({
-            msg: err.response?.data?.error,
-            clickClose: false,
-            timeout: 5000,
-            position: "toast-top-right",
-            type: "error",
-          });
-          console.log(err.response.data);
-          if (err.response.status == 401) {
-            return this.$router.push({ path: "/login" });
-          }
-        })
-        .finally(() => {
-          this.isBusy = false;
-        });
+      }
     },
     getPaymentInfo(item) {
       this.paymentInfo = item;
@@ -326,7 +339,7 @@ export default {
             :busy="isBusy"
             table-class="table table-centered datatable table-card-list"
             thead-tr-class="bg-transparent"
-            :items="transactionData"
+            :items="transactions"
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
@@ -457,7 +470,11 @@ export default {
                   v-model="currentPage"
                   :total-rows="rows"
                   :per-page="perPage"
-                ></b-pagination>
+                  @change="gotoNext()"
+                  first-number
+                  last-number
+                >
+                </b-pagination>
               </ul>
             </div>
           </div>
