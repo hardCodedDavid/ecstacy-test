@@ -1,4 +1,5 @@
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import appConfig from "@/app.config";
@@ -34,8 +35,9 @@ export default {
       paymentData: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 200,
-      pageOptions: [200, 400, 60],
+      requestCurrentPage: 1,
+      perPage: 20,
+      pageOptions: [20, 40, 50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -94,11 +96,14 @@ export default {
   },
   middleware: "authentication",
   computed: {
+    ...mapGetters({
+      withdrawals: "withdrawal/getWithdrawals",
+    }),
     /**
      * Total no. of records
      */
     rows() {
-      return this.paymentData.length;
+      return this.withdrawals.length;
     },
   },
   mounted() {
@@ -107,47 +112,57 @@ export default {
     this.fetchPayments();
   },
   methods: {
-    fetchPayments() {
-      this.isBusy = !this.isBusy;
-      this.axios
-        .get(BASE_URL + "/admin/withdrawals?per_page=10000")
-        .then((res) => {
-          console.log(res.data.data);
-          // console.log(JSON.parse(res.data.data.data[0].meta_data));
+    ...mapMutations({
+      populateWithdrawals: "withdrawal/SET_WITHDRAWALS",
+    }),
+    gotoNext() {
+      this.requestCurrentPage++;
+      this.fetchPayments(this.requestCurrentPage);
+    },
+    fetchPayments(page = 1) {
+      if (this.withdrawals.length / 50 < page) {
+        if (page === 1) {
+          this.isBusy = !this.isBusy;
+        }
+        this.axios
+          .get(BASE_URL + `/admin/withdrawals?page=${ page }&per_page=50`)
+          .then((res) => {
+            console.log(res.data.data);
+            // console.log(JSON.parse(res.data.data.data[0].meta_data));
 
-          const dataArrr = [];
-          res.data?.data?.forEach((record) => {
-            let u = {};
-            u.id = record.id;
-            u.user_id =
-              record.user != null ? record.user?.id : record.receiver?.id;
-            u.reference_id = record.reference
-              ? `${record.reference}`
-              : "Not available";
-            u.amount = record.amount;
-            u.bank_name =
-              record.meta?.bank_name || "Not available";
-            u.email =
-              record.user != null ? record.user?.email : record.receiver?.email;
-            u.account_name =
-              record.meta?.account_name || "Not available";
-            u.account_number =
-              record.meta?.account_number || "Not available";
-            u.status = record.status == 0 ? "failed" : record.status;
-            u.created_at = record.created_at;
+            const dataArrr = [];
+            res.data?.data?.forEach((record) => {
+              let u = {};
+              u.id = record.id;
+              u.user_id =
+                record.user != null ? record.user?.id : record.receiver?.id;
+              u.reference_id = record.reference
+                ? `${record.reference}`
+                : "Not available";
+              u.amount = record.amount;
+              u.bank_name = record.meta?.bank_name || "Not available";
+              u.email =
+                record.user != null
+                  ? record.user?.email
+                  : record.receiver?.email;
+              u.account_name = record.meta?.account_name || "Not available";
+              u.account_number = record.meta?.account_number || "Not available";
+              u.status = record.status == 0 ? "failed" : record.status;
+              u.created_at = record.created_at;
 
-            dataArrr.push(u);
+              dataArrr.push(u);
+            });
+            this.populateWithdrawals(dataArrr);
+            this.totalRows = this.withdrawals.length;
+          })
+          .catch((err) => {
+            // this.error = true
+            console.log(err);
+          })
+          .finally(() => {
+            this.isBusy = false;
           });
-          this.paymentData = dataArrr;
-          this.totalRows = dataArrr.length;
-        })
-        .catch((err) => {
-          // this.error = true
-          console.log(err);
-        })
-        .finally(() => {
-          this.isBusy = false;
-        });
+      }
     },
     approveWithdrawal(id) {
       this.isBusy = !this.isBusy;
@@ -166,7 +181,7 @@ export default {
         })
         .catch((err) => {
           // this.error = true
-          console.log('James', err);
+          console.log("James", err);
           this.$refs.mytoast.Add({
             msg: err.response?.data?.error,
             clickClose: false,
@@ -322,7 +337,7 @@ export default {
             :busy="isBusy"
             table-class="table table-centered datatable table-card-list"
             thead-tr-class="bg-transparent"
-            :items="paymentData"
+            :items="withdrawals"
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
@@ -364,11 +379,11 @@ export default {
                 data.item.id
               }}</a>
             </template>
-            
+
             <template v-slot:cell(reference_id)="data">
-              <a href="javascript: void(0);" class="text-dark fw-bold">{{
-                data.item.reference_id.slice(0, 15)
-              }}...</a>
+              <a href="javascript: void(0);" class="text-dark fw-bold"
+                >{{ data.item.reference_id.slice(0, 15) }}...</a
+              >
             </template>
 
             <template v-slot:cell(email)="data">
@@ -444,6 +459,9 @@ export default {
                   v-model="currentPage"
                   :total-rows="rows"
                   :per-page="perPage"
+                  @change="gotoNext()"
+                  first-number
+                  last-number
                 ></b-pagination>
               </ul>
             </div>
