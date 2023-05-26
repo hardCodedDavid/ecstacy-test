@@ -121,10 +121,16 @@ export default {
     gotoNext(value) {
       this.fetchData(value);
     },
+    getAPIUrl(page) {
+      return this.filter ? `/admin/users/all/search?page=${ page }&per_page=50&query=${this.filter}` : `/admin/users/all?page=${ page }&per_page=50`
+    },
     fetchData(page = 1) {
+        if (page === 1) {
+          this.currentPage = 1
+        }
         this.isBusy = !this.isBusy;
         this.axios
-          .get(BASE_URL + `/admin/users/all?page=${ page }&per_page=50`)
+          .get(BASE_URL + this.getAPIUrl(page))
           .then((res) => {
             const users = res.data?.data;
             const userArr = [];
@@ -390,6 +396,7 @@ export default {
                   <b-form-input
                     v-model="filter"
                     type="search"
+                    @input="fetchData()"
                     placeholder="Search..."
                     class="form-control form-control-sm ms-2"
                   ></b-form-input>
@@ -411,7 +418,6 @@ export default {
             :current-page="1"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
-            :filter="filter"
             :filter-included-fields="filterOn"
             @filtered="onFiltered"
             show-empty

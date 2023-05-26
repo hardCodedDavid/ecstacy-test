@@ -131,10 +131,16 @@ export default {
     gotoNext(value) {
       this.fetchTransactions(value);
     },
+    getAPIUrl(page) {
+      return this.filter ? `/admin/transactions/all/search?page=${ page }&per_page=50&query=${this.filter}` : `/admin/transactions?page=${page}&per_page=50`
+    },
     fetchTransactions(page = 1) {
+      if (page === 1) {
+        this.currentPage = 1
+      }
       this.isBusy = !this.isBusy;
       this.axios
-        .get(BASE_URL + `/admin/transactions?page=${page}&per_page=50`)
+        .get(BASE_URL + this.getAPIUrl(page))
         .then((res) => {
           const dataResponse = res.data?.data || [];
           const dataArrr = [];
@@ -319,6 +325,7 @@ export default {
                   <b-form-input
                     v-model="filter"
                     type="search"
+                    @input="fetchTransactions()"
                     placeholder="Search..."
                     class="form-control form-control-sm ms-2"
                   ></b-form-input>
@@ -340,7 +347,6 @@ export default {
             :current-page="1"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
-            :filter="filter"
             :filter-included-fields="filterOn"
             @filtered="onFiltered"
             show-empty
