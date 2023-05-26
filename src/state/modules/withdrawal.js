@@ -10,9 +10,7 @@ export const getters = {
 
 export const mutations = {
   SET_WITHDRAWALS (state, payload) {
-    for (let data of payload) {
-      state.withdrawals.push(data)
-    }
+    state.withdrawals = payload
   }
 }
 

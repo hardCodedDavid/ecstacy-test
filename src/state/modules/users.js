@@ -18,9 +18,7 @@ export const getters = {
 
 export const mutations = {
   SET_USERS (state, payload) {
-    for (let data of payload) {
-      state.users.push(data)
-    }
+    state.users = payload
   },
   SET_VERIFIED_USERS (state, payload) {
     for (let data of payload) {

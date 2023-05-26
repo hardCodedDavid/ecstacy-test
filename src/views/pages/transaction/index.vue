@@ -36,8 +36,8 @@ export default {
       totalRows: 1,
       currentPage: 1,
       requestCurrentPage: 1,
-      perPage: 20,
-      pageOptions: [20, 40, 50],
+      perPage: 50,
+      pageOptions: [50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -128,70 +128,64 @@ export default {
         return "Not available";
       }
     },
-    gotoNext() {
-      this.requestCurrentPage++;
-      this.fetchTransactions(this.requestCurrentPage);
+    gotoNext(value) {
+      this.fetchTransactions(value);
     },
     fetchTransactions(page = 1) {
-      if (this.transactions.length / 50 < page) {
-        if (page === 1) {
-          this.isBusy = !this.isBusy;
-        }
-        this.axios
-          .get(BASE_URL + `/admin/transactions?page=${page}&per_page=50`)
-          .then((res) => {
-            const dataResponse = res.data?.data || [];
-            const dataArrr = [];
-            dataResponse.forEach((record) => {
-              const u = {};
-              u.id = record.id;
-              u.reference_id =
-                `${record.reference.slice(0, 15)}...` || "Not available";
-              u.user_id = record.user?.id;
-              // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
-              u.user_name = this.getUser(record);
-              u.amount = record.amount;
-              u.type = record.title;
-              u.provider = record.meta?.payment_type || "Not available";
-              u.byadmin =
-                record.meta_data && JSON.parse(record.meta_data).funded_by_admin
-                  ? JSON.parse(record.meta_data).funded_by_admin
-                  : false;
-              // u.type = record.transaction_type
-              u.status =
-                record.status == 0
-                  ? "failed"
-                  : record.status == "delivered"
-                  ? "success"
-                  : record.status;
-              u.created_at = record.created_at;
+      this.isBusy = !this.isBusy;
+      this.axios
+        .get(BASE_URL + `/admin/transactions?page=${page}&per_page=50`)
+        .then((res) => {
+          const dataResponse = res.data?.data || [];
+          const dataArrr = [];
+          dataResponse.forEach((record) => {
+            const u = {};
+            u.id = record.id;
+            u.reference_id =
+              `${record.reference.slice(0, 15)}...` || "Not available";
+            u.user_id = record.user?.id;
+            // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
+            u.user_name = this.getUser(record);
+            u.amount = record.amount;
+            u.type = record.title;
+            u.provider = record.meta?.payment_type || "Not available";
+            u.byadmin =
+              record.meta_data && JSON.parse(record.meta_data).funded_by_admin
+                ? JSON.parse(record.meta_data).funded_by_admin
+                : false;
+            // u.type = record.transaction_type
+            u.status =
+              record.status == 0
+                ? "failed"
+                : record.status == "delivered"
+                ? "success"
+                : record.status;
+            u.created_at = record.created_at;
 
-              // console.log(u)
-              dataArrr.push(u);
-              // dataArrr.unshift(u)
-            });
-            this.populateTransaction(dataArrr);
-            this.totalRows = this.transactions.length;
-          })
-          .catch((err) => {
-            // this.error = true
-            console.log(err);
-            this.$refs.mytoast.Add({
-              msg: err.response?.data?.error,
-              clickClose: false,
-              timeout: 5000,
-              position: "toast-top-right",
-              type: "error",
-            });
-            console.log(err.response.data);
-            if (err.response.status == 401) {
-              return this.$router.push({ path: "/login" });
-            }
-          })
-          .finally(() => {
-            this.isBusy = false;
+            // console.log(u)
+            dataArrr.push(u);
+            // dataArrr.unshift(u)
           });
-      }
+          this.populateTransaction(dataArrr);
+          this.totalRows = res.data?.meta?.total;
+        })
+        .catch((err) => {
+          // this.error = true
+          this.$refs.mytoast.Add({
+            msg: err.response?.data?.error,
+            clickClose: false,
+            timeout: 5000,
+            position: "toast-top-right",
+            type: "error",
+          });
+          console.log(err.response.data);
+          if (err.response.status == 401) {
+            return this.$router.push({ path: "/login" });
+          }
+        })
+        .finally(() => {
+          this.isBusy = false;
+        });
     },
     getPaymentInfo(item) {
       this.paymentInfo = item;
@@ -343,7 +337,7 @@ export default {
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
-            :current-page="currentPage"
+            :current-page="1"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
@@ -468,9 +462,9 @@ export default {
                 <!-- pagination -->
                 <b-pagination
                   v-model="currentPage"
-                  :total-rows="rows"
+                  :total-rows="totalRows"
                   :per-page="perPage"
-                  @change="gotoNext()"
+                  @change="gotoNext"
                   first-number
                   last-number
                 >

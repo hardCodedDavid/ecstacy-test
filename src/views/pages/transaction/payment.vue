@@ -36,8 +36,8 @@ export default {
       totalRows: 1,
       currentPage: 1,
       requestCurrentPage: 1,
-      perPage: 20,
-      pageOptions: [20, 40, 50],
+      perPage: 50,
+      pageOptions: [50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -121,51 +121,46 @@ export default {
         return "Not available";
       }
     },
-    gotoNext() {
-      this.requestCurrentPage++;
-      this.fetchPayments(this.requestCurrentPage);
+    gotoNext(value) {
+      this.fetchPayments(value);
     },
     fetchPayments(page = 1) {
-      if (this.payments.length / 50 < page) {
-        if (page === 1) {
-          this.isBusy = !this.isBusy;
-        }
-        this.axios
-          .get(BASE_URL + `/admin/payments?page${ page }&per_page=50`)
-          .then((res) => {
-            const dataResponse = res.data?.data;
-            const dataArrr = [];
-            dataResponse?.forEach((record) => {
-              const u = {};
-              u.id = record.id;
-              u.user_id =
-                record.user != null ? record.user?.id : record.receiver?.id;
-              u.reference = record.request_id
-                ? record.request_id
-                : "Not available";
-              u.amount = record.amount;
-              u.type = record.title;
-              u.email = this.getUser(record)?.email;
-              // u.type = record.transaction_type
-              u.status = record.status;
-              u.created_at = record.created_at;
+      this.isBusy = !this.isBusy;
+      this.axios
+        .get(BASE_URL + `/admin/payments?page${page}&per_page=50`)
+        .then((res) => {
+          const dataResponse = res.data?.data;
+          const dataArrr = [];
+          dataResponse?.forEach((record) => {
+            const u = {};
+            u.id = record.id;
+            u.user_id =
+              record.user != null ? record.user?.id : record.receiver?.id;
+            u.reference = record.request_id
+              ? record.request_id
+              : "Not available";
+            u.amount = record.amount;
+            u.type = record.title;
+            u.email = this.getUser(record)?.email;
+            // u.type = record.transaction_type
+            u.status = record.status;
+            u.created_at = record.created_at;
 
-              dataArrr.push(u);
-            });
-            this.populatePayments(dataArrr);
-            this.totalRows = this.payments.length;
-          })
-          .catch((err) => {
-            // this.error = true
-            console.log(err);
-            if (err.response?.status == 401) {
-              return this.$router.push({ path: "/login" });
-            }
-          })
-          .finally(() => {
-            this.isBusy = false;
+            dataArrr.push(u);
           });
-        }
+          this.populatePayments(dataArrr);
+          this.totalRows = res.data?.meta?.total;
+        })
+        .catch((err) => {
+          // this.error = true
+          console.log(err);
+          if (err.response?.status == 401) {
+            return this.$router.push({ path: "/login" });
+          }
+        })
+        .finally(() => {
+          this.isBusy = false;
+        });
     },
     resolvePayment() {
       this.isBusy = !this.isBusy;
@@ -315,7 +310,7 @@ export default {
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
-            :current-page="currentPage"
+            :current-page="1"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
@@ -419,9 +414,9 @@ export default {
                 <!-- pagination -->
                 <b-pagination
                   v-model="currentPage"
-                  :total-rows="rows"
+                  :total-rows="totalRows"
                   :per-page="perPage"
-                  @change="gotoNext()"
+                  @change="gotoNext"
                   first-number
                   last-number
                 ></b-pagination>

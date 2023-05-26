@@ -35,9 +35,8 @@ export default {
       paymentData: [],
       totalRows: 1,
       currentPage: 1,
-      requestCurrentPage: 1,
-      perPage: 20,
-      pageOptions: [20, 40, 50],
+      perPage: 50,
+      pageOptions: [50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -110,62 +109,55 @@ export default {
     ...mapMutations({
       populateTransfer: "transfers/SET_TRANSFERS",
     }),
-    gotoNext() {
-      this.requestCurrentPage++;
-      this.fetchPayments(this.requestCurrentPage);
+    gotoNext(page) {
+      this.fetchPayments(page);
     },
     fetchPayments(page = 1) {
-      if (this.transfers.length / 50 < page) {
-        if (page === 1) {
-          this.isBusy = !this.isBusy;
-        }
-        this.axios
-          .get(BASE_URL + `/admin/wallet-transfers?page=${ page }&per_page=50`)
-          .then((res) => {
-            const dataResponse = res.data?.data || [];
-            // console.log(dataResponse)
-            const dataArrr = [];
-            dataResponse.forEach((record) => {
-              const u = {};
-              u.id = record.id;
-              u.user_id = record.user?.id;
-              u.receiver_id = record.receiver?.id;
-              // u.sender = record.request_id ? record.request_id:'Not available'
-              u.sender =
-                record.user != null
-                  ? record.user?.first_name + " " + record.user?.last_name
-                  : "Not available";
-              u.amount = record.amount;
-              u.type = record.title;
-              // u.sender = record.user.username
-              u.receiver =
-                record.receiver != null
-                  ? record.receiver?.first_name +
-                    " " +
-                    record.receiver?.last_name
-                  : "Not available";
-              // u.receiver = record.receiver.username
-              // u.type = record.transaction_type
-              u.status = record.status;
-              u.created_at = record.updated_at;
+      this.isBusy = !this.isBusy;
+      this.axios
+        .get(BASE_URL + `/admin/wallet-transfers?page=${page}&per_page=50`)
+        .then((res) => {
+          const dataResponse = res.data?.data || [];
+          // console.log(dataResponse)
+          const dataArrr = [];
+          dataResponse.forEach((record) => {
+            const u = {};
+            u.id = record.id;
+            u.user_id = record.user?.id;
+            u.receiver_id = record.receiver?.id;
+            // u.sender = record.request_id ? record.request_id:'Not available'
+            u.sender =
+              record.user != null
+                ? record.user?.first_name + " " + record.user?.last_name
+                : "Not available";
+            u.amount = record.amount;
+            u.type = record.title;
+            // u.sender = record.user.username
+            u.receiver =
+              record.receiver != null
+                ? record.receiver?.first_name + " " + record.receiver?.last_name
+                : "Not available";
+            // u.receiver = record.receiver.username
+            // u.type = record.transaction_type
+            u.status = record.status;
+            u.created_at = record.updated_at;
 
-              dataArrr.push(u);
-            });
-            this.populateTransfer(dataArrr);
-            this.totalRows = this.transfers.length;
-          })
-          .catch((err) => {
-            // this.error = true
-            // console.log(err)
-            // console.log(err.response)
-            if (err.response.status == 401) {
-              return this.$router.push({ path: "/login" });
-            }
-          })
-          .finally(() => {
-            this.isBusy = false;
+            dataArrr.push(u);
           });
-      }
+          this.populateTransfer(dataArrr);
+          this.totalRows = res.data?.meta?.total;
+        })
+        .catch((err) => {
+          // this.error = true
+          // console.log(err)
+          // console.log(err.response)
+          if (err.response.status == 401) {
+            return this.$router.push({ path: "/login" });
+          }
+        })
+        .finally(() => {
+          this.isBusy = false;
+        });
     },
     resolvePayment() {
       this.isBusy = !this.isBusy;
@@ -319,7 +311,7 @@ export default {
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
-            :current-page="currentPage"
+            :current-page="1"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
@@ -435,9 +427,9 @@ export default {
                 <!-- pagination -->
                 <b-pagination
                   v-model="currentPage"
-                  :total-rows="rows"
+                  :total-rows="totalRows"
                   :per-page="perPage"
-                  @change="gotoNext()"
+                  @change="gotoNext"
                   first-number
                   last-number
                 ></b-pagination>

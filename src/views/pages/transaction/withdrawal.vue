@@ -36,8 +36,8 @@ export default {
       totalRows: 1,
       currentPage: 1,
       requestCurrentPage: 1,
-      perPage: 20,
-      pageOptions: [20, 40, 50],
+      perPage: 50,
+      pageOptions: [50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -115,54 +115,47 @@ export default {
     ...mapMutations({
       populateWithdrawals: "withdrawal/SET_WITHDRAWALS",
     }),
-    gotoNext() {
-      this.requestCurrentPage++;
-      this.fetchPayments(this.requestCurrentPage);
+    gotoNext(value) {
+      this.fetchPayments(value);
     },
     fetchPayments(page = 1) {
-      if (this.withdrawals.length / 50 < page) {
-        if (page === 1) {
-          this.isBusy = !this.isBusy;
-        }
-        this.axios
-          .get(BASE_URL + `/admin/withdrawals?page=${ page }&per_page=50`)
-          .then((res) => {
-            console.log(res.data.data);
-            // console.log(JSON.parse(res.data.data.data[0].meta_data));
+      this.isBusy = !this.isBusy;
+      this.axios
+        .get(BASE_URL + `/admin/withdrawals?page=${page}&per_page=50`)
+        .then((res) => {
+          console.log(res.data.data);
+          // console.log(JSON.parse(res.data.data.data[0].meta_data));
 
-            const dataArrr = [];
-            res.data?.data?.forEach((record) => {
-              let u = {};
-              u.id = record.id;
-              u.user_id =
-                record.user != null ? record.user?.id : record.receiver?.id;
-              u.reference_id = record.reference
-                ? `${record.reference}`
-                : "Not available";
-              u.amount = record.amount;
-              u.bank_name = record.meta?.bank_name || "Not available";
-              u.email =
-                record.user != null
-                  ? record.user?.email
-                  : record.receiver?.email;
-              u.account_name = record.meta?.account_name || "Not available";
-              u.account_number = record.meta?.account_number || "Not available";
-              u.status = record.status == 0 ? "failed" : record.status;
-              u.created_at = record.created_at;
+          const dataArrr = [];
+          res.data?.data?.forEach((record) => {
+            let u = {};
+            u.id = record.id;
+            u.user_id =
+              record.user != null ? record.user?.id : record.receiver?.id;
+            u.reference_id = record.reference
+              ? `${record.reference}`
+              : "Not available";
+            u.amount = record.amount;
+            u.bank_name = record.meta?.bank_name || "Not available";
+            u.email =
+              record.user != null ? record.user?.email : record.receiver?.email;
+            u.account_name = record.meta?.account_name || "Not available";
+            u.account_number = record.meta?.account_number || "Not available";
+            u.status = record.status == 0 ? "failed" : record.status;
+            u.created_at = record.created_at;
 
-              dataArrr.push(u);
-            });
-            this.populateWithdrawals(dataArrr);
-            this.totalRows = this.withdrawals.length;
-          })
-          .catch((err) => {
-            // this.error = true
-            console.log(err);
-          })
-          .finally(() => {
-            this.isBusy = false;
+            dataArrr.push(u);
           });
-      }
+          this.populateWithdrawals(dataArrr);
+          this.totalRows = res.data?.meta?.total;
+        })
+        .catch((err) => {
+          // this.error = true
+          console.log(err);
+        })
+        .finally(() => {
+          this.isBusy = false;
+        });
     },
     approveWithdrawal(id) {
       this.isBusy = !this.isBusy;
@@ -341,7 +334,7 @@ export default {
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
-            :current-page="currentPage"
+            :current-page="1"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
@@ -457,9 +450,9 @@ export default {
                 <!-- pagination -->
                 <b-pagination
                   v-model="currentPage"
-                  :total-rows="rows"
+                  :total-rows="totalRows"
                   :per-page="perPage"
-                  @change="gotoNext()"
+                  @change="gotoNext"
                   first-number
                   last-number
                 ></b-pagination>

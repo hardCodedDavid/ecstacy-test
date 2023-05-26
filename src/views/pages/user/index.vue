@@ -39,8 +39,8 @@ export default {
       totalRows: 1,
       currentPage: 1,
       requestCurrentPage: 1,
-      perPage: 20,
-      pageOptions: [20, 40, 50],
+      perPage: 50,
+      pageOptions: [50],
       filter: null,
       filterOn: [],
       sortBy: "age",
@@ -118,15 +118,11 @@ export default {
     ...mapMutations({
       populateUser: "users/SET_USERS",
     }),
-    gotoNext() {
-      this.requestCurrentPage++;
-      this.fetchData(this.requestCurrentPage);
+    gotoNext(value) {
+      this.fetchData(value);
     },
     fetchData(page = 1) {
-      if (this.usersRecord.length / 50 < page) {
-        if (page === 1) {
-          this.isBusy = !this.isBusy;
-        }
+        this.isBusy = !this.isBusy;
         this.axios
           .get(BASE_URL + `/admin/users/all?page=${ page }&per_page=50`)
           .then((res) => {
@@ -153,6 +149,7 @@ export default {
               userArr.push(u);
             });
             this.populateUser(userArr);
+            this.totalRows = res.data?.meta?.total
             // this.fetchRoles();
           })
           .catch((err) => {
@@ -168,7 +165,6 @@ export default {
           .finally(() => {
             this.isBusy = false;
           });
-      }
     },
     deleteUser(id) {
       this.isBusy = true;
@@ -412,7 +408,7 @@ export default {
             :fields="fields"
             responsive="sm"
             :per-page="perPage"
-            :current-page="currentPage"
+            :current-page="1"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
@@ -567,9 +563,9 @@ export default {
                 <!-- pagination -->
                 <b-pagination
                   v-model="currentPage"
-                  :total-rows="rows"
+                  :total-rows="totalRows"
                   :per-page="perPage"
-                  @change="gotoNext()"
+                  @input="gotoNext"
                   first-number
                   last-number
                 ></b-pagination>
