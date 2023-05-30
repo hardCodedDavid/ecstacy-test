@@ -374,7 +374,7 @@ export default {
             </template>
 
             <template v-slot:cell(reference_id)="data">
-              <a href="javascript: void(0);" class="text-dark fw-bold"
+              <a href="javascript: void(0);" class="text-dark"
                 >{{ data.item.reference_id.slice(0, 15) }}...</a
               >
             </template>

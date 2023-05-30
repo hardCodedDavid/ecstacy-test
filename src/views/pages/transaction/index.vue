@@ -46,6 +46,7 @@ export default {
       paymentInfo: null,
       paymentId: null,
       paymentRef: null,
+      paymentStatus: null,
       fields: [
         {
           key: "index",
@@ -132,11 +133,13 @@ export default {
       this.fetchTransactions(value);
     },
     getAPIUrl(page) {
-      return this.filter ? `/admin/transactions/all/search?page=${ page }&per_page=50&query=${this.filter}` : `/admin/transactions?page=${page}&per_page=50`
+      return this.filter
+        ? `/admin/transactions/all/search?page=${page}&per_page=50&query=${this.filter}`
+        : `/admin/transactions?page=${page}&per_page=50`;
     },
     fetchTransactions(page = 1) {
       if (page === 1) {
-        this.currentPage = 1
+        this.currentPage = 1;
       }
       this.isBusy = !this.isBusy;
       this.axios
@@ -147,8 +150,7 @@ export default {
           dataResponse.forEach((record) => {
             const u = {};
             u.id = record.id;
-            u.reference_id =
-              `${record.reference.slice(0, 15)}...` || "Not available";
+            u.reference_id = record.reference;
             u.user_id = record.user?.id;
             // u.user_name = record.user != null ? record.first_name+' '+record.user.last_name:'Not available'
             u.user_name = this.getUser(record);
@@ -197,11 +199,18 @@ export default {
       this.paymentInfo = item;
       this.paymentId = item.id;
       this.paymentRef = item.reference_id;
+      this.paymentStatus = item.status;
     },
     resolvePayment() {
       this.isBusy = true;
       this.axios
-        .put(BASE_URL + "/admin/transactions/resolve/" + this.paymentRef)
+        .put(
+          BASE_URL +
+            `/admin/transactions/${
+              this.paymentStatus === "success" ? "decline" : "approve"
+            }/` +
+            this.paymentRef
+        )
         .then((res) => {
           console.log(res.data.data);
           this.fetchTransactions();
@@ -255,7 +264,11 @@ export default {
       title-class="font-18"
       hide-footer
     >
-      <p>Are you sure you want to Resolve this Payment "{{ paymentRef }}"</p>
+      <p>
+        Are you sure you want to
+        {{ this.paymentStatus === "success" ? "decline" : "approve" }} this
+        Payment "{{ paymentRef }}"
+      </p>
 
       <div class="modal-footer">
         <button
@@ -263,7 +276,7 @@ export default {
           type="button"
           class="btn btn-success"
         >
-          Resolve
+          {{ this.paymentStatus === "success" ? "Decline" : "Approve" }}
         </button>
         <b-button
           type="button"
@@ -393,6 +406,12 @@ export default {
               }}</a>
             </template>
 
+            <template v-slot:cell(reference_id)="data">
+              <a href="javascript: void(0);" class="text-dark">{{
+                `${data.item.reference_id.slice(0, 15)}...` || "Not available"
+              }}</a>
+            </template>
+
             <template v-slot:cell(user_name)="data">
               <router-link
                 :to="{
@@ -444,7 +463,7 @@ export default {
                     <i class="uil-eye font-size-20"></i>
                   </a>
                 </li>
-                <li v-if="item.status != 'success'" class="list-inline-item">
+                <li class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-success"
