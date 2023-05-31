@@ -35,6 +35,7 @@ export default {
       transactionData: [],
       totalRows: 1,
       currentPage: 1,
+      currentAPIpage: 1,
       requestCurrentPage: 1,
       perPage: 50,
       pageOptions: [50],
@@ -131,6 +132,7 @@ export default {
     },
     gotoNext(value) {
       this.fetchTransactions(value);
+      this.currentAPIpage = value
     },
     getAPIUrl(page) {
       return this.filter
@@ -204,7 +206,7 @@ export default {
     resolvePayment() {
       this.isBusy = true;
       this.axios
-        .put(
+        .post(
           BASE_URL +
             `/admin/transactions/${
               this.paymentStatus === "success" ? "decline" : "approve"
@@ -213,7 +215,7 @@ export default {
         )
         .then((res) => {
           console.log(res.data.data);
-          this.fetchTransactions();
+          this.fetchTransactions(this.currentAPIpage);
           this.$refs.mytoast.Add({
             msg: "Transaction resolved successfully",
             clickClose: false,
