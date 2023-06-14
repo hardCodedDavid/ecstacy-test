@@ -58,6 +58,8 @@ export default {
         airtime_discount: 0,
         sme_data_discount: 0,
         education_payment_discount: 0,
+        referral_minimum_top_up: 0,
+        referral_commission: this.referral_commission,
       },
       error: {
         title: false,
@@ -358,25 +360,25 @@ export default {
                         />
                       </div>
                       <div class="col-md-4">
-                        <label for="data">Referal minimum topup</label>
+                        <label for="data">Referral minimum topup</label>
                         <input
                           id="data"
                           type="number"
                           step="any"
                           class="form-control mb-4"
                           placeholder="Amount"
-                          v-model="service.referal_minimum_top_up"
+                          v-model="service.referral_minimum_top_up"
                         />
                       </div>
                       <div class="col-md-4">
-                        <label for="data">Referal Commission</label>
+                        <label for="data">Referral Commission</label>
                         <input
                           id="data"
                           type="number"
                           step="any"
                           class="form-control mb-4"
                           placeholder="Amount"
-                          v-model="service.referal_commission"
+                          v-model="service.referral_commission"
                         />
                       </div>
                     </div>
