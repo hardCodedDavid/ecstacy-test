@@ -40,24 +40,26 @@ export default {
       loadings: false,
       isLoading: false,
       service: {
-        wallet_topup: 50,
-        airtime_topup: 50,
-        data_topup: 50,
-        utility_topup: 50,
-        tvsubscription_topup: 50,
-        epin_topup: 50,
-        wallet_transfer_topup: 50,
+        wallet_topup: 20,
+        airtime_topup: 0,
+        data_topup: 0,
+        utility_topup: 0,
+        tvsubscription_topup: 0,
+        epin_topup: 0,
+        wallet_transfer_topup: 0,
         withdrawal_topup: 50,
-        games_charge: 50,
-        glo_cg_topup: 50,
-        airtel_cg_topup: 50,
-        mtn_sme_topup: 50,
+        games_charge: 0,
+        glo_cg_topup: 2.2,
+        airtel_cg_topup: 6.9,
+        mtn_sme_topup: 0,
         cable_tv_discount: 0,
         utility_bills_discount: 0,
         data_discount: 0,
-        airtime_discount: 0,
+        airtime_discount: 3,
         sme_data_discount: 0,
         education_payment_discount: 0,
+        referral_commission: 50,
+        referral_minimum_top_up: 500,
       },
       error: {
         title: false,
@@ -355,6 +357,28 @@ export default {
                           class="form-control mb-4"
                           placeholder="Amount"
                           v-model="service.education_payment_discount"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">Referral Commission</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.referral_commission"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">Referral Minimum Top Up</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.referral_minimum_top_up"
                         />
                       </div>
                     </div>
