@@ -357,6 +357,28 @@ export default {
                           v-model="service.education_payment_discount"
                         />
                       </div>
+                      <div class="col-md-4">
+                        <label for="data">Referal minimum topup</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.referal_minimum_top_up"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">Referal Commission</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.referal_commission"
+                        />
+                      </div>
                     </div>
 
                     <button
