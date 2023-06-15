@@ -107,25 +107,6 @@ export const menuItems = [
   //         },
   //     ]
   // },
-  // {
-  //     id: 6,
-  //     label: "Plan",
-  //     icon: "uil-invoice",
-  //     subItems: [
-  //         {
-  //             id: 7,
-  //             label: "Plans",
-  //             link: "/plans",
-  //             parentId: 6
-  //         },
-  //         {
-  //             id: 8,
-  //             label: "Description",
-  //             link: "/description",
-  //             parentId: 6
-  //         },
-  //     ]
-  // },
   {
     id: 8,
     label: 'Finances',
