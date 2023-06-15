@@ -274,6 +274,13 @@ export const menuItems = [
     link: '/provider',
   },
   {
+    id: 18,
+    label: 'Referral Terms',
+    show: isPermitted('View Referral Terms'),
+    icon: 'uil-file-alt',
+    link: '/referral-terms',
+  },
+  {
     id: 22,
     label: 'Settings',
     show: true,

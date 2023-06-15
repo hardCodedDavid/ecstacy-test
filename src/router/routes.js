@@ -412,6 +412,14 @@ export default [
     },
     component: () => import('../views/pages/permissions/index'),
   },
+  {
+    path: '/referral-terms',
+    name: 'referrals',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/referrals/terms'),
+  },
 
   // {
   //   path: '/calendar',
