@@ -202,6 +202,13 @@ export const menuItems = [
   },
   {
     id: 15,
+    label: 'Referrals',
+    show: isPermitted('View Referrals'),
+    icon: 'uil-users-alt',
+    link: '/referrals',
+  },
+  {
+    id: 15,
     label: 'Role',
     show: isPermitted('View Roles'),
     icon: 'uil-user-circle',

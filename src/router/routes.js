@@ -414,11 +414,19 @@ export default [
   },
   {
     path: '/referral-terms',
-    name: 'referrals',
+    name: 'referral-terms',
     meta: {
       authRequired: true,
     },
     component: () => import('../views/pages/referrals/terms'),
+  },
+  {
+    path: '/referrals',
+    name: 'referrals',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/referrals/index'),
   },
 
   // {
