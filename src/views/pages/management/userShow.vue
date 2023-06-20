@@ -139,6 +139,7 @@ export default {
             this.wallet_balance = res.data?.data?.wallet_balance;
             this.total_transactions = res.data?.data?.total_transactions;
             this.wdtransactions = res.data?.data?.wdtransactions;
+            this.referrals = res.data?.data?.referrals;
 
             // console.log(res.data.data.wdtransactions);
             const wdArr = [];
@@ -710,6 +711,73 @@ export default {
                         <tr>
                           <td colspan="7" class="text-center pt-3 pb-5">
                             No transactions has been made
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </b-tab>
+            <b-tab>
+              <template v-slot:title>
+                <i class="uil uil-users-alt font-size-20"></i>
+                <span class="d-none d-sm-block">Referrals</span>
+              </template>
+              <div>
+                <div>
+                  <div class="table-responsive">
+                    <table class="table table-nowrap table-hover mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Joined</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        v-for="(referral, index) in referrals"
+                        :key="referral.id"
+                      >
+                        <tr>
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>
+                            <p>
+                              {{ referral.first_name }} {{ referral.last_name }}
+                            </p>
+                          </td>
+                          <td>
+                            <p>
+                              {{ referral.email }}
+                            </p>
+                          </td>
+                          <tb>
+                            <span
+                              class="badge bg-pill font-size-12 d-flex items-center"
+                              style="position:relative;top:-6px;"
+                              :class="{
+                                'bg-soft-success':
+                                  referral.status === 'delivered' ||
+                                  referral.status === 'success',
+                                'bg-soft-danger':
+                                  referral.status === 'failed',
+                                'bg-soft-warning':
+                                  referral.status === 'pending',
+                              }"
+                              >{{ referral.status }}</span
+                            >
+                          </tb>
+                          <td>
+                            <p>{{ referral.joined | formatDate }}</p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-if="referrals.length == 0">
+                        <tr>
+                          <td colspan="7" class="text-center pt-3 pb-5">
+                            Not yet referred a user
                           </td>
                         </tr>
                       </tbody>
