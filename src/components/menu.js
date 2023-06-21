@@ -208,6 +208,28 @@ export const menuItems = [
     link: '/referrals',
   },
   {
+    id: 29,
+    label: 'FAQ',
+    show: true,
+    icon: 'uil-comment-alt-notes',
+    subItems: [
+      {
+        id: 1,
+        label: 'FAQ',
+        show: true,
+        link: '/faq',
+        parentId: 29,
+      },
+      {
+        id: 2,
+        label: 'FAQ Category',
+        show: true,
+        link: '/faq-category',
+        parentId: 29,
+      }
+    ]
+  },
+  {
     id: 15,
     label: 'Role',
     show: isPermitted('View Roles'),

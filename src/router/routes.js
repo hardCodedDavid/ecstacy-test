@@ -428,6 +428,22 @@ export default [
     },
     component: () => import('../views/pages/referrals/index'),
   },
+  {
+    path: '/faq',
+    name: 'faq',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/faq/index'),
+  },
+  {
+    path: '/faq-category',
+    name: 'faq-category',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/pages/faq/faq-category'),
+  },
 
   // {
   //   path: '/calendar',
