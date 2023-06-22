@@ -13,7 +13,7 @@ import { BASE_URL } from '../../../baseconstant'
 export default {
   components: { Layout, PageHeader, Multiselect, VueToastr },
   page: {
-    title: 'FAQ',
+    title: 'FAQ Category',
     meta: [
       {
         name: 'description',
@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      title: 'FAQ',
+      title: 'FAQ Category',
       isBusy: false,
       items: [
         {
@@ -275,7 +275,7 @@ export default {
           class="btn btn-primary mb-3 brand-primary"
           v-b-modal.modal-add-faq-category
         >
-          <i class="mdi mdi-plus me-1"></i> Add New FAQ
+          <i class="mdi mdi-plus me-1"></i> Add New Category
         </button>
         <div
           class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline"

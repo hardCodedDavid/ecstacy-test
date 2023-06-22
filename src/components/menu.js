@@ -201,11 +201,26 @@ export const menuItems = [
     ],
   },
   {
-    id: 15,
+    id: 30,
     label: 'Referrals',
-    show: isPermitted('View Referrals'),
+    show: true,
     icon: 'uil-users-alt',
-    link: '/referrals',
+    subItems: [
+      {
+        id: 1,
+        label: 'Referrals',
+        show: true,
+        link: '/referrals',
+        parentId: 30,
+      },
+      {
+        id: 2,
+        label: 'Referral Terms',
+        show: true,
+        link: '/referral-terms',
+        parentId: 30,
+      }
+    ]
   },
   {
     id: 29,
@@ -282,13 +297,6 @@ export const menuItems = [
     show: isPermitted('View ServiceProvider'),
     icon: 'uil-file-alt',
     link: '/provider',
-  },
-  {
-    id: 18,
-    label: 'Referral Terms',
-    show: isPermitted('View Referral Terms'),
-    icon: 'uil-file-alt',
-    link: '/referral-terms',
   },
   {
     id: 22,
