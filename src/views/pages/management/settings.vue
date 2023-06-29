@@ -60,6 +60,10 @@ export default {
         education_payment_discount: 0,
         referral_commission: 50,
         referral_minimum_top_up: 500,
+        mtn_cg_charge: 0,
+        mtn_cg_data_discount: 0,
+        mtn_data_card_charge: 0,
+        mtn_data_card_discount: 0,
       },
       error: {
         title: false,
@@ -108,13 +112,8 @@ export default {
         this.axios
           .get(BASE_URL + "/admin/profile")
           .then((res) => {
-            // console.log(res.data.data)
-            // this.user = res.data.data.user
             console.log(res.data?.data?.service_charges);
             this.service = res.data?.data?.service_charges;
-            // this.admin.name = res.data.data.name
-            // this.admin.phone = res.data.data.phone
-            // this.url = res.data.data.profile_photo
           })
           .catch((err) => {
             // this.error = true
@@ -379,6 +378,50 @@ export default {
                           class="form-control mb-4"
                           placeholder="Amount"
                           v-model="service.referral_minimum_top_up"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">MTN CG Charge</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.mtn_cg_charge"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">MTN CG Data Discount</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.mtn_cg_data_discount"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">MTN Data Card Charge</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.mtn_data_card_charge"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">MTN Data Card Discount</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.mtn_data_card_discount"
                         />
                       </div>
                     </div>
