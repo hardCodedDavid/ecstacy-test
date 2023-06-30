@@ -699,7 +699,7 @@ export default {
                     <i class="uil uil-info-circle font-size-18 text-danger"></i>
                   </a>
                 </li> -->
-                <li class="list-inline-item">
+                <!-- <li class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-primary"
@@ -710,7 +710,7 @@ export default {
                   >
                     <i class="uil uil-trash font-size-18 text-danger"></i>
                   </a>
-                </li>
+                </li> -->
               </ul>
             </template>
           </b-table>

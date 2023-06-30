@@ -384,7 +384,7 @@ export default {
                         <label for="data">MTN CG Charge</label>
                         <input
                           id="data"
-                          type="number"
+                          type="text"
                           step="any"
                           class="form-control mb-4"
                           placeholder="Amount"
@@ -395,7 +395,7 @@ export default {
                         <label for="data">MTN CG Data Discount</label>
                         <input
                           id="data"
-                          type="number"
+                          type="text"
                           step="any"
                           class="form-control mb-4"
                           placeholder="Amount"
@@ -406,7 +406,7 @@ export default {
                         <label for="data">MTN Data Card Charge</label>
                         <input
                           id="data"
-                          type="number"
+                          type="text"
                           step="any"
                           class="form-control mb-4"
                           placeholder="Amount"
@@ -417,7 +417,7 @@ export default {
                         <label for="data">MTN Data Card Discount</label>
                         <input
                           id="data"
-                          type="number"
+                          type="text"
                           step="any"
                           class="form-control mb-4"
                           placeholder="Amount"

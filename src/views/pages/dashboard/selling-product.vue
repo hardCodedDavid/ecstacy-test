@@ -6,7 +6,7 @@ export default {};
 </script>
 
 <template>
-<div class="card">
+<div class="card" style="height: 95%;">
     <div class="card-body">
         <div class="float-end">
             <b-dropdown right toggle-class="text-reset p-0" variant="white" menu-class="dropdown-menu-end">
@@ -26,61 +26,61 @@ export default {};
         <h4 class="card-title mb-4">Top Selling Products</h4>
 
         <div class="row align-items-center no-gutters mt-3">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-truncate mt-1 mb-0">
                     <i class="mdi mdi-circle-medium text-primary me-2"></i> Desktops
                 </p>
             </div>
 
-            <div class="col-sm-9">
+            <div class="col-sm-8">
                 <b-progress :value="52" variant="primary" class="mt-1" height="6px"></b-progress>
             </div>
         </div>
         <!-- end row-->
 
         <div class="row align-items-center no-gutters mt-3">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-truncate mt-1 mb-0">
                     <i class="mdi mdi-circle-medium text-info me-2"></i> iPhones
                 </p>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-8">
                 <b-progress :value="45" variant="info" class="mt-1" height="6px"></b-progress>
             </div>
         </div>
         <!-- end row-->
 
         <div class="row align-items-center no-gutters mt-3">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-truncate mt-1 mb-0">
                     <i class="mdi mdi-circle-medium text-success me-2"></i> Android
                 </p>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-8">
                 <b-progress :value="48" variant="success" class="mt-1" height="6px"></b-progress>
             </div>
         </div>
         <!-- end row-->
 
         <div class="row align-items-center no-gutters mt-3">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-truncate mt-1 mb-0">
                     <i class="mdi mdi-circle-medium text-warning me-2"></i> Tablets
                 </p>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-8">
                 <b-progress :value="78" variant="warning" class="mt-1" height="6px"></b-progress>
             </div>
         </div>
         <!-- end row-->
 
         <div class="row align-items-center no-gutters mt-3">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <p class="text-truncate mt-1 mb-0">
                     <i class="mdi mdi-circle-medium text-purple me-2"></i> Cables
                 </p>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-8">
                 <b-progress :value="63" variant="purple" class="mt-1" height="6px"></b-progress>
             </div>
         </div>
