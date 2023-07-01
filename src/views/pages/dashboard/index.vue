@@ -5,7 +5,7 @@ import appConfig from '@/app.config'
 import { BASE_URL } from '../../../baseconstant'
 
 import Stat from '@/components/widgets/stat'
-import SalesAnalytics from "./sales-analytics"
+// import SalesAnalytics from "./sales-analytics"
 // import SellingProduct from './selling-product'
 
 import TopUsers from './top-users'
@@ -29,7 +29,7 @@ export default {
     TopUsers,
     Activity,
     SocialSource,
-    SalesAnalytics,
+    // SalesAnalytics,
     // SellingProduct,
   },
   data() {
@@ -88,7 +88,7 @@ export default {
       </div>
     </div>
     <div class="row" v-if="dashboard">
-      <SalesAnalytics />
+      <!-- <SalesAnalytics /> -->
       <TopUsers :recent_users="dashboard.recent_users" />
       <Activity :recent_transactions="dashboard.recent_transactions" />
       <SocialSource />

@@ -64,6 +64,8 @@ export default {
         mtn_cg_data_discount: 0,
         mtn_data_card_charge: 0,
         mtn_data_card_discount: 0,
+        ninemobile_sme_charge: 0,
+        ninemobile_sme_discount: 0,
       },
       error: {
         title: false,
@@ -422,6 +424,28 @@ export default {
                           class="form-control mb-4"
                           placeholder="Amount"
                           v-model="service.mtn_data_card_discount"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">9Mobile SME service charge</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.ninemobile_sme_charge"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="data">9Mobile SME data discount</label>
+                        <input
+                          id="data"
+                          type="number"
+                          step="any"
+                          class="form-control mb-4"
+                          placeholder="Amount"
+                          v-model="service.ninemobile_sme_discount"
                         />
                       </div>
                     </div>

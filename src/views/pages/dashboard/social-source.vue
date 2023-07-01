@@ -1,8 +1,8 @@
 <script>
 /**
  * Top-users component
- */
- import SellingProduct from './selling-product'
+//  */
+//  import SellingProduct from './selling-product'
 
 export default {
   data() {
@@ -11,7 +11,7 @@ export default {
     };
   },
   components: {
-    SellingProduct,
+    // SellingProduct,
   },
   methods: {
     // getDashboardData(){
@@ -34,6 +34,6 @@ export default {
 
 <template>
   <div class="col-xl-4">
-    <SellingProduct />
+    <!-- <SellingProduct /> -->
   </div>
 </template>
