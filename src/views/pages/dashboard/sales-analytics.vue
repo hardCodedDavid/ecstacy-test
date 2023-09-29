@@ -1,5 +1,6 @@
 <script>
 import countTo from "vue-count-to";
+// import { BASE_URL } from '../../../baseconstant'
 // import SellingProduct from './selling-product'
 
 /**
@@ -10,23 +11,26 @@ export default {
     countTo,
     // SellingProduct,
   },
+  props:{
+    social_analysis: {},
+  },
   data() {
     return {
       series: [
+        // {
+        //   name: "Desktops",
+        //   type: "column",
+        //   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
+        // },
         {
-          name: "Desktops",
-          type: "column",
-          data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-        },
-        {
-          name: "Laptops",
+          name: "Airtime",
           type: "area",
-          data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
+          data: [],
         },
         {
-          name: "Tablets",
+          name: "Data Bundle",
           type: "line",
-          data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+          data: [],
         },
       ],
       chartOptions: {
@@ -37,7 +41,7 @@ export default {
           },
         },
         stroke: {
-          width: [0, 2, 4],
+          width: [ 2, 4],
           curve: "smooth",
         },
         plotOptions: {
@@ -45,7 +49,7 @@ export default {
             columnWidth: "30%",
           },
         },
-        colors: ["#5b73e8", "#dfe2e6", "#f1b44c"],
+        colors: ["#09a3273d", "#ff7800"],
         fill: {
           opacity: [0.85, 0.25, 1],
           gradient: {
@@ -58,17 +62,6 @@ export default {
           },
         },
         labels: [
-          "01/01/2003",
-          "02/01/2003",
-          "03/01/2003",
-          "04/01/2003",
-          "05/01/2003",
-          "06/01/2003",
-          "07/01/2003",
-          "08/01/2003",
-          "09/01/2003",
-          "10/01/2003",
-          "11/01/2003",
         ],
         markers: {
           size: 0,
@@ -100,6 +93,39 @@ export default {
       },
     };
   },
+  watch: {
+    social_analysis: {
+      handler: function (newData) {
+        const airtimeData = newData.airtime_monthly_count.map((item) => item.count);
+        const dataBundleData = newData.data_monthly_count.map((item) => item.count);
+
+        // Update chart series
+        this.series = [
+          {
+            name: 'Airtime',
+            data: airtimeData,
+          },
+          {
+            name: 'Data Bundle',
+            data: dataBundleData,
+          },
+        ];
+
+        // Update x-axis labels
+        // this.chartOptions.labels = months;
+
+        this.chartOptions.labels = [
+          "04/02/2023",
+          "05/02/2023",
+          "06/02/2023",
+          "07/02/2023",
+          "08/02/2023",
+          "09/02/2023",
+        ];
+      },
+      immediate: true, // Trigger the watcher immediately with the initial props value
+    },
+  },
 };
 </script>
 
@@ -108,7 +134,7 @@ export default {
     <div class="col-lg-7">
       <div class="card">
         <div class="card-body">
-          <div class="float-end">
+          <!-- <div class="float-end">
             <b-dropdown
               variant="white"
               toggle-class="text-reset p-0"
@@ -125,45 +151,38 @@ export default {
               <a class="dropdown-item" href="#">Yearly</a>
               <a class="dropdown-item" href="#">Weekly</a>
             </b-dropdown>
-          </div>
+          </div> -->
           <h4 class="card-title mb-4">Sales Analytics</h4>
 
           <div class="mt-1">
             <ul class="list-inline main-chart mb-0">
               <li class="list-inline-item chart-border-left me-0 border-0">
                 <h3 class="text-primary">
-                  $
+                  ₦
                   <span data-plugin="counterup">
                     <countTo
                       :startVal="1"
-                      :endVal="2371"
+                      :endVal="social_analysis.airtime_sum"
                       :duration="2000"
                     ></countTo>
                   </span>
                   <span class="text-muted d-inline-block font-size-15 ms-3"
-                    >Income</span
+                    >Airtime</span
                   >
                 </h3>
               </li>
               <li class="list-inline-item chart-border-left me-0">
                 <h3>
+                  ₦
                   <span data-plugin="counterup">
                     <countTo
                       :startVal="1"
-                      :endVal="258"
+                      :endVal="social_analysis.data_sum"
                       :duration="2000"
                     ></countTo>
                   </span>
                   <span class="text-muted d-inline-block font-size-15 ms-3"
-                    >Sales</span
-                  >
-                </h3>
-              </li>
-              <li class="list-inline-item chart-border-left me-0">
-                <h3>
-                  <span data-plugin="counterup">3.6</span>%
-                  <span class="text-muted d-inline-block font-size-15 ms-3"
-                    >Conversation Ratio</span
+                    >Data Bundle</span
                   >
                 </h3>
               </li>
@@ -187,21 +206,7 @@ export default {
     </div>
     <div class="col-lg-5">
         <div class="card">
-            <div class="card-body">
-
-                <div class="float-end">
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="text-muted">Monthly<i class="mdi mdi-chevron-down ms-1"></i></span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton4">
-                            <a class="dropdown-item" href="#">Yearly</a>
-                            <a class="dropdown-item" href="#">Monthly</a>
-                            <a class="dropdown-item" href="#">Weekly</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="card-body" style="height: 480px;">
 
                 <h4 class="card-title">Social Source</h4>
 
@@ -212,9 +217,9 @@ export default {
                             </span>
                     </div>
                     <p class="font-16 text-muted mb-2"></p>
-                    <h5><a href="#" class="text-dark">MTN - <span class="text-muted font-16">125 sales</span> </a></h5>
+                    <h5><a href="#" class="text-dark">MTN - <span class="text-muted font-16">{{ social_analysis.total_mtn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} sales</span> </a></h5>
                     <p class="text-muted">Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus tincidunt.</p>
-                    <a href="#" class="text-reset font-16">Learn more <i class="mdi mdi-chevron-right"></i></a>
+                    <!-- <a href="#" class="text-reset font-16">Learn more <i class="mdi mdi-chevron-right"></i></a> -->
                 </div>
                 <div class="row mt-4">
                     <div class="col-4">
@@ -225,7 +230,7 @@ export default {
                                 </span>
                             </div>
                             <h5 class="font-size-15">MTN</h5>
-                            <p class="text-muted mb-0">125 sales</p>
+                            <p class="text-muted mb-0">{{ social_analysis.total_mtn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} sales</p>
                         </div>
                     </div>
                     <div class="col-4">
@@ -236,7 +241,7 @@ export default {
                                 </span>
                             </div>
                             <h5 class="font-size-15">Airtel</h5>
-                            <p class="text-muted mb-0">112 sales</p>
+                            <p class="text-muted mb-0">{{ social_analysis.total_airtel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} sales</p>
                         </div>
                     </div>
                     <div class="col-4">
@@ -247,13 +252,18 @@ export default {
                                 </span>
                             </div>
                             <h5 class="font-size-15">GLO</h5>
-                            <p class="text-muted mb-0">104 sales</p>
+                            <p class="text-muted mb-0">{{ social_analysis.total_glo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} sales</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-3 text-center">
-                    <a href="#" class="text-primary font-size-14 fw-medium">View All Sources <i class="mdi mdi-chevron-right"></i></a>
+                <div class="mt-3 text-center" style="padding-top: 30px;">
+                      <router-link
+                        to="/transactions"
+                        class="text-primary font-size-14 fw-medium"
+                      >
+                        View Transactions <i class="mdi mdi-chevron-right"></i>
+                      </router-link>
                 </div>
 
             </div>

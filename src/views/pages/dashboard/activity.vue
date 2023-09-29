@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-  <div class="col-xl-4">
+  <div class="col-xl-6">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title mb-4">Recent Transactions</h4>

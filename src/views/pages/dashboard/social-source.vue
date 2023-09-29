@@ -34,6 +34,6 @@ export default {
 
 <template>
   <div class="col-xl-4">
-    <!-- <SellingProduct /> -->
+    <SellingProduct />
   </div>
 </template>

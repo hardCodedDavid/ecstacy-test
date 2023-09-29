@@ -379,6 +379,10 @@ export default {
               >
             </template>
 
+            <template v-slot:cell(amount)="data">
+              <p>₦{{ data.item.amount }}</p>
+            </template>
+
             <template v-slot:cell(email)="data">
               <router-link
                 :to="{

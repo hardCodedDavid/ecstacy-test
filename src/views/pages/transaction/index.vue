@@ -12,7 +12,7 @@ import { BASE_URL } from "../../../baseconstant";
 export default {
   components: { Layout, PageHeader },
   page: {
-    title: "Transaction",
+    title: "Transactions",
     meta: [
       {
         name: "description",
@@ -425,6 +425,9 @@ export default {
                 >{{ data.item.user_name }}</router-link
               >
               <!-- <a href="#" class="text-body text-danger">{{ data.item.user_name }}</a> -->
+            </template>
+            <template v-slot:cell(amount)="data">
+              <p>₦{{ data.item.amount }}</p>
             </template>
             <template v-slot:cell(status)="data">
               <div

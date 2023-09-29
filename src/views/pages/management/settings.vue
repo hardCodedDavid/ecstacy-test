@@ -26,6 +26,224 @@ export default {
   data() {
     return {
       title: "Settings",
+      modalData: [],
+      gridList: [
+        {
+          profile: "mdi-cloud-sync-outline",
+          name: "Service Charges",
+          list: "servicesList"
+        },
+        {
+          profile: "mdi-access-point-plus",
+          name: "Network SME Topup",
+          list: "smeList"
+        },
+        {
+          profile: "mdi-percent-outline",
+          name: "Discount Fees",
+          list: "discountList"
+        },
+        {
+          profile: "mdi-account-arrow-right-outline",
+          name: "Referrals",
+          list: "referralList"
+        },
+        {
+          profile: "mdi-access-point-network",
+          name: "Network SME Discounts",
+          list: "cgList"
+        },
+        {
+          profile: "mdi-signal-cellular-1",
+          name: "Airtime Discount",
+          list: "airtimeList"
+        },
+        {
+          profile: "mdi-wifi-sync",
+          name: "Data Discount",
+          list: "dataList"
+        },
+        {
+          profile: "mdi-gauge-full",
+          name: "Limit Fees",
+          list: "limitList"
+        },
+      ],
+      servicesList: [
+        {
+          name: "Wallet Topup Charge",
+          model: "wallet_topup"
+        },
+        {
+          name: "Airtime Service Charge",
+          model: "airtime_topup"
+        },
+        {
+          name: "Data Service Charge",
+          model: "data_topup"
+        },
+        {
+          name: "Utility Bills charge",
+          model: "utility_topup"
+        },
+        {
+          name: "Tv subscription service charg",
+          model: "tvsubscription_topup"
+        },
+        {
+          name: "E-pin service charge",
+          model: "epin_topup"
+        },
+        {
+          name: "Wallet transfer charge",
+          model: "wallet_transfer_topup"
+        },
+        {
+          name: "Withdrawal service charge",
+          model: "withdrawal_topup"
+        },
+        {
+          name: "Game subscription charge",
+          model: "games_charge"
+        },
+      ],
+      smeList: [
+        {
+          name: "MTN SME Topup",
+          model: "mtn_sme_topup"
+        },
+        {
+          name: "GLO SME/CG Topup",
+          model: "glo_cg_topup"
+        },
+        {
+          name: "AIRTEL SME/CG Topup",
+          model: "airtel_cg_topup"
+        },
+      ],
+      discountList: [
+        {
+          name: "Airtime Discount(%)",
+          model: "airtime_discount"
+        },
+        {
+          name: "Data Discount(%)",
+          model: "data_discount"
+        },
+        {
+          name: "SME Data Discount(%)",
+          model: "sme_data_discount"
+        },
+        {
+          name: "Cable Tv Discount(%)",
+          model: "cable_tv_discount"
+        },
+        {
+          name: "Utility Bills Discount(%)",
+          model: "utility_bills_discount"
+        },
+        {
+          name: "Education Discount(%)",
+          model: "education_payment_discount"
+        },
+      ],
+      referralList: [
+        {
+          name: "Referral Commission",
+          model: "referral_commission"
+        },
+        {
+          name: "Referral Minimum Top Up",
+          model: "referral_minimum_top_up"
+        },
+      ],
+      cgList: [
+        {
+          name: "MTN CG Charge",
+          model: "mtn_cg_charge"
+        },
+        {
+          name: "MTN CG Data Discount",
+          model: "mtn_cg_data_discount"
+        },
+        {
+          name: "MTN Data Card Charge",
+          model: "mtn_data_card_charge"
+        },
+        {
+          name: "MTN Data Card Discount",
+          model: "mtn_data_card_discount"
+        },
+        {
+          name: "9Mobile SME service charge",
+          model: "ninemobile_sme_charge"
+        },
+        {
+          name: "9Mobile SME data discount",
+          model: "ninemobile_sme_discount"
+        },
+      ],
+      airtimeList: [
+        {
+          name: "MTN Airtime Discount(%)",
+          model: "mtn_airtime_discount"
+        },
+        {
+          name: "GLO Airtime Discount(%)",
+          model: "glo_airtime_discount"
+        },
+        {
+          name: "Airtel Airtime Discount(%)",
+          model: "airtel_airtime_discount"
+        },
+        {
+          name: "Etisalat Airtime Discount(%)",
+          model: "etisalat_airtime_discount"
+        },
+      ],
+      dataList: [
+        {
+          name: "MTN Data Discount(%)",
+          model: "mtn_data_discount"
+        },
+        {
+          name: "GLO Data Discount(%)",
+          model: "glo_data_discount"
+        },
+        {
+          name: "Airtel Data Discount(%)",
+          model: "airtel_data_discount"
+        },
+        {
+          name: "Etisalat Data Discount(%)",
+          model: "etisalat_data_discount"
+        },
+      ],
+      limitList: [
+        {
+          name: "Minimum Airtime Purchase",
+          model: "minimum_airtime_purchase"
+        },
+        {
+          name: "Daily Withdrawal Limit",
+          model: "daily_withdrawal_limit"
+        },
+        {
+          name: "Airtime Purchase Limit",
+          model: "airtime_purchase_limit"
+        },
+        {
+          name: "Withdrawal Fee Percentage (%)",
+          model: "withdrawal_fee_percentage"
+        },
+        {
+          name: "Withdrawal Fee Limit TO Charge",
+          model: "withdrawal_fee_limit_to_charge"
+        },
+      ],
+
+
+
       items: [
         {
           text: "Service",
@@ -66,6 +284,21 @@ export default {
         mtn_data_card_discount: 0,
         ninemobile_sme_charge: 0,
         ninemobile_sme_discount: 0,
+
+        mtn_airtime_discount:90,
+        glo_airtime_discount:0,
+        airtel_airtime_discount:0,
+        etisalat_airtime_discount:0,
+        mtn_data_discount:0,
+        airtel_data_discount:0,
+        etisalat_data_discount:0,
+        glo_data_discount:0, //
+
+        minimum_airtime_purchase:0,
+        daily_withdrawal_limit:0,
+        airtime_purchase_limit:90,
+        withdrawal_fee_percentage:0,
+        withdrawal_fee_limit_to_charge:0
       },
       error: {
         title: false,
@@ -93,6 +326,7 @@ export default {
             position: "toast-top-right",
             type: "success",
           });
+          this.$bvModal.hide('modal-edit-settings');
         })
         .catch((err) => {
           // this.error = true
@@ -132,10 +366,12 @@ export default {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
     },
+    getModalList(list) {
+      if (this[list]) {
+        this.modalData = this[list];
+      }
+    },
   },
-  //   mounted() {
-  //     this.fetchCategory()
-  //   },
   middleware: "authentication",
 };
 </script>
@@ -144,7 +380,82 @@ export default {
   <Layout>
     <PageHeader :title="title" :items="items" />
     <vue-toastr ref="mytoast"></vue-toastr>
+
     <div class="row">
+      <div
+        class="col-xl-3 col-sm-6"
+        v-for="(item, index) in gridList"
+        :key="index"
+      >
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="clearfix m-4"></div>
+            <div class="mb-4">
+              <!-- <img
+                v-if="item.profile"
+                :src="item.profile"
+                alt
+                class="avatar-lg rounded-circle img-thumbnail"
+              /> -->
+              <div class="avatar-lg mx-auto mb-4">
+                <div
+                  class="avatar-title bg-soft-dark rounded-circle text-primary"
+                >
+                  <i
+                    :class="'mdi ' + item.profile + ' display-4 m-0 text-white'"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="font-size-16 mb-1">
+              <a href="#" class="text-dark">{{ item.name }}</a>
+            </h5>
+            <!-- <p class="text-muted mb-2">{{ item.designation }}</p> -->
+          </div>
+
+          <div class="btn-group" role="group">
+            <button @click="getModalList(item.list)" type="button" class="btn btn-outline-light text-truncate" v-b-modal.modal-edit-settings>
+              <i class="bx bx-pencil me-1"></i> Edit {{ item.name }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ::START EDIT Settings Modal -->    
+      <b-modal id="modal-edit-settings" title="Edit Settings" title-class="font-18" hide-footer>
+        <form method="post" @submit="updateServiceCharge">
+          <div  v-for="(list, index) in modalData" :key="index">
+            <label for="" class="m-2">{{ list.name }}: </label>
+            <input type="text" v-model="service[list.model]" id="horizontal-firstname-input" :placeholder="'Enter ' + list.name" class="m-2 form-control">
+          </div>
+          
+          <div class="modal-footer">
+              <button v-if="!loadings" type="submit" class="btn btn-primary">
+                  Save changes
+              </button>
+              <button v-if="loadings" class="btn btn-primary">
+                <b-spinner
+                  small
+                  variant="white"
+                  role="status"
+                  class="me-2"
+                ></b-spinner>
+                <span>Loading...</span>
+              </button>
+              <b-button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                  @click="$bvModal.hide('modal-edit-settings')"
+                  >
+                  Close
+              </b-button>
+          </div>
+        </form>
+        </b-modal>
+        <!-- ::END EDIT Settings Modal -->
+    </div>
+  <!-- <div class="row">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
@@ -473,7 +784,7 @@ export default {
           </div>
         </div>
       </div>
-    </div>
+  </div> -->
     <!-- End Form Layout -->
   </Layout>
 </template>

@@ -85,7 +85,7 @@ export default {
 </script>
 
 <template>
-<div class="col-xl-4">
+<div class="col-xl-6">
     <div class="card">
         <div class="card-body">
             <!-- <div class="float-end">

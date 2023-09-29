@@ -374,6 +374,10 @@ export default {
               >
             </template>
 
+            <template v-slot:cell(amount)="data">
+              <p>₦{{ data.item.amount }}</p>
+            </template>
+
             <template v-slot:cell(status)="data">
               <div
                 class="badge bg-pill bg-soft-success font-size-12"
