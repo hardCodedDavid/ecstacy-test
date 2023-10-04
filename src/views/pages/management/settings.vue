@@ -240,10 +240,6 @@ export default {
           name: "Withdrawal Fee Limit TO Charge",
           model: "withdrawal_fee_limit_to_charge"
         },
-        {
-          name: "Minimum Withdrawal Amount",
-          model: "minimum_withdrawal_amount"
-        },
       ],
 
 
@@ -302,9 +298,7 @@ export default {
         daily_withdrawal_limit:0,
         airtime_purchase_limit:90,
         withdrawal_fee_percentage:0,
-        withdrawal_fee_limit_to_charge:0,
-
-        minimum_withdrawal_amount:0
+        withdrawal_fee_limit_to_charge:0
       },
       error: {
         title: false,

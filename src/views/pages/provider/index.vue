@@ -146,53 +146,15 @@ export default {
           this.isBusy = false
         })
     },
-    addProvider() {
-      this.isBusy = true
-      const formData = new FormData()
-      formData.append('provider_name', this.provider.provider_name)
-      if (this.profile_photo) {
-        formData.append('photo', this.profile_photo)
-      }
-
-      this.axios
-        .post(
-          BASE_URL + '/admin/providers',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        )
-        .then(() => {
-          // console.log(res.data.data);
-          this.fetchData()
-          this.$refs.mytoast.Add({
-            msg: 'Provider Edited Successfully',
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'success',
-          })
-        })
-        .catch((err) => {
-          this.$refs.mytoast.Add({
-            msg: err.response.data.details,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          this.isBusy = false
-          this.url = ''
-          this.profile_photo = ''
-        })
-    },
     editProvider() {
       this.isBusy = true
+      // provider: {
+      //   id: this.id,
+      //   provider_name: this.name,
+      // },
       const formData = new FormData()
+      // Append the method only if you are using a patch route in your server side
+      // Append the file
       formData.append('provider_name', this.provider.provider_name)
       formData.append('photo', this.profile_photo)
 
@@ -435,10 +397,39 @@ export default {
     </b-modal>
     <!-- ::END ADD Admin Modal -->
 
-    <!-- ::START EDIT Provider Modal -->
+    <!-- ::START DELETE Admin Modal -->
+    <b-modal
+      id="modal-delete-admin"
+      title="Delete Admin"
+      title-class="font-18"
+      hide-footer
+    >
+      <p>Are you sure you want to delete "{{ admin.name }}"</p>
+
+      <div class="modal-footer">
+        <button
+          @click="deleteAdmin(), $bvModal.hide('modal-delete-admin')"
+          type="button"
+          class="btn btn-primary"
+        >
+          Delete
+        </button>
+        <b-button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          @click="$bvModal.hide('modal-delete-admin')"
+        >
+          Close
+        </b-button>
+      </div>
+    </b-modal>
+    <!-- ::END DELETE Admin Modal -->
+
+    <!-- ::START EDIT Role Modal -->
     <b-modal
       id="modal-edit-role"
-      title="Edit Provider"
+      title="Edit Role"
       title-class="font-18"
       hide-footer
     >
@@ -482,95 +473,10 @@ export default {
         </b-button>
       </div>
     </b-modal>
-    <!-- ::END EDIT Provider Modal -->
-
-    <!-- ::START DELETE Provider Modal -->
-    <b-modal
-      id="modal-delete-provider"
-      title="Delete Admin"
-      title-class="font-18"
-      hide-footer
-    >
-      <p>Are you sure you want to delete "{{ provider.provider_name }}"</p>
-
-      <div class="modal-footer">
-        <button
-          @click="deleteProvider(provider.id), $bvModal.hide('modal-delete-provider')"
-          type="button"
-          class="btn btn-primary"
-        >
-          Delete
-        </button>
-        <b-button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          @click="$bvModal.hide('modal-delete-provider')"
-        >
-          Close
-        </b-button>
-      </div>
-    </b-modal>
-    <!-- ::END DELETE Provider Modal -->
-
-    <!-- ::START EDIT Provider Modal -->
-    <b-modal
-      id="modal-add-role"
-      title="Add Provider"
-      title-class="font-18"
-      hide-footer
-    >
-      <label for="" class="m-2">Provider Name: </label>
-      <input
-        type="text"
-        v-model="provider.provider_name"
-        id="horizontal-firstname-input"
-        placeholder="Enter provider name..."
-        class="m-2 form-control"
-      />
-
-      <img
-        class="avatar-lg rounded-circle img-thumbnail"
-        :src="url"
-        alt="Card image cap"
-      />
-      <b-form-file
-        placeholder="Choose an image here..."
-        @change="onFileChange"
-        v-model="profile_photo"
-        :state="Boolean(profile_photo)"
-      ></b-form-file>
-
-      <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
-      <div class="modal-footer">
-        <button
-          @click="addProvider(), $bvModal.hide('modal-add-role')"
-          type="button"
-          class="btn btn-primary"
-        >
-          Save changes
-        </button>
-        <b-button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          @click="$bvModal.hide('modal-add-role')"
-        >
-          Close
-        </b-button>
-      </div>
-    </b-modal>
-    <!-- ::END EDIT Provider Modal -->
+    <!-- ::END EDIT Role Modal -->
 
     <div class="row">
       <div class="col-12">
-        <button
-          type="button"
-          class="btn btn-primary mb-3 brand-primary"
-          v-b-modal.modal-add-role
-        >
-          <i class="mdi mdi-plus me-1"></i> Add New Provider
-        </button>
         <div
           class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline"
         >
@@ -665,15 +571,8 @@ export default {
                 >{{ data.item.name }}</router-link
               >
               <router-link
-                v-else-if="data.item.name === 'simserver'"
-                :to="{ name: 'simServer-details' }"
-                style="color: #761300; max-width: 250px;"
-                class="d-inline-block text-truncate text-dark"
-                >{{ data.item.name }}</router-link
-              >
-              <router-link
                 v-else
-                :to="{ name: 'provider-details', params: { id: data.item.id } }"
+                :to="{ name: 'user-details', params: { id: data.item.id } }"
                 style="color: #761300; max-width: 250px;"
                 class="d-inline-block text-truncate text-dark"
                 >{{ data.item.name }}</router-link
@@ -769,18 +668,6 @@ export default {
                     v-b-modal.modal-edit-role
                   >
                     <i class="uil uil-pen font-size-18"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a
-                    href="javascript:void(0);"
-                    class="px-2 text-primary"
-                    v-b-tooltip.hover
-                    title="Delete"
-                    @click="getProviderInfo(item)"
-                    v-b-modal.modal-delete-provider
-                  >
-                    <i class="uil uil-trash-alt text-danger font-size-18"></i>
                   </a>
                 </li>
                 <li class="list-inline-item">

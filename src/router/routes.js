@@ -333,15 +333,6 @@ export default [
       import('../views/pages/management/mySimHostingProviderShow'),
   },
   {
-    path: '/management/provider/sim-server',
-    name: 'simServer-details',
-    meta: {
-      authRequired: true,
-    },
-    component: () =>
-      import('../views/pages/management/simServer'),
-  },
-  {
     path: '/management/user/:id',
     name: 'user-details',
     meta: {
