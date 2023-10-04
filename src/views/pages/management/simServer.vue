@@ -1,5 +1,5 @@
 <script>
-import Multiselect from 'vue-multiselect'
+// import Multiselect from 'vue-multiselect'
 import VueToastr from 'vue-toastr'
 
 import Layout from '../../layouts/main'
@@ -11,9 +11,9 @@ import { BASE_URL } from '../../../baseconstant'
  * Orders component
  */
 export default {
-  components: { Layout, PageHeader, Multiselect, VueToastr },
+  components: { Layout, PageHeader, VueToastr },
   page: {
-    title: 'Provider',
+    title: 'Service',
     meta: [
       {
         name: 'description',
@@ -23,49 +23,65 @@ export default {
   },
   data() {
     return {
-      title: 'Manage Providers',
+      title: 'Sim Server',
       isBusy: false,
       items: [
         {
           text: 'App',
         },
         {
-          text: 'Providers',
+          text: 'Services',
+        },
+        {
+          text: 'Sim Server',
           active: true,
         },
       ],
       providerData: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 20,
-      pageOptions: [10, 20, 30, 50],
+      perPage: 40,
+      pageOptions: [40, 100, 200, 400],
       filter: null,
       filterOn: [],
       sortBy: 'name',
-      service_enabled: true,
       sortDesc: false,
       url: false,
-      profile_photo: '',
-      provider: {
+      profile_photo: null,
+      product: {
         id: this.id,
-        provider_name: this.name,
+        name: this.plan,
+        amount: this.amount,
+        type: this.type
       },
       fields: [
         {
           key: 'index',
           label: 'S/N',
         },
+        // {
+        //   key: 'plan_id',
+        //   label: 'Plan ID',
+        // },
         {
           key: 'thumbnail',
           label: 'Thumbnail',
         },
         {
-          key: 'name',
-          label: 'Provider Name',
+          key: 'network',
+          label: 'Network',
         },
         {
-          key: 'products',
-          label: 'Services ',
+          key: 'plan',
+          label: 'Name',
+        },
+        {
+          key: 'amount',
+          label: 'Amount',
+        },
+        {
+          key: 'type',
+          label: 'Plan Type',
         },
         {
           key: 'status',
@@ -78,13 +94,6 @@ export default {
         },
         'action',
       ],
-      admin: {
-        id: this.id,
-        name: this.name,
-        email: this.email,
-        phone: this.phone,
-        role: this.role,
-      },
       options: null,
     }
   },
@@ -101,6 +110,7 @@ export default {
     // Set the initial number of items
     this.totalRows = this.items.length
     this.fetchData()
+    // console.log(this.$route.params.id)
   },
   methods: {
     onFileChange(e) {
@@ -108,21 +118,82 @@ export default {
       this.url = URL.createObjectURL(file)
       this.profile_photo = URL.createObjectURL(file)
     },
+    getProductInfo(item) {
+      this.product.id = item.id
+      this.product.name = item.network
+      this.product.type = item.type
+      this.product.amount = item.amount
+    },
+    editProduct(id) {
+      this.isBusy = true
+      const formData = new FormData()
+        if(this.profile_photo != '') {
+        formData.append('logo', this.profile_photo)
+        }
+      // formData.append('product_id', this.product.id)
+      formData.append('amount', this.product.amount)
+
+      this.axios
+        .post(
+          BASE_URL + '/admin/ss/provider/' + id + '/products/update',
+          formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+        )
+        .then(() => {
+          this.fetchData()
+
+          this.$refs.mytoast.Add({
+            msg: 'Product Edited Successfully',
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'success',
+          })
+        })
+        .catch((err) => {
+          // console.log(err);
+          // console.log(this.role);
+
+          this.$refs.mytoast.Add({
+            msg: err.response?.data?.error,
+            clickClose: false,
+            timeout: 5000,
+            position: 'toast-top-right',
+            type: 'error',
+          })
+        })
+        .finally(() => {
+          this.isBusy = false
+          this.url = ''
+      this.profile_photo = ''
+        })
+    },
     fetchData() {
       this.isBusy = true
+      // console.log('check')
       this.axios
-        .get(BASE_URL + '/admin/providers?per_page=10000')
+        .get(
+          BASE_URL +
+            '/admin/ss/provider/simserver/products?per_page=10000'
+        )
         .then((res) => {
           //   console.log(res.data.data.data);
-          const data = res.data?.data
+          const data = res.data.data
+          
           const dataArr = []
-          //   console.log(data)
+            console.log(data)
           data.forEach((user) => {
             let u = {}
             u.id = user.id
-            u.thumbnail = user.logo
-            u.name = user.name
-            u.products = user.products.length
+            // u.plan_id = user.plan_id
+            u.thumbnail = user.thumbnail
+            u.network = user.network
+            u.plan = user.plan
+            u.amount = user.amount
+            u.type = user.type
             u.status = user.status == 'enabled' ? 'enabled' : 'disabled'
             u.created_at = user.created_at
 
@@ -146,98 +217,10 @@ export default {
           this.isBusy = false
         })
     },
-    addProvider() {
-      this.isBusy = true
-      const formData = new FormData()
-      formData.append('provider_name', this.provider.provider_name)
-      if (this.profile_photo) {
-        formData.append('photo', this.profile_photo)
-      }
-
-      this.axios
-        .post(
-          BASE_URL + '/admin/providers',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        )
-        .then(() => {
-          // console.log(res.data.data);
-          this.fetchData()
-          this.$refs.mytoast.Add({
-            msg: 'Provider Edited Successfully',
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'success',
-          })
-        })
-        .catch((err) => {
-          this.$refs.mytoast.Add({
-            msg: err.response.data.details,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          this.isBusy = false
-          this.url = ''
-          this.profile_photo = ''
-        })
-    },
-    editProvider() {
-      this.isBusy = true
-      const formData = new FormData()
-      formData.append('provider_name', this.provider.provider_name)
-      formData.append('photo', this.profile_photo)
-
-      this.axios
-        .post(
-          BASE_URL + '/admin/providers/' + this.provider.id,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        )
-        .then(() => {
-          // console.log(res.data.data);
-          this.fetchData()
-          this.$refs.mytoast.Add({
-            msg: 'Provider Edited Successfully',
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'success',
-          })
-        })
-        .catch((err) => {
-          // console.log(err);
-          // console.log(this.role);
-          this.$refs.mytoast.Add({
-            msg: err.response.data.details,
-            clickClose: false,
-            timeout: 5000,
-            position: 'toast-top-right',
-            type: 'error',
-          })
-        })
-        .finally(() => {
-          this.isBusy = false
-          this.url = ''
-          this.profile_photo = ''
-        })
-    },
     deleteProvider(id) {
       this.isBusy = true
       this.axios
-        .delete(BASE_URL + '/admin/providers/' + id)
+        .delete(BASE_URL + '/admin/ss/providers/' + id)
         .then((res) => {
           this.$refs.mytoast.Add({
             msg: res.data.message,
@@ -250,7 +233,7 @@ export default {
         })
         .catch((err) => {
           this.$refs.mytoast.Add({
-            msg: err.response.message || err.response?.data?.error,
+            msg: err.response?.message || err.response.data.error,
             clickClose: false,
             timeout: 5000,
             position: 'toast-top-right',
@@ -267,13 +250,14 @@ export default {
       // console.log(this.service_enabled)
       this.isBusy = true
       const status = item.status == 'enabled' ? 'disable':'enable'
+      const showStatus = item.status == 'enabled' ? 'disabled':'enabled'
       this.axios
-        .put(BASE_URL + '/admin/providers/' + item.id +'/'+status)
+        .put(BASE_URL + '/admin/ss/provider/' + item.id + '/products/'+status)
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
           this.$refs.mytoast.Add({
-            msg: 'Service '+status+'d Successfully',
+            msg: 'Service '+showStatus+' Successfully',
             clickClose: false,
             timeout: 5000,
             position: 'toast-top-right',
@@ -294,10 +278,10 @@ export default {
           this.isBusy = false
         })
     },
-    enableProvider(id) {
+    enableService(id) {
       this.isBusy = true
       this.axios
-        .put(BASE_URL + '/admin/providers/' + id + '/enable')
+        .put(BASE_URL + '/admin/ss/provider/' + id + '/products/enable')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -312,7 +296,7 @@ export default {
         .catch((err) => {
           console.log(err)
           this.$refs.mytoast.Add({
-            msg: err.response?.data?.error,
+            msg: err.response.data.details,
             clickClose: false,
             timeout: 5000,
             position: 'toast-top-right',
@@ -323,10 +307,11 @@ export default {
           this.isBusy = false
         })
     },
-    disableProvider(id) {
+    disableService(id) {
       this.isBusy = true
+      console.log(id)
       this.axios
-        .put(BASE_URL + '/admin/providers/' + id + '/disable')
+        .put(BASE_URL + '/admin/ss/providers/' + id + '/products/disable-mysimhosting')
         .then(() => {
           // console.log(res.data.data);
           this.fetchData()
@@ -352,10 +337,6 @@ export default {
           this.isBusy = false
         })
     },
-    getProviderInfo(item) {
-      this.provider.id = item.id
-      this.provider.provider_name = item.name
-    },
 
     /**
      * Search the table data with search input
@@ -373,81 +354,40 @@ export default {
   <Layout>
     <PageHeader :title="title" :items="items" />
     <vue-toastr ref="mytoast"></vue-toastr>
-    <!-- ::START ADD admin Modal -->
+
+    <!-- ::START EDIT Role Modal -->
     <b-modal
-      id="modal-add-admin"
-      title="Add Admin"
+      id="modal-edit-product"
+      title="Edit Service"
       title-class="font-18"
       hide-footer
     >
-      <!-- <h5>Edit admin</h5> -->
-      <label for="" class="m-2">Name: </label>
+      <label for="" class="m-2">Product Name: </label>
       <input
         type="text"
-        v-model="admin.name"
+        v-model="product.name"
+        readonly
         id="horizontal-firstname-input"
-        placeholder="Enter admin name..."
+        placeholder="Enter product name..."
         class="m-2 form-control"
       />
-      <label for="" class="m-2">Email: </label>
-      <input
-        type="text"
-        v-model="admin.email"
-        id="horizontal-firstname-input"
-        placeholder="Enter admin email..."
-        class="m-2 form-control"
-      />
-      <label for="" class="m-2">Phone: </label>
-      <input
-        type="number"
-        v-model="admin.phone"
-        id="horizontal-firstname-input"
-        placeholder="Enter admin phone..."
-        class="m-2 form-control"
-      />
-      <label for="" class="m-2">Role: </label>
-      <multiselect
-        class="m-2"
-        v-model="admin.role"
-        :options="options"
-        track-by="id"
-        label="name"
-      ></multiselect>
 
-      <!-- <textarea v-model="admin.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
-      <div class="modal-footer">
-        <button
-          @click="addAdmin(), $bvModal.hide('modal-add-admin')"
-          type="button"
-          class="btn btn-primary"
-        >
-          Save changes
-        </button>
-        <b-button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          @click="$bvModal.hide('modal-add-admin')"
-        >
-          Close
-        </b-button>
-      </div>
-    </b-modal>
-    <!-- ::END ADD Admin Modal -->
-
-    <!-- ::START EDIT Provider Modal -->
-    <b-modal
-      id="modal-edit-role"
-      title="Edit Provider"
-      title-class="font-18"
-      hide-footer
-    >
-      <label for="" class="m-2">Provider Name: </label>
+      <label for="" class="m-2">Product Type: </label>
       <input
         type="text"
-        v-model="provider.provider_name"
+        v-model="product.type"
+        readonly
         id="horizontal-firstname-input"
-        placeholder="Enter provider name..."
+        placeholder="Enter product type..."
+        class="m-2 form-control"
+      />
+
+      <label for="" class="m-2">Amount: </label>
+      <input
+        type="text"
+        v-model="product.amount"
+        id="horizontal-firstname-input"
+        placeholder="Enter product amount..."
         class="m-2 form-control"
       />
 
@@ -466,7 +406,7 @@ export default {
       <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
       <div class="modal-footer">
         <button
-          @click="editProvider(), $bvModal.hide('modal-edit-role')"
+          @click="editProduct(product.id), $bvModal.hide('modal-edit-product')"
           type="button"
           class="btn btn-primary"
         >
@@ -476,101 +416,16 @@ export default {
           type="button"
           class="btn btn-secondary"
           data-dismiss="modal"
-          @click="$bvModal.hide('modal-edit-role')"
+          @click="$bvModal.hide('modal-edit-product')"
         >
           Close
         </b-button>
       </div>
     </b-modal>
-    <!-- ::END EDIT Provider Modal -->
-
-    <!-- ::START DELETE Provider Modal -->
-    <b-modal
-      id="modal-delete-provider"
-      title="Delete Admin"
-      title-class="font-18"
-      hide-footer
-    >
-      <p>Are you sure you want to delete "{{ provider.provider_name }}"</p>
-
-      <div class="modal-footer">
-        <button
-          @click="deleteProvider(provider.id), $bvModal.hide('modal-delete-provider')"
-          type="button"
-          class="btn btn-primary"
-        >
-          Delete
-        </button>
-        <b-button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          @click="$bvModal.hide('modal-delete-provider')"
-        >
-          Close
-        </b-button>
-      </div>
-    </b-modal>
-    <!-- ::END DELETE Provider Modal -->
-
-    <!-- ::START EDIT Provider Modal -->
-    <b-modal
-      id="modal-add-role"
-      title="Add Provider"
-      title-class="font-18"
-      hide-footer
-    >
-      <label for="" class="m-2">Provider Name: </label>
-      <input
-        type="text"
-        v-model="provider.provider_name"
-        id="horizontal-firstname-input"
-        placeholder="Enter provider name..."
-        class="m-2 form-control"
-      />
-
-      <img
-        class="avatar-lg rounded-circle img-thumbnail"
-        :src="url"
-        alt="Card image cap"
-      />
-      <b-form-file
-        placeholder="Choose an image here..."
-        @change="onFileChange"
-        v-model="profile_photo"
-        :state="Boolean(profile_photo)"
-      ></b-form-file>
-
-      <!-- <textarea v-model="role.features" name="features" id="horizontal-firstname-input" cols="55" rows="10" class="m-2 form-control"></textarea> -->
-      <div class="modal-footer">
-        <button
-          @click="addProvider(), $bvModal.hide('modal-add-role')"
-          type="button"
-          class="btn btn-primary"
-        >
-          Save changes
-        </button>
-        <b-button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          @click="$bvModal.hide('modal-add-role')"
-        >
-          Close
-        </b-button>
-      </div>
-    </b-modal>
-    <!-- ::END EDIT Provider Modal -->
+    <!-- ::END EDIT Role Modal -->
 
     <div class="row">
       <div class="col-12">
-        <button
-          type="button"
-          class="btn btn-primary mb-3 brand-primary"
-          v-b-modal.modal-add-role
-        >
-          <i class="mdi mdi-plus me-1"></i> Add New Provider
-        </button>
         <div
           class="table table-centered datatable dt-responsive nowrap table-card-list dataTable no-footer dtr-inline"
         >
@@ -658,22 +513,7 @@ export default {
 
             <template v-slot:cell(name)="data">
               <router-link
-                v-if="data.item.name === 'mysimhosting'"
-                :to="{ name: 'mysimhosting-details' }"
-                style="color: #761300; max-width: 250px;"
-                class="d-inline-block text-truncate text-dark"
-                >{{ data.item.name }}</router-link
-              >
-              <router-link
-                v-else-if="data.item.name === 'simserver'"
-                :to="{ name: 'simServer-details' }"
-                style="color: #761300; max-width: 250px;"
-                class="d-inline-block text-truncate text-dark"
-                >{{ data.item.name }}</router-link
-              >
-              <router-link
-                v-else
-                :to="{ name: 'provider-details', params: { id: data.item.id } }"
+                :to="{ name: 'user-details', params: { id: data.item.id } }"
                 style="color: #761300; max-width: 250px;"
                 class="d-inline-block text-truncate text-dark"
                 >{{ data.item.name }}</router-link
@@ -717,70 +557,32 @@ export default {
             </template>
             <template v-slot:cell(action)="{ item }">
               <ul class="list-inline mb-0">
-                <li
-                  class="list-inline-item"
-                  v-if="
-                    item.name === 'mysimhosting' ||
-                      item.name == 'Mysimhosting' ||
-                      item.name == 'mysimhosting'
-                  "
-                >
-                  <a
-                    href="javascript:void(0);"
-                    class="text-info"
-                    v-b-tooltip.hover
-                    title="Provider"
-                    ><router-link
-                      class="text-info"
-                      :to="{
-                        name: 'mysimhosting-details'
-                      }"
-                      v-b-tooltip.hover
-                      title="Provider"
-                      ><i class="uil uil-eye font-size-18"></i
-                    ></router-link>
-                  </a>
-                </li>
-                <li class="list-inline-item" v-else>
-                  <a
-                    href="javascript:void(0);"
-                    class="text-info"
-                    v-b-tooltip.hover
-                    title="Provider"
-                    ><router-link
-                      class="text-info"
-                      :to="{
-                        name: 'provider-details',
-                        params: { id: item.id },
-                      }"
-                      v-b-tooltip.hover
-                      title="Provider"
-                      ><i class="uil uil-eye font-size-18"></i
-                    ></router-link>
-                  </a>
-                </li>
+                <!-- <li class="list-inline-item">
+                      <a
+                        href="javascript:void(0);"
+                        class="text-info"
+                        v-b-tooltip.hover
+                        title="Provider"
+                      ><router-link 
+                        class="text-info"
+                        :to="{ name: 'provider-details', params: { id: item.id }}"
+                        v-b-tooltip.hover
+                        title="Provider"
+                      ><i class="uil uil-eye font-size-18"></i></router-link>
+                        
+                      </a>
+                    </li> -->
+
                 <li class="list-inline-item">
                   <a
                     href="javascript:void(0);"
                     class="px-2 text-primary"
                     v-b-tooltip.hover
                     title="Edit"
-                    @click="getProviderInfo(item)"
-                    v-b-modal.modal-edit-role
+                    @click="getProductInfo(item)"
+                    v-b-modal.modal-edit-product
                   >
                     <i class="uil uil-pen font-size-18"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a
-                    href="javascript:void(0);"
-                    class="px-2 text-primary"
-                    v-b-tooltip.hover
-                    title="Delete"
-                    @click="getProviderInfo(item)"
-                    v-b-modal.modal-delete-provider
-                  >
-                    <i class="uil uil-trash-alt text-danger font-size-18"></i>
                   </a>
                 </li>
                 <li class="list-inline-item">
@@ -791,9 +593,9 @@ export default {
                     href="javascript:void(0);"
                     class="px-2 text-primary"
                     v-b-tooltip.hover
-                    title="Enable"
+                    title="Enable service"
                     v-b-modal.modal-edit-admin
-                    @click="enableProvider(item.id)"
+                    @click="enableService(item.id)"
                   >
                     <i
                       class="uil uil-check-circle font-size-18 text-success"
@@ -805,25 +607,25 @@ export default {
                     href="javascript:void(0);"
                     class="px-2 text-primary"
                     v-b-tooltip.hover
-                    title="Disable"
+                    title="Disable service"
                     v-b-modal.modal-edit-admin
-                    @click="disableProvider(item.id)"
+                    @click="disableService(item.id)"
                   >
                     <i class="uil uil-info-circle font-size-18 text-danger"></i>
                   </a>
                 </li> -->
                 <!-- <li class="list-inline-item">
-                  <a
-                    href="javascript:void(0);"
-                    class="px-2 text-primary"
-                    v-b-tooltip.hover
-                    title="Delete"
-                    v-b-modal.modal-edit-admin
-                    @click="deleteProvider(item.id)"
-                  >
-                    <i class="uil uil-trash font-size-18 text-danger"></i>
-                  </a>
-                </li> -->
+                      <a
+                        href="javascript:void(0);"
+                        class="px-2 text-primary"
+                        v-b-tooltip.hover
+                        title="Delete"
+                        v-b-modal.modal-edit-admin
+                        @click="deleteProvider(item.id)"
+                      >
+                        <i class="uil uil-trash font-size-18 text-danger"></i>
+                      </a>
+                    </li> -->
               </ul>
             </template>
           </b-table>
