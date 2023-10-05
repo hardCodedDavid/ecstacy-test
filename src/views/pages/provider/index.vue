@@ -741,6 +741,30 @@ export default {
                     ></router-link>
                   </a>
                 </li>
+                <li
+                  class="list-inline-item"
+                  v-else-if="
+                    item.name === 'simserver' ||
+                      item.name == 'Simserver' ||
+                      item.name == 'Sim Server'
+                  "
+                >
+                  <a
+                    href="javascript:void(0);"
+                    class="text-info"
+                    v-b-tooltip.hover
+                    title="Provider"
+                    ><router-link
+                      class="text-info"
+                      :to="{
+                        name: 'simServer-details'
+                      }"
+                      v-b-tooltip.hover
+                      title="Provider"
+                      ><i class="uil uil-eye font-size-18"></i
+                    ></router-link>
+                  </a>
+                </li>
                 <li class="list-inline-item" v-else>
                   <a
                     href="javascript:void(0);"
